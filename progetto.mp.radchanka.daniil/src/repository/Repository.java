@@ -3,13 +3,13 @@ package repository;
 import java.util.Collection;
 
 public interface Repository<T> {
-    public void create(T value);
+	public void create(T value);
 
-    public Collection<T> get();
+	public void delete(T value);
 
-    public Collection<T> get(Pagination pagination);
+	public Collection<T> get(RetrieveStrategy<T> retrieveStrategy);
 
-    public void update(T value);
+	public T get(RetrieveSingleItemStrategy<T> retrieveStrategy);
 
-    public void delete(T value);
+	public void update(T value);
 }
