@@ -1,12 +1,12 @@
 package repository;
 
 public final class Pagination {
-	private final int _pageIndex;
-	private final int _pageSize;
+	private final int pageIndex;
+	private final int pageSize;
 
 	private Pagination(int pageIndex, int pageSize) {
-		_pageIndex = pageIndex;
-		_pageSize = pageSize;
+		this.pageIndex = pageIndex;
+		this.pageSize = pageSize;
 
 	}
 
@@ -15,10 +15,10 @@ public final class Pagination {
 	}
 
 	public int getPageIndex() {
-		return _pageIndex;
+		return this.pageIndex;
 	}
 
 	public int getPageSize() {
-		return _pageSize;
+		return this.pageSize;
 	}
 }

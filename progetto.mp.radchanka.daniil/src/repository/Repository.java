@@ -1,15 +1,27 @@
 package repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
-public interface Repository<T> {
-	public void create(T value);
+import domainDrivenDesign.Entity;
+import specification.Specification;
 
-	public void delete(T value);
+public interface Repository<TEntity extends Entity<TId>, TId> {
+	public void add(TEntity entity);
+	
+	public void addRange(Collection<TEntity> entity);
+	
+	public Collection<TEntity> getAll();
+	
+	public Collection<TEntity> get(Specification<TEntity> specification, Pagination pagination);
 
-	public Collection<T> get(RetrieveStrategy<T> retrieveStrategy);
+	public Optional<TEntity> getFirst(Specification<TEntity> specification);
 
-	public T get(RetrieveSingleItemStrategy<T> retrieveStrategy);
+	public void remove(TId entityId);
+	
+	public void removeRange(Collection<TId> entityIds);
 
-	public void update(T value);
+	public void update(TEntity entity);
+	
+	public void updateRange(Collection<TEntity> entity);
 }
