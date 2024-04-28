@@ -1,4 +1,4 @@
 package mediator;
 
-public interface Mediator extends CommandSender, QuerySender {
+public interface Mediator extends RequestDispatcher, NotificationDispatcher {
 }

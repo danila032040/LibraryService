@@ -1,29 +1,36 @@
 package mediator;
 
-import java.util.Collection;
-import java.util.stream.Stream;
 
 public class MediatorImpl implements Mediator {
-
-	private final Stream<CommandHandler<? extends Command<?>,?>> commandHandlers;
+	private final RequestDispatcher requestDispatcher;
+	private final NotificationDispatcher notificationDispatcher;
 	
-	public MediatorImpl(Collection<CommandHandler<? extends Command<?>, ?>> commandHandlers) {
-		this.commandHandlers = commandHandlers.stream();
-	}	
-	@Override
-	public <TCommand extends Command<TResult>, TResult> TResult SendCommand(TCommand command) throws Exception {
-		// TODO Auto-generated method stub
-		commandHandlers.filter(x->{
-			var test = x.getClass().getGenericSuperclass()
-			return true;
-		});
-		return null;
+	public MediatorImpl(RequestDispatcher requestDispatcher,
+			NotificationDispatcher notificationDispatcher) {
+		this.requestDispatcher = requestDispatcher;
+		this.notificationDispatcher = notificationDispatcher;
 	}
 
-	@Override
-	public <TQuery extends Query<TResult>, TResult> TResult SendQuery(TQuery query) {
-		// TODO Auto-generated method stub
-		return null;
+	public <TRequest extends Request<TResult>, TResult> void registerHandler(
+			Class<TRequest> requestType,
+			RequestHandler<TRequest, TResult> handler) {
+		this.requestDispatcher.registerHandler(requestType, handler);
+	}
+
+	public <TRequest extends Request<TResult>, TResult> TResult sendRequest(
+			TRequest request) {
+		return this.requestDispatcher.sendRequest(request);
+	}
+
+	public <TNotification extends Notification> void registerHandler(
+			Class<TNotification> notificationType,
+			NotificationHandler<TNotification> handler) {
+		this.notificationDispatcher.registerHandler(notificationType, handler);
+	}
+
+	public <TNotification extends Notification> void sendNotification(
+			TNotification notification) {
+		this.notificationDispatcher.sendNotification(notification);
 	}
 
 }
