@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class NotificationDispatcherImpl implements NotificationDispatcher {
 	private final Map<Class<? extends Notification>, NotificationHandler<? extends Notification>> handlers;
-	
+
 	public NotificationDispatcherImpl() {
 		handlers = new HashMap<>();
 	}

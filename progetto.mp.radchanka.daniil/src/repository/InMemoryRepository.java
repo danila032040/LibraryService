@@ -1,35 +1,72 @@
 package repository;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import domainDrivenDesign.cloneable.CloneableEntity;
+import domainDrivenDesign.Entity;
 import specification.Specification;
 
-public class InMemoryRepository<TEntity extends CloneableEntity<TEntity, TId>, TId>
+public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 		implements
 			Repository<TEntity, TId> {
+	private final Function<TEntity, TEntity> entityCloneFactory;
 	private final Supplier<Collection<TEntity>> resultCollectionFactory;
 	private final Collection<TEntity> storage;
 
 	public InMemoryRepository(Collection<TEntity> storage,
 			Supplier<Collection<TEntity>> resultCollectionFactory,
-			Supplier<TId> uniqueIdSupplier) {
+			Function<TEntity, TEntity> entityCloneFactory) {
 		this.storage = storage;
+		this.entityCloneFactory = entityCloneFactory;
 		this.resultCollectionFactory = resultCollectionFactory;
 	}
 
 	@Override
 	public void add(TEntity entity) {
-		this.storage.add(entity.createClone());
+		this.storage.add(cloneEntity(entity));
 	}
 
 	@Override
 	public void addRange(Collection<TEntity> entities) {
 		entities.forEach(this::add);
+	}
+
+	@Override
+	public Collection<TEntity> get(Specification<TEntity> specification) {
+		Stream<TEntity> stream = this.storage.stream();
+
+		stream = applySpecification(stream, specification);
+		stream = cloneContent(stream);
+
+		return stream.collect(Collectors.toCollection(resultCollectionFactory));
+	}
+
+	@Override
+	public Collection<TEntity> get(
+			Specification<TEntity> specification,
+			Consumer<SortComparatorBuilder<TEntity>> sortOpt,
+			Pagination pagination) {
+		Stream<TEntity> stream = this.storage.stream();
+
+		SortComparatorBuilder<TEntity> sortComparatorBuilder = new SortComparatorBuilder<TEntity>();
+		sortOpt.accept(sortComparatorBuilder);
+
+		stream = applySpecification(stream, specification);
+		stream = applySortComparator(
+				stream,
+				sortComparatorBuilder.getCompiledComparator());
+		stream = applyPagination(stream, pagination);
+		stream = cloneContent(stream);
+
+		return stream.collect(Collectors.toCollection(resultCollectionFactory));
+
 	}
 
 	@Override
@@ -60,16 +97,12 @@ public class InMemoryRepository<TEntity extends CloneableEntity<TEntity, TId>, T
 
 		stream = applySpecification(stream, specification);
 
-		return stream.findFirst().map(TEntity::createClone);
+		return stream.findFirst().map(this::cloneEntity);
 	}
 
 	@Override
 	public void remove(TId entityId) {
-		this.storage
-				.removeIf(
-						storageEntity -> storageEntity
-								.getId()
-								.equals(entityId));
+		removeRange(Collections.singleton(entityId));
 	}
 
 	@Override
@@ -79,8 +112,7 @@ public class InMemoryRepository<TEntity extends CloneableEntity<TEntity, TId>, T
 
 	@Override
 	public void update(TEntity entity) {
-		this.remove(entity.getId());
-		this.add(entity);
+		updateRange(Collections.singletonList(entity));
 	}
 
 	@Override
@@ -101,6 +133,12 @@ public class InMemoryRepository<TEntity extends CloneableEntity<TEntity, TId>, T
 				.limit(pagination.getPageSize());
 	}
 
+	private Stream<TEntity> applySortComparator(
+			Stream<TEntity> stream,
+			Comparator<TEntity> comparator) {
+		return stream.sorted(comparator);
+	}
+
 	private Stream<TEntity> applySpecification(
 			Stream<TEntity> stream,
 			Specification<TEntity> specification) {
@@ -108,6 +146,9 @@ public class InMemoryRepository<TEntity extends CloneableEntity<TEntity, TId>, T
 	}
 
 	private Stream<TEntity> cloneContent(Stream<TEntity> stream) {
-		return stream.map(TEntity::createClone);
+		return stream.map(this::cloneEntity);
+	}
+	private TEntity cloneEntity(TEntity entity) {
+		return entityCloneFactory.apply(entity);
 	}
 }

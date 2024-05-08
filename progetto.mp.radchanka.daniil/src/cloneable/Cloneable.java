@@ -1,4 +1,4 @@
-package domainDrivenDesign.cloneable;
+package cloneable;
 
 public interface Cloneable<T> {
 	public T createClone();
