@@ -5,7 +5,7 @@ public class NotificationHandlerNotFoundException extends RuntimeException {
 	private final Class<?> notificationType;
 
 	public NotificationHandlerNotFoundException(Class<?> notificationType) {
-		super("No notification handler found for type: "
+		super("No notification handlers found for type: "
 				+ notificationType.getName());
 		this.notificationType = notificationType;
 	}

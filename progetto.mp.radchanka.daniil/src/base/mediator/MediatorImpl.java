@@ -10,16 +10,19 @@ public class MediatorImpl implements Mediator {
 		this.notificationDispatcher = notificationDispatcher;
 	}
 
-	public <TNotification extends Notification> void registerHandler(
+	public <TNotification extends Notification> NotificationDispatcher registerHandler(
 			Class<TNotification> notificationType,
 			NotificationHandler<TNotification> handler) {
 		this.notificationDispatcher.registerHandler(notificationType, handler);
+		return this;
 	}
 
-	public <TRequest extends Request<TResult>, TResult> void registerHandler(
+	public <TRequest extends Request<TResult>, TResult> RequestDispatcher registerHandler(
 			Class<TRequest> requestType,
-			RequestHandler<TRequest, TResult> handler) {
+			RequestHandler<TRequest, TResult> handler)
+			throws RequestHandlerAlreadyRegisteredException {
 		this.requestDispatcher.registerHandler(requestType, handler);
+		return this;
 	}
 
 	public <TNotification extends Notification> void sendNotification(

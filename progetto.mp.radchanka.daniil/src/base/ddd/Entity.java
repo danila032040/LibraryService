@@ -27,7 +27,8 @@ public abstract class Entity<TId> {
 	}
 
 	public Collection<DomainEvent> extractAllDomainEvents() {
-		Collection<DomainEvent> result = IteratorUtils.toArrayList(domainEvents.descendingIterator());
+		Collection<DomainEvent> result = IteratorUtils
+				.toArrayList(domainEvents.descendingIterator());
 		domainEvents.clear();
 		return result;
 	}
@@ -39,10 +40,6 @@ public abstract class Entity<TId> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
-	}
-
-	public void setId(TId id) {
-		this.id = id;
 	}
 
 	protected void registerDomainEvent(DomainEvent domainEvent) {

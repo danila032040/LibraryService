@@ -1,7 +1,7 @@
 package base.mediator;
 
 public interface NotificationDispatcher {
-	public <TNotification extends Notification> void registerHandler(
+	public <TNotification extends Notification> NotificationDispatcher registerHandler(
 			Class<TNotification> notificationType,
 			NotificationHandler<TNotification> handler);
 

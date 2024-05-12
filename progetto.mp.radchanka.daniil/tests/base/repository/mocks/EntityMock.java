@@ -10,6 +10,7 @@ public class EntityMock extends Entity<Integer>
 
 	public EntityMock(int id, int someFieldUsedForSortBy) {
 		super(id);
+		this.someIntUsedForSortBy = someFieldUsedForSortBy;
 	}
 
 	public int getSomeFieldUsedForSortBy() {

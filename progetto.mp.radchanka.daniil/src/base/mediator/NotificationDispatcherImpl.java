@@ -1,19 +1,29 @@
 package base.mediator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class NotificationDispatcherImpl implements NotificationDispatcher {
-	private final Map<Class<? extends Notification>, NotificationHandler<? extends Notification>> handlers;
+	private final Map<Class<? extends Notification>, Collection<NotificationHandler<? extends Notification>>> handlersByNotificationType;
 
 	public NotificationDispatcherImpl() {
-		handlers = new HashMap<>();
+		handlersByNotificationType = new HashMap<>();
 	}
 
-	public <TNotification extends Notification> void registerHandler(
+	public <TNotification extends Notification> NotificationDispatcher registerHandler(
 			Class<TNotification> notificationType,
 			NotificationHandler<TNotification> handler) {
-		handlers.put(notificationType, handler);
+		Objects.requireNonNull(notificationType);
+		Objects.requireNonNull(handler);
+		Collection<NotificationHandler<? extends Notification>> handlers = handlersByNotificationType
+				.getOrDefault(notificationType, new ArrayList<>());
+		handlers.add(handler);
+		handlersByNotificationType.put(notificationType, handlers);
+		return this;
 	}
 
 	public <TNotification extends Notification> void sendNotification(
@@ -21,13 +31,13 @@ public class NotificationDispatcherImpl implements NotificationDispatcher {
 		Class<? extends Notification> notificationType = notification
 				.getClass();
 
-		NotificationHandler<? extends Notification> handler = handlers
-				.get(notificationType);
+		Collection<? extends NotificationHandler<? extends Notification>> handlers = handlersByNotificationType
+				.getOrDefault(notificationType, Collections.emptyList());
 
-		if (handler == null)
+		if (handlers.isEmpty())
 			throw new NotificationHandlerNotFoundException(notificationType);
 
-		handleNotification(notification, handler);
+		handlers.forEach(handler -> handleNotification(notification, handler));
 	}
 
 	private <TNotification extends Notification> void handleNotification(
