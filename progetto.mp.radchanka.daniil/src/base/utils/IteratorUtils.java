@@ -1,5 +1,6 @@
 package base.utils;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -11,5 +12,11 @@ public final class IteratorUtils {
 			}
 		}
 		return (!a.hasNext() && !b.hasNext());
+	}
+	
+	public static <T> ArrayList<T> toArrayList(Iterator<T> iterator){
+		ArrayList<T> list = new ArrayList<>();
+		iterator.forEachRemaining(list::add);
+		return list;
 	}
 }

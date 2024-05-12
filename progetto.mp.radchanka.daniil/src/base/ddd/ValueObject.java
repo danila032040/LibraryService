@@ -1,6 +1,7 @@
 package base.ddd;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 import base.utils.IteratorUtils;
 
@@ -29,7 +30,7 @@ public abstract class ValueObject {
 
 		while (equalityComponentsIterator.hasNext())
 			result = prime * result
-					+ equalityComponentsIterator.next().hashCode();
+					+ Objects.hashCode(equalityComponentsIterator.next());
 
 		return result;
 	}

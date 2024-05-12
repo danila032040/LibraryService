@@ -1,20 +1,22 @@
-package base.ddd;
+package base.ddd.mocks;
 
 import java.util.Iterator;
 
 import org.assertj.core.util.Lists;
 
+import base.ddd.ValueObject;
+
 public class ValueObjectMock extends ValueObject {
 
 	private int integerToCompareWith;
-	private String stringToCompareWith;
 	private Object objectToCompareWith;
+	private String stringToCompareWith;
 
-	public ValueObjectMock(int integerToCompareWith, String stringToCompareWith,
-			Object objectToCompareWith) {
+	public ValueObjectMock(int integerToCompareWith, Object objectToCompareWith,
+			String stringToCompareWith) {
 		this.integerToCompareWith = integerToCompareWith;
-		this.stringToCompareWith = stringToCompareWith;
 		this.objectToCompareWith = objectToCompareWith;
+		this.stringToCompareWith = stringToCompareWith;
 	}
 
 	@Override
@@ -22,8 +24,8 @@ public class ValueObjectMock extends ValueObject {
 		return Lists
 				.list(
 						integerToCompareWith,
-						stringToCompareWith,
-						objectToCompareWith)
+						objectToCompareWith,
+						stringToCompareWith)
 				.iterator();
 	}
 }

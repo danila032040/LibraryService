@@ -1,17 +1,19 @@
 package base.ddd;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Objects;
 
+import base.utils.IteratorUtils;
+
 public abstract class Entity<TId> {
-	private Collection<DomainEvent> domainEvents;
+	private Deque<DomainEvent> domainEvents;
 	private TId id;
-	
+
 	public Entity(TId id) {
 		this.id = id;
-		this.domainEvents = new ArrayList<DomainEvent>();
+		this.domainEvents = new LinkedList<DomainEvent>();
 	}
 
 	@Override
@@ -24,8 +26,8 @@ public abstract class Entity<TId> {
 		return Objects.equals(id, other.id);
 	}
 
-	public Collection<DomainEvent> extractAllDomainEvents(){
-		var result = List.copyOf(domainEvents);
+	public Collection<DomainEvent> extractAllDomainEvents() {
+		Collection<DomainEvent> result = IteratorUtils.toArrayList(domainEvents.descendingIterator());
 		domainEvents.clear();
 		return result;
 	}
@@ -38,11 +40,11 @@ public abstract class Entity<TId> {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-	
+
 	public void setId(TId id) {
 		this.id = id;
 	}
-	
+
 	protected void registerDomainEvent(DomainEvent domainEvent) {
 		this.domainEvents.add(domainEvent);
 	}

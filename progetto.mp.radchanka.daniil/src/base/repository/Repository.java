@@ -7,9 +7,10 @@ import base.ddd.Entity;
 import base.specification.Specification;
 
 public interface Repository<TEntity extends Entity<TId>, TId> {
-	public void add(TEntity entity);
+	public void add(TEntity entity) throws AlreadyExistsException;
 
-	public void addRange(Collection<TEntity> entity);
+	public void addRange(Collection<TEntity> entity)
+			throws AlreadyExistsException;
 
 	public Collection<TEntity> get(Specification<TEntity> specification);
 

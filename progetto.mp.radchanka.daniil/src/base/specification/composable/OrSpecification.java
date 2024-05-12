@@ -1,5 +1,7 @@
 package base.specification.composable;
 
+import java.util.Objects;
+
 import base.specification.Specification;
 
 public final class OrSpecification<T> extends CompositeSpecification<T> {
@@ -8,6 +10,8 @@ public final class OrSpecification<T> extends CompositeSpecification<T> {
 
 	public OrSpecification(Specification<T> leftSpecification,
 			Specification<T> rightSpecification) {
+		Objects.requireNonNull(leftSpecification);
+		Objects.requireNonNull(rightSpecification);
 		_leftSpecification = leftSpecification;
 		_rightSpecification = rightSpecification;
 	}

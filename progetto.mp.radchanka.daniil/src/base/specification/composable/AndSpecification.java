@@ -1,5 +1,7 @@
 package base.specification.composable;
 
+import java.util.Objects;
+
 import base.specification.Specification;
 
 public final class AndSpecification<T> extends CompositeSpecification<T> {
@@ -8,6 +10,8 @@ public final class AndSpecification<T> extends CompositeSpecification<T> {
 
 	public AndSpecification(Specification<T> leftSpecification,
 			Specification<T> rightSpecification) {
+		Objects.requireNonNull(leftSpecification);
+		Objects.requireNonNull(rightSpecification);
 		_leftSpecification = leftSpecification;
 		_rightSpecification = rightSpecification;
 	}

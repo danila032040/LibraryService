@@ -1,39 +1,68 @@
 package base.repository;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import base.cloneable.CloneFactory;
 import base.ddd.Entity;
 import base.specification.Specification;
+import base.utils.StreamUtils;
 
 public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 		implements
 			Repository<TEntity, TId> {
-	private final Function<TEntity, TEntity> entityCloneFactory;
+
+	private final CloneFactory<TEntity> entityCloneFactory;
 	private final Supplier<Collection<TEntity>> resultCollectionFactory;
+
 	private final Collection<TEntity> storage;
 
 	public InMemoryRepository(Collection<TEntity> storage,
 			Supplier<Collection<TEntity>> resultCollectionFactory,
-			Function<TEntity, TEntity> entityCloneFactory) {
-		this.storage = storage;
-		this.entityCloneFactory = entityCloneFactory;
-		this.resultCollectionFactory = resultCollectionFactory;
+			CloneFactory<TEntity> entityCloneFactory) {
+		this.storage = Objects.requireNonNull(storage);
+		this.resultCollectionFactory = Objects
+				.requireNonNull(resultCollectionFactory);
+		this.entityCloneFactory = Objects.requireNonNull(entityCloneFactory);
 	}
 
 	@Override
-	public void add(TEntity entity) {
-		this.storage.add(cloneEntity(entity));
+	public void add(TEntity entity) throws AlreadyExistsException {
+		if (this.storage
+				.stream()
+				.anyMatch(x -> Objects.equals(x.getId(), entity.getId())))
+			throw new AlreadyExistsException(
+					String
+							.format(
+									"Entity with id = %s already exists in the storage",
+									entity.getId().toString()));
+		addToStorage(entity);
 	}
 
 	@Override
-	public void addRange(Collection<TEntity> entities) {
-		entities.forEach(this::add);
+	public void addRange(Collection<TEntity> entities)
+			throws AlreadyExistsException {
+		List<TId> alreadyPresentIds = StreamUtils
+				.filterDuplicates(
+						Stream
+								.concat(
+										this.storage
+												.stream()
+												.map(Entity::getId),
+										entities.stream().map(Entity::getId)))
+				.collect(Collectors.toUnmodifiableList());
+
+		if (!alreadyPresentIds.isEmpty()) {
+			throw new AlreadyExistsException(
+					GenerateAlreadyExistsExceptionMessage(alreadyPresentIds));
+		}
+
+		addRangeToStorage(entities);
 	}
 
 	@Override
@@ -41,6 +70,19 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 		Stream<TEntity> stream = this.storage.stream();
 
 		stream = applySpecification(stream, specification);
+		stream = cloneContent(stream);
+
+		return stream.collect(Collectors.toCollection(resultCollectionFactory));
+	}
+
+	@Override
+	public Collection<TEntity> get(
+			Specification<TEntity> specification,
+			Pagination pagination) {
+		Stream<TEntity> stream = this.storage.stream();
+
+		stream = applySpecification(stream, specification);
+		stream = applyPagination(stream, pagination);
 		stream = cloneContent(stream);
 
 		return stream.collect(Collectors.toCollection(resultCollectionFactory));
@@ -63,19 +105,6 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 	}
 
 	@Override
-	public Collection<TEntity> get(
-			Specification<TEntity> specification,
-			Pagination pagination) {
-		Stream<TEntity> stream = this.storage.stream();
-
-		stream = applySpecification(stream, specification);
-		stream = applyPagination(stream, pagination);
-		stream = cloneContent(stream);
-
-		return stream.collect(Collectors.toCollection(resultCollectionFactory));
-	}
-
-	@Override
 	public Collection<TEntity> getAll() {
 		Stream<TEntity> stream = this.storage.stream();
 
@@ -90,32 +119,46 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 
 		stream = applySpecification(stream, specification);
 
-		return stream.findFirst().map(this::cloneEntity);
+		return stream.findFirst().map(entityCloneFactory::createClone);
 	}
 
 	@Override
 	public void remove(TId entityId) {
-		removeRange(Collections.singleton(entityId));
+		removeFromStorage(entityId);
 	}
 
 	@Override
 	public void removeRange(Collection<TId> entityIds) {
-		this.storage.removeIf(entity -> entityIds.contains(entity.getId()));
+		removeRangeFromStorage(entityIds);
 	}
 
 	@Override
 	public void update(TEntity entity) {
-		updateRange(Collections.singletonList(entity));
+		removeFromStorage(entity.getId());
+		addToStorage(entity);
 	}
 
 	@Override
 	public void updateRange(Collection<TEntity> entities) {
-		removeRange(
+		removeRangeFromStorage(
 				entities
 						.stream()
 						.map(TEntity::getId)
 						.collect(Collectors.toUnmodifiableSet()));
-		addRange(entities);
+		addRangeToStorage(entities);
+	}
+
+	private void addRangeToStorage(Collection<TEntity> entities) {
+		this.storage
+				.addAll(
+						entities
+								.stream()
+								.map(entityCloneFactory::createClone)
+								.collect(Collectors.toUnmodifiableList()));
+	}
+
+	private void addToStorage(TEntity entity) {
+		this.storage.add(entityCloneFactory.createClone(entity));
 	}
 
 	private Stream<TEntity> applyPagination(
@@ -139,9 +182,29 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 	}
 
 	private Stream<TEntity> cloneContent(Stream<TEntity> stream) {
-		return stream.map(this::cloneEntity);
+		return stream.map(entityCloneFactory::createClone);
 	}
-	private TEntity cloneEntity(TEntity entity) {
-		return entityCloneFactory.apply(entity);
+
+	private String GenerateAlreadyExistsExceptionMessage(
+			Collection<TId> alreadyPresentIds)
+			throws AlreadyExistsException {
+		StringBuilder exceptionMessage = new StringBuilder(
+				"Entities with ids = {");
+		for (TId alreadyPresentId : alreadyPresentIds) {
+			exceptionMessage.append(alreadyPresentId);
+			exceptionMessage.append(", ");
+		}
+		exceptionMessage.delete(exceptionMessage.length() - 2, exceptionMessage.length());
+		exceptionMessage.append("} are already in the storage");
+
+		return exceptionMessage.toString();
+	}
+
+	private void removeFromStorage(TId entityId) {
+		this.storage.removeIf(entity -> entity.getId() == entityId);
+	}
+
+	private void removeRangeFromStorage(Collection<TId> entityIds) {
+		this.storage.removeIf(entity -> entityIds.contains(entity.getId()));
 	}
 }

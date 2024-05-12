@@ -9,6 +9,12 @@ public final class Pagination {
 	private final int pageSize;
 
 	private Pagination(int pageIndex, int pageSize) {
+		if (pageIndex < 0)
+			throw new IllegalArgumentException("Page index must be positive");
+		if (pageSize <= 0)
+			throw new IllegalArgumentException(
+					"Page size must be greater than 0");
+
 		this.pageIndex = pageIndex;
 		this.pageSize = pageSize;
 
