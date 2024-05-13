@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import base.mediator.ddd.DomainEventNotification;
 import base.ddd.DomainEvent;
+import base.mediator.ddd.DomainEventNotification;
 import tests.base.mediator.ddd.mocks.DomainEventMock;
 
 public class DomainEventNotificationUnitTests {

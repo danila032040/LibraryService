@@ -18,6 +18,7 @@ public class DomainEventNotificationPublisher implements DomainEventPublisher {
 	public void publishDomainEvents(Collection<DomainEvent> domainEvents) {
 		domainEvents
 				.stream()
+				.map(domainEvent->domainEvent.getClass().cast(domainEvent))
 				.map(DomainEventNotification::fromDomainEvent)
 				.forEach(notificationDispatcher::sendNotification);
 	}
