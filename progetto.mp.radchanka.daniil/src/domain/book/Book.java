@@ -2,8 +2,9 @@ package domain.book;
 
 import base.ddd.Entity;
 import domain.author.AuthorId;
-import domain.exceptions.BookIsAlreadyBorrowedByAnotherUserDomainException;
-import domain.exceptions.UserTriedToReturnTheBookOfAnotherUserDomainException;
+import domain.book.events.BookCreatedDomainEvent;
+import domain.book.exceptions.BookIsAlreadyBorrowedByAnotherUserDomainException;
+import domain.book.exceptions.UserTriedToReturnTheBookOfAnotherUserDomainException;
 import domain.library.LibraryId;
 import domain.users.UserId;
 

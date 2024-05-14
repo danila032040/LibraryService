@@ -1,6 +1,7 @@
-package domain.book;
+package domain.book.events;
 
 import base.ddd.DomainEvent;
+import domain.book.BookId;
 import domain.users.UserId;
 
 public class BookBorrowedByUserDomainEvent implements DomainEvent {

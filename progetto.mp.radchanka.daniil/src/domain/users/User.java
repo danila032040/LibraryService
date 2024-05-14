@@ -9,6 +9,7 @@ import base.ddd.Entity;
 import base.cloneable.Cloneable;
 import domain.Address;
 import domain.book.BookId;
+import domain.users.events.UserCreatedDomainEvent;
 
 public class User extends Entity<UserId> implements Cloneable<User> {
 	private String name;

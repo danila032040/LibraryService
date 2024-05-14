@@ -1,4 +1,4 @@
-package domain.exceptions;
+package domain.book.exceptions;
 
 import domain.book.BookId;
 import domain.users.UserId;

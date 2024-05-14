@@ -1,6 +1,7 @@
-package domain.book;
+package domain.book.events;
 
 import base.ddd.DomainEvent;
+import domain.book.BookId;
 
 public class BookCreatedDomainEvent implements DomainEvent {
 

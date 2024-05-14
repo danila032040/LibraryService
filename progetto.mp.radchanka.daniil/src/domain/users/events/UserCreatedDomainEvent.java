@@ -1,6 +1,7 @@
-package domain.users;
+package domain.users.events;
 
 import base.ddd.DomainEvent;
+import domain.users.UserId;
 
 public class UserCreatedDomainEvent implements DomainEvent {
 	private UserId userId;

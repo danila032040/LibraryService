@@ -3,6 +3,8 @@ package domain.library;
 import base.ddd.Entity;
 import base.cloneable.Cloneable;
 import domain.Address;
+import domain.library.events.LibraryAddressChangedDomainEvent;
+import domain.library.events.LibraryCreatedDomainEvent;
 
 public class Library extends Entity<LibraryId> implements Cloneable<Library> {
 	private Address address;

@@ -1,6 +1,7 @@
-package domain.author;
+package domain.author.events;
 
 import base.ddd.DomainEvent;
+import domain.author.AuthorId;
 
 public class AuthorCreatedDomainEvent implements DomainEvent {
 	private AuthorId authorId;
