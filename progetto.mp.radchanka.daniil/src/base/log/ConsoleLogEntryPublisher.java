@@ -1,10 +1,6 @@
 package base.log;
 
-public class ConsoleLogEntryPublisher extends LogEntryPublisherDecorator {
-	public ConsoleLogEntryPublisher(
-			LogEntryPublisher wrappeeLogEntryPublisher) {
-		super(wrappeeLogEntryPublisher);
-	}
+public class ConsoleLogEntryPublisher implements LogEntryPublisher {
 
 	@Override
 	public void publishLogEntry(LogEntry logEntry) {
