@@ -1,6 +1,13 @@
 package base.log;
 
-public class ConsoleLogEntryPublisher implements LogEntryPublisher {
+import java.io.PrintStream;
+
+public class PrintStreamLogEntryPublisher implements LogEntryPublisher {
+	
+	private PrintStream printStream;
+	public PrintStreamLogEntryPublisher(PrintStream printStream) {
+		this.printStream = printStream;
+	}
 
 	@Override
 	public void publishLogEntry(LogEntry logEntry) {
@@ -11,8 +18,7 @@ public class ConsoleLogEntryPublisher implements LogEntryPublisher {
 				.getScopeName()
 				.map(scopeName -> scopeName + " " + compiledMessage)
 				.orElse(compiledMessage);
-		System.out
-				.println(
+		printStream.println(
 						String
 								.format(
 										"%s [%s]: %s",
