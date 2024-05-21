@@ -1,13 +1,13 @@
-package infrastructure.repositories;
+package infrastructure.user.repositories;
 
 import java.util.Collection;
 import java.util.function.Supplier;
 
 import base.cloneable.CloneFactory;
 import base.repository.InMemoryRepository;
-import domain.users.User;
-import domain.users.UserId;
-import domain.users.UserRepository;
+import domain.user.User;
+import domain.user.UserId;
+import domain.user.UserRepository;
 
 public class UserRepositoryImpl extends InMemoryRepository<User, UserId>
 		implements

@@ -2,7 +2,7 @@ package domain.library;
 
 import base.ddd.Entity;
 import base.cloneable.Cloneable;
-import domain.Address;
+import domain.common.Address;
 import domain.library.events.LibraryAddressChangedDomainEvent;
 import domain.library.events.LibraryCreatedDomainEvent;
 
@@ -15,7 +15,9 @@ public class Library extends Entity<LibraryId> implements Cloneable<Library> {
 
 	public static Library createNewLibrary(LibraryId id, Address address) {
 		Library createdLibrary = new Library(id, address);
-		createdLibrary.registerDomainEvent(new LibraryCreatedDomainEvent(id));
+		createdLibrary
+				.registerDomainEvent(
+						new LibraryCreatedDomainEvent(createdLibrary));
 		return createdLibrary;
 	}
 
@@ -26,6 +28,7 @@ public class Library extends Entity<LibraryId> implements Cloneable<Library> {
 		this
 				.registerDomainEvent(
 						new LibraryAddressChangedDomainEvent(
+								this,
 								previous,
 								current));
 	}

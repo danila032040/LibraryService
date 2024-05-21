@@ -1,17 +1,18 @@
 package domain.book.events;
 
 import base.ddd.DomainEvent;
-import domain.book.BookId;
+import domain.book.Book;
 
 public class BookCreatedDomainEvent implements DomainEvent {
 
-	private BookId bookId;
+	private Book book;
 
-	public BookCreatedDomainEvent(BookId id) {
-		this.bookId = id;
+	public BookCreatedDomainEvent(Book book) {
+		this.book = book;
 	}
 
-	public BookId getId() {
-		return bookId;
+	public Book getBook() {
+		return book;
 	}
+
 }

@@ -1,7 +1,7 @@
 package domain.book.exceptions;
 
 import domain.book.BookId;
-import domain.users.UserId;
+import domain.user.UserId;
 
 public class BookIsAlreadyBorrowedByAnotherUserDomainException
 		extends

@@ -1,22 +1,22 @@
 package domain.book.events;
 
 import base.ddd.DomainEvent;
-import domain.book.BookId;
-import domain.users.UserId;
+import domain.book.Book;
+import domain.user.UserId;
 
 public class BookBorrowedByUserDomainEvent implements DomainEvent {
-	private BookId borrowedBookId;
+	private Book borrowedBook;
 	private UserId userIdThatHadBorrowedTheBook;
 
-	public BookBorrowedByUserDomainEvent(BookId borrowedBookId,
+	public BookBorrowedByUserDomainEvent(Book borrowedBook,
 			UserId userIdThatHadBorrowedTheBook) {
-		this.borrowedBookId = borrowedBookId;
+		this.borrowedBook = borrowedBook;
 		this.userIdThatHadBorrowedTheBook = userIdThatHadBorrowedTheBook;
 
 	}
 
-	public BookId getBorrowedBookId() {
-		return borrowedBookId;
+	public Book getBorrowedBook() {
+		return borrowedBook;
 	}
 
 	public UserId getUserIdThatHadBorrowedTheBook() {

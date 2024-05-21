@@ -8,7 +8,7 @@ public class LoggerImpl implements Logger {
 	private GlobalLogConfiguration logConfiguration;
 	private LogEntryPublisher logEntryPublisher;
 
-	protected LoggerImpl(GlobalLogConfiguration logConfiguration,
+	public LoggerImpl(GlobalLogConfiguration logConfiguration,
 			LogEntryPublisher logEntryPublisher) {
 		this.logConfiguration = logConfiguration;
 		this.logEntryPublisher = logEntryPublisher;

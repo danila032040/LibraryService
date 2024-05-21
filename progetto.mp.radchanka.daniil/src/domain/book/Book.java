@@ -2,35 +2,19 @@ package domain.book;
 
 import base.ddd.Entity;
 import domain.author.AuthorId;
+import domain.book.events.BookBorrowedByUserDomainEvent;
 import domain.book.events.BookCreatedDomainEvent;
+import domain.book.events.BookReturnedByUserDomainEvent;
 import domain.book.exceptions.BookIsAlreadyBorrowedByAnotherUserDomainException;
 import domain.book.exceptions.UserTriedToReturnTheBookOfAnotherUserDomainException;
 import domain.library.LibraryId;
-import domain.users.UserId;
+import domain.user.UserId;
 
 import java.util.Optional;
 
 import base.cloneable.Cloneable;
 
 public class Book extends Entity<BookId> implements Cloneable<Book> {
-	private String name;
-	private String genre;
-	private int publicationYear;
-	private Optional<AuthorId> authorId;
-	private Optional<LibraryId> libraryId;
-	private Optional<UserId> borrowedByUserId;
-
-	private Book(BookId id, String name, String genre, int publicationYear,
-			Optional<AuthorId> authorId, Optional<LibraryId> libraryId) {
-		super(id);
-		this.name = name;
-		this.genre = genre;
-		this.publicationYear = publicationYear;
-		this.authorId = authorId;
-		this.libraryId = libraryId;
-		this.borrowedByUserId = Optional.empty();
-	}
-
 	public static Book createNewBook(
 			BookId id,
 			String name,
@@ -45,28 +29,27 @@ public class Book extends Entity<BookId> implements Cloneable<Book> {
 				publicationYear,
 				authorId,
 				libraryId);
-		createdBook.registerDomainEvent(new BookCreatedDomainEvent(id));
+		createdBook
+				.registerDomainEvent(new BookCreatedDomainEvent(createdBook));
 		return createdBook;
 	}
+	private Optional<AuthorId> authorId;
+	private Optional<UserId> borrowedByUserId;
+	private String genre;
+	private Optional<LibraryId> libraryId;
+	private String name;
 
-	public String getName() {
-		return name;
-	}
+	private int publicationYear;
 
-	public String getGenre() {
-		return genre;
-	}
-
-	public int getPublicationYear() {
-		return publicationYear;
-	}
-
-	public Optional<AuthorId> getAuthorId() {
-		return authorId;
-	}
-
-	public Optional<LibraryId> getLibraryId() {
-		return libraryId;
+	private Book(BookId id, String name, String genre, int publicationYear,
+			Optional<AuthorId> authorId, Optional<LibraryId> libraryId) {
+		super(id);
+		this.name = name;
+		this.genre = genre;
+		this.publicationYear = publicationYear;
+		this.authorId = authorId;
+		this.libraryId = libraryId;
+		this.borrowedByUserId = Optional.empty();
 	}
 
 	public void borrowByUser(UserId userId)
@@ -78,6 +61,40 @@ public class Book extends Entity<BookId> implements Cloneable<Book> {
 					this.borrowedByUserId.get());
 
 		this.borrowedByUserId = Optional.of(userId);
+		this
+				.registerDomainEvent(
+						new BookBorrowedByUserDomainEvent(this, userId));
+	}
+
+	@Override
+	public Book createClone() {
+		return new Book(
+				this.getId().createClone(),
+				name,
+				genre,
+				publicationYear,
+				authorId.map(AuthorId::createClone),
+				libraryId.map(LibraryId::createClone));
+	}
+
+	public Optional<AuthorId> getAuthorId() {
+		return authorId;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public Optional<LibraryId> getLibraryId() {
+		return libraryId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getPublicationYear() {
+		return publicationYear;
 	}
 
 	public void returnByUser(UserId userId)
@@ -91,17 +108,21 @@ public class Book extends Entity<BookId> implements Cloneable<Book> {
 					userId,
 					userThatHadBorrowedTheBook);
 		borrowedByUserId = Optional.empty();
+		this
+				.registerDomainEvent(
+						new BookReturnedByUserDomainEvent(this, userId));
 
 	}
 
-	@Override
-	public Book createClone() {
-		return new Book(
-				this.getId().createClone(),
-				name,
-				genre,
-				publicationYear,
-				authorId.map(AuthorId::createClone),
-				libraryId.map(LibraryId::createClone));
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPublicationYear(int publicationYear) {
+		this.publicationYear = publicationYear;
 	}
 }

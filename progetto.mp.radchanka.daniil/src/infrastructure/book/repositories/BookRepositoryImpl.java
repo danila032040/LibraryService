@@ -1,4 +1,4 @@
-package infrastructure.repositories;
+package infrastructure.book.repositories;
 
 import java.util.Collection;
 import java.util.function.Supplier;

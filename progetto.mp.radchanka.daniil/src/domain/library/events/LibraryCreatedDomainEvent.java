@@ -1,16 +1,18 @@
 package domain.library.events;
 
 import base.ddd.DomainEvent;
-import domain.library.LibraryId;
+import domain.library.Library;
 
 public class LibraryCreatedDomainEvent implements DomainEvent {
-	private LibraryId libraryId;
+	private Library library;
 
-	public LibraryCreatedDomainEvent(LibraryId libraryId) {
+	public LibraryCreatedDomainEvent(Library library) {
+		this.library = library;
 
 	}
 
-	public LibraryId getLibraryId() {
-		return libraryId;
+	public Library getLibrary() {
+		return library;
 	}
+
 }

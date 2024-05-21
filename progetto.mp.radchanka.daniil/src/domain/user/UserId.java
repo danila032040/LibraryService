@@ -1,4 +1,4 @@
-package domain.users;
+package domain.user;
 
 import java.util.Objects;
 import base.cloneable.Cloneable;

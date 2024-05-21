@@ -2,10 +2,13 @@ package base.log;
 
 import java.util.Optional;
 
+import base.lazyLoading.LazyLoad;
+
 public class LogEntry {
 	private LogLevelType logLevel;
 	private String timeStamp;
 	private String originalMessage;
+	private LazyLoad<String> compiledMessage;
 	private Optional<String> scopeName;
 	private Object[] arguments;
 
@@ -17,6 +20,8 @@ public class LogEntry {
 		this.originalMessage = originalMessage;
 		this.scopeName = scopeName;
 		this.arguments = arguments;
+		this.compiledMessage = new LazyLoad<String>(
+				() -> String.format(originalMessage, arguments));
 	}
 	public String getTimeStamp() {
 		return timeStamp;
@@ -33,7 +38,7 @@ public class LogEntry {
 	public Object[] getArguments() {
 		return arguments;
 	}
-	public String compileMessage() {
-		return String.format(originalMessage, arguments);
+	public String getCompiledMessage() {
+		return compiledMessage.getValue();
 	}
 }

@@ -1,16 +1,16 @@
 package domain.author.events;
 
 import base.ddd.DomainEvent;
-import domain.author.AuthorId;
+import domain.author.Author;
 
 public class AuthorCreatedDomainEvent implements DomainEvent {
-	private AuthorId authorId;
+	private Author author;
 
-	public AuthorCreatedDomainEvent(AuthorId authorId) {
-		this.authorId = authorId;
+	public AuthorCreatedDomainEvent(Author author) {
+		this.author = author;
 	}
 
-	public AuthorId getAuthorId() {
-		return authorId;
+	public Author getAuthor() {
+		return author;
 	}
 }

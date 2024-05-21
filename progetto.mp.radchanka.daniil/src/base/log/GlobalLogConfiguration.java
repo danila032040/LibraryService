@@ -31,5 +31,4 @@ public class GlobalLogConfiguration {
 	public void setDateProvider(Supplier<Date> dateProvider) {
 		this.dateProvider = dateProvider;
 	}
-
 }
