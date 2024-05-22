@@ -10,6 +10,7 @@ public final class LazyLoad<T> {
 
 	public LazyLoad(Supplier<T> instanceSupplier) {
 		this.instanceSupplier = Objects.requireNonNull(instanceSupplier);
+		this.value = Optional.empty();
 	}
 
 	public T getValue() {
