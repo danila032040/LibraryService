@@ -1,35 +1,31 @@
 package base.log;
 
-import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 import base.lazyLoading.LazyLoad;
 
 public class LogEntry {
 	private LogLevelType logLevel;
-	private String timeStamp;
+	private Date dateTime;
 	private String originalMessage;
 	private LazyLoad<String> compiledMessage;
 	private Optional<String> scopeName;
 	private Object[] arguments;
 
-	public LogEntry(
-			MessageFormat messageFormat,
-			LogLevelType logLevel, 
-			String timeStamp, 
-			Optional<String> scopeName, 
-			String originalMessage,
-			Object[] arguments) {
-		this.timeStamp = timeStamp;
+	public LogEntry(LogLevelType logLevel, Date dateTime, Optional<String> scopeName, String originalMessage,
+			Object[] arguments, BiFunction<String, Object[], String> compiledMessageProvider) {
+		this.dateTime = dateTime;
 		this.logLevel = logLevel;
 		this.scopeName = scopeName;
 		this.originalMessage = originalMessage;
 		this.arguments = arguments;
-		this.compiledMessage = new LazyLoad<String>(() -> MessageFormat.format(originalMessage, arguments));
+		this.compiledMessage = new LazyLoad<String>(() -> compiledMessageProvider.apply(originalMessage, arguments));
 	}
 
-	public String getTimeStamp() {
-		return timeStamp;
+	public Date getDateTime() {
+		return dateTime;
 	}
 
 	public LogLevelType getLogLevel() {

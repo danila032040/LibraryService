@@ -1,12 +1,14 @@
 package base.log;
 
 import java.util.Date;
+import java.util.Locale;
 import java.util.function.Supplier;
 
 public class GlobalLogConfiguration {
 	private LogLevelType minimalLogLevel;
 	private String timeStampFormat;
 	private Supplier<Date> dateProvider;
+	private Locale locale;
 
 	public LogLevelType getMinimalLogLevel() {
 		return minimalLogLevel;
@@ -30,5 +32,13 @@ public class GlobalLogConfiguration {
 
 	public void setDateProvider(Supplier<Date> dateProvider) {
 		this.dateProvider = dateProvider;
+	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 }
