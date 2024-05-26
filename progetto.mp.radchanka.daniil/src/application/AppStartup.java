@@ -59,15 +59,15 @@ public class AppStartup {
 		registerNotificationHandlers(mediator);
 		registerRequestHandlers(mediator);
 	}
-	
+
 	private void registerNotificationHandlers(Mediator mediator) {
 
 	}
-	
+
 	private void registerRequestHandlers(Mediator mediator) {
 
 	}
-	
+
 	private <TEntity extends Entity<TEntityId>, TEntityId> Collection<TEntity> createStorage() {
 		return new ArrayList<TEntity>();
 	}
@@ -79,9 +79,12 @@ public class AppStartup {
 	}
 
 	private Logger createLogger() {
+		var globalLogConfiguration = new GlobalLogConfiguration();
 		return new LoggerImpl(
-				new GlobalLogConfiguration(),
-				new PrintStreamLogEntryPublisher(System.out));
+				globalLogConfiguration,
+				new PrintStreamLogEntryPublisher(
+						globalLogConfiguration,
+						System.out));
 	}
 
 	private AuthorRepository createAuthorRepository(

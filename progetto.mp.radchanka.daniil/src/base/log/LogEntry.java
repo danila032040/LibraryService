@@ -1,6 +1,6 @@
 package base.log;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
@@ -8,23 +8,26 @@ import base.lazyLoading.LazyLoad;
 
 public class LogEntry {
 	private LogLevelType logLevel;
-	private Date dateTime;
+	private LocalDateTime dateTime;
 	private String originalMessage;
 	private LazyLoad<String> compiledMessage;
 	private Optional<String> scopeName;
 	private Object[] arguments;
 
-	public LogEntry(LogLevelType logLevel, Date dateTime, Optional<String> scopeName, String originalMessage,
-			Object[] arguments, BiFunction<String, Object[], String> compiledMessageProvider) {
+	public LogEntry(LogLevelType logLevel, LocalDateTime dateTime,
+			Optional<String> scopeName, String originalMessage,
+			Object[] arguments, CompiledMessageBuilder compiledMessageBuilder) {
 		this.dateTime = dateTime;
 		this.logLevel = logLevel;
 		this.scopeName = scopeName;
 		this.originalMessage = originalMessage;
 		this.arguments = arguments;
-		this.compiledMessage = new LazyLoad<String>(() -> compiledMessageProvider.apply(originalMessage, arguments));
+		this.compiledMessage = new LazyLoad<String>(
+				() -> compiledMessageBuilder
+						.compileMessage(originalMessage, arguments));
 	}
 
-	public Date getDateTime() {
+	public LocalDateTime getDateTime() {
 		return dateTime;
 	}
 

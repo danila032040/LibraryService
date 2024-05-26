@@ -8,7 +8,8 @@ public class LoggerImpl implements Logger {
 	private GlobalLogConfiguration logConfiguration;
 	private LogEntryPublisher logEntryPublisher;
 
-	public LoggerImpl(GlobalLogConfiguration globalLogConfiguration, LogEntryPublisher logEntryPublisher) {
+	public LoggerImpl(GlobalLogConfiguration globalLogConfiguration,
+			LogEntryPublisher logEntryPublisher) {
 		this.logConfiguration = globalLogConfiguration;
 		this.logEntryPublisher = logEntryPublisher;
 	}
@@ -28,14 +29,28 @@ public class LoggerImpl implements Logger {
 	public void log(LogLevelType logLevel, String message, Object... args) {
 		if (isLowerThanMinimalLogLevel(logLevel))
 			return;
-		logEntryPublisher.publishLogEntry(new LogEntry(logLevel, logConfiguration.getDateProvider().get(),
-				currentScopeLog.map(LogScope::getName), message, args, (originalMessage, arguments) -> MessageFormat
-						.format(originalMessage, arguments, logConfiguration.getLocale())));
+		logEntryPublisher
+				.publishLogEntry(
+						new LogEntry(
+								logLevel,
+								logConfiguration
+										.getLocalDateTimeProvider()
+										.get(),
+								currentScopeLog.map(LogScope::getName),
+								message,
+								args,
+								(originalMessage, arguments) -> MessageFormat
+										.format(
+												originalMessage,
+												arguments,
+												logConfiguration.getLocale())));
 
 	}
 
 	private boolean isLowerThanMinimalLogLevel(LogLevelType logLevel) {
-		return this.logConfiguration.getMinimalLogLevel().compareTo(logLevel) > 0;
+		return this.logConfiguration
+				.getMinimalLogLevel()
+				.compareTo(logLevel) > 0;
 	}
 
 }
