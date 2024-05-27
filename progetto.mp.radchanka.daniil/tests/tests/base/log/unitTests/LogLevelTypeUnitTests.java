@@ -27,7 +27,7 @@ public class LogLevelTypeUnitTests {
 
 	@Test
 	public void toShortString_WhenWarningLogLevelTypeIsUsed_ShouldBeWRN() {
-		String expected = "WRN";
+		String expected = "WARN";
 
 		String actual = LogLevelType.Warning.toShortString();
 
