@@ -2,6 +2,7 @@ package base.utils;
 
 import java.text.Format;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,8 +14,10 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
+import java.util.stream.Stream;
 
 import base.utils.converters.Converter;
 import base.utils.converters.chain.ConverterChain;
@@ -75,6 +78,32 @@ public class MessageFormatSupportingTimePackage extends Formatter {
 	}
 
 	public String format(Object... arguments) {
+		Format[] formats = messageFormat.getFormats();
+		for (int i = 0; i < formats.length; ++i) {
+			if (formats[i] instanceof SimpleDateFormat) {
+				SimpleDateFormat simpleDateFormat = (SimpleDateFormat) formats[i];
+				if (arguments[i] instanceof ZonedDateTime) {
+					ZonedDateTime zonedDateTime = (ZonedDateTime) arguments[i];
+					simpleDateFormat
+							.setTimeZone(
+									TimeZone
+											.getTimeZone(
+													zonedDateTime.getZone()));
+				}
+				if (arguments[i] instanceof OffsetDateTime) {
+					OffsetDateTime offsetDateTime = (OffsetDateTime) arguments[i];
+					simpleDateFormat
+							.setTimeZone(
+									TimeZone
+											.getTimeZone(
+													ZoneId
+															.of(
+																	offsetDateTime
+																			.getOffset()
+																			.getId())));
+				}
+			}
+		}
 		return messageFormat
 				.format(
 						Arrays
