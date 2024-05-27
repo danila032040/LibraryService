@@ -17,6 +17,4 @@ public interface Logger {
 		log(LogLevelType.Fatal, message, args);
 	}
 	public void log(LogLevelType logLevel, String message, Object... args);
-	public LogScope beginScope(String scopeName) throws Exception;
-	public void closeScope() throws Exception;
 }

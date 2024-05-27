@@ -25,7 +25,6 @@ public class LogEntryUnitTests {
 		LogEntry logEntry = new LogEntry(
 				LogLevelType.Information,
 				LocalDateTime.of(2024, 01, 01, 0, 0),
-				Optional.empty(),
 				originalMessage,
 				arguments,
 				compiledMessageProvider);

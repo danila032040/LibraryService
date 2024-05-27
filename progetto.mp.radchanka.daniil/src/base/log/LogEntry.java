@@ -11,15 +11,13 @@ public class LogEntry {
 	private LocalDateTime dateTime;
 	private String originalMessage;
 	private LazyLoad<String> compiledMessage;
-	private Optional<String> scopeName;
 	private Object[] arguments;
 
 	public LogEntry(LogLevelType logLevel, LocalDateTime dateTime,
-			Optional<String> scopeName, String originalMessage,
-			Object[] arguments, CompiledMessageBuilder compiledMessageBuilder) {
+			String originalMessage, Object[] arguments,
+			CompiledMessageBuilder compiledMessageBuilder) {
 		this.dateTime = dateTime;
 		this.logLevel = logLevel;
-		this.scopeName = scopeName;
 		this.originalMessage = originalMessage;
 		this.arguments = arguments;
 		this.compiledMessage = new LazyLoad<String>(
@@ -37,10 +35,6 @@ public class LogEntry {
 
 	public String getOriginalMessage() {
 		return originalMessage;
-	}
-
-	public Optional<String> getScopeName() {
-		return scopeName;
 	}
 
 	public Object[] getArguments() {

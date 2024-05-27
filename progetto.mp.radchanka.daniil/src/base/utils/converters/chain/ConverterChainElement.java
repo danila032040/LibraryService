@@ -1,4 +1,6 @@
-package base.utils.converters;
+package base.utils.converters.chain;
+
+import base.utils.converters.Converter;
 
 public interface ConverterChainElement<TFrom, TTo>
 		extends

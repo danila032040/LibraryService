@@ -1,7 +1,9 @@
 package base.log;
 
 import java.io.PrintStream;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Objects;
 
 public class PrintStreamLogEntryPublisher implements LogEntryPublisher {
 
@@ -11,29 +13,27 @@ public class PrintStreamLogEntryPublisher implements LogEntryPublisher {
 	public PrintStreamLogEntryPublisher(
 			GlobalLogConfiguration globalLogConfiguration,
 			PrintStream printStream) {
-		this.logConfiguration = globalLogConfiguration;
-		this.printStream = printStream;
+		this.logConfiguration = Objects.requireNonNull(globalLogConfiguration);
+		this.printStream = Objects.requireNonNull(printStream);
 	}
 
 	@Override
 	public void publishLogEntry(LogEntry logEntry) {
-		String timeStamp = new SimpleDateFormat(
-				logConfiguration.getTimeStampFormat())
+		Locale locale = logConfiguration.getLocale();
+		String timeStamp = DateTimeFormatter
+				.ofPattern(logConfiguration.getTimeStampFormat(), locale)
 				.format(logEntry.getDateTime());
 		String logLevelType = logEntry.getLogLevel().toShortString();
-		String compiledMessage = logEntry.getCompiledMessage();
-		String scopeNameWithCompiledMessage = logEntry
-				.getScopeName()
-				.map(scopeName -> scopeName + " " + compiledMessage)
-				.orElse(compiledMessage);
+		String compiledMessage = logEntry.getCompiledMessage();;
 		printStream
 				.println(
 						String
 								.format(
+										locale,
 										"%s [%s]: %s",
 										timeStamp,
 										logLevelType,
-										scopeNameWithCompiledMessage));
+										compiledMessage));
 	}
 
 }

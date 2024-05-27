@@ -1,10 +1,8 @@
 package base.log;
 
-import java.text.MessageFormat;
-import java.util.Optional;
+import base.utils.MessageFormatSupportingTimePackage;
 
 public class LoggerImpl implements Logger {
-	private Optional<LogScope> currentScopeLog;
 	private GlobalLogConfiguration logConfiguration;
 	private LogEntryPublisher logEntryPublisher;
 
@@ -12,18 +10,6 @@ public class LoggerImpl implements Logger {
 			LogEntryPublisher logEntryPublisher) {
 		this.logConfiguration = globalLogConfiguration;
 		this.logEntryPublisher = logEntryPublisher;
-	}
-
-	public LogScope beginScope(String scopeName) throws Exception {
-		if (currentScopeLog.isPresent())
-			currentScopeLog.get().close();
-		currentScopeLog = Optional.of(new LogScope(this, scopeName));
-		return currentScopeLog.get();
-	}
-
-	public void closeScope() throws Exception {
-		if (currentScopeLog.isPresent())
-			currentScopeLog.get().close();
 	}
 
 	public void log(LogLevelType logLevel, String message, Object... args) {
@@ -36,14 +22,16 @@ public class LoggerImpl implements Logger {
 								logConfiguration
 										.getLocalDateTimeProvider()
 										.get(),
-								currentScopeLog.map(LogScope::getName),
 								message,
 								args,
-								(originalMessage, arguments) -> MessageFormat
-										.format(
-												originalMessage,
-												arguments,
-												logConfiguration.getLocale())));
+								(
+										originalMessage,
+										arguments) -> MessageFormatSupportingTimePackage
+												.of(
+														originalMessage,
+														logConfiguration
+																.getLocale())
+												.format(arguments)));
 
 	}
 

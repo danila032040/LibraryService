@@ -1,6 +1,9 @@
-package base.utils.converters;
+package base.utils.converters.chain;
 
+import java.util.Objects;
 import java.util.function.Predicate;
+
+import base.utils.converters.Converter;
 
 public class ConverterChainElementImpl<TFrom, TTo>
 		implements
@@ -13,8 +16,8 @@ public class ConverterChainElementImpl<TFrom, TTo>
 
 	private ConverterChainElementImpl(Predicate<TFrom> canHandlePredicate,
 			Converter<TFrom, TTo> converter) {
-		this.canHandlePredicate = canHandlePredicate;
-		this.converter = converter;
+		this.canHandlePredicate = Objects.requireNonNull(canHandlePredicate);
+		this.converter = Objects.requireNonNull(converter);
 	}
 
 	public static <TFrom, TTo> ConverterChainElementImpl<TFrom, TTo> from(
@@ -41,7 +44,7 @@ public class ConverterChainElementImpl<TFrom, TTo>
 
 	@Override
 	public void setNext(ConverterChainElement<TFrom, TTo> converter) {
-		this.nextConverter = converter;
+		this.nextConverter = Objects.requireNonNull(converter);
 	}
 
 	@Override

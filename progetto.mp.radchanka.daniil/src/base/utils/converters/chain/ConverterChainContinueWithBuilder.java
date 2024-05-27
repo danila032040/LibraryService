@@ -1,6 +1,8 @@
-package base.utils.converters;
+package base.utils.converters.chain;
 
 import java.util.function.Predicate;
+
+import base.utils.converters.Converter;
 
 public interface ConverterChainContinueWithBuilder<TFrom, TTo>
 		extends

@@ -1,7 +1,6 @@
 package base.log;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Locale;
 import java.util.function.Supplier;
 
