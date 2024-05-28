@@ -1,7 +1,9 @@
 package base.utils;
 
+import java.text.FieldPosition;
 import java.text.Format;
 import java.text.MessageFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -22,7 +24,11 @@ import java.util.stream.Stream;
 import base.utils.converters.Converter;
 import base.utils.converters.chain.ConverterChain;
 
-public class MessageFormatSupportingTimePackage extends Formatter {
+public class MessageFormatSupportingTimePackage extends Format {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MessageFormat messageFormat;
 	private Converter<Object, Object> objectToDateIfItIsFromTimePackageConverter;
 
@@ -121,7 +127,15 @@ public class MessageFormatSupportingTimePackage extends Formatter {
 	}
 
 	@Override
-	public String format(LogRecord record) {
-		return messageFormat.format(record);
+	public StringBuffer format(
+			Object obj,
+			StringBuffer toAppendTo,
+			FieldPosition pos) {
+		return messageFormat.format(obj, toAppendTo, pos);
+	}
+
+	@Override
+	public Object parseObject(String source, ParsePosition pos) {
+		return messageFormat.parseObject(source, pos);
 	}
 }
