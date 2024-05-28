@@ -16,6 +16,11 @@ public class Address extends ValueObject implements Cloneable<Address> {
 	private Optional<String> stateProvince;
 	private Optional<String> street;
 
+	public Address() {
+		this(Optional.empty(), Optional.empty(), Optional.empty(),
+				Optional.empty(), Optional.empty(), Optional.empty());
+	}
+
 	public Address(Optional<String> building, Optional<String> city,
 			Optional<String> countryRegion, Optional<String> postalCode,
 			Optional<String> stateProvince, Optional<String> street) {

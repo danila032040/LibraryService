@@ -43,6 +43,11 @@ public class AppStartup {
 	private Logger logger;
 	private Mediator mediator;
 
+	public static void main(String[] args) {
+		AppStartup startup = new AppStartup();
+		startup.registerDependencies();
+	}
+
 	public void registerDependencies() {
 		mediator = createMediator();
 		logger = createLogger();

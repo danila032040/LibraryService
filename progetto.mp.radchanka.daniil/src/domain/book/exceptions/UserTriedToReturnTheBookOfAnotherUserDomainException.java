@@ -20,10 +20,6 @@ public class UserTriedToReturnTheBookOfAnotherUserDomainException
 		this.userIdThatTriedToReturnTheBook = userIdThatTriedToReturnTheBook;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
 	public BookId getBookId() {
 		return bookId;
 	}

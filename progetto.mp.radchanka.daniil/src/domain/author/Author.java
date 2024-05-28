@@ -1,5 +1,7 @@
 package domain.author;
 
+import java.util.Objects;
+
 import base.cloneable.Cloneable;
 import base.ddd.Entity;
 import domain.author.events.AuthorCreatedDomainEvent;
@@ -22,10 +24,10 @@ public class Author extends Entity<AuthorId> implements Cloneable<Author> {
 	private String surname;
 
 	private Author(AuthorId id, String name, String surname, String country) {
-		super(id);
-		this.name = name;
-		this.surname = surname;
-		this.country = country;
+		super(Objects.requireNonNull(id));
+		this.name = Objects.requireNonNull(name);
+		this.surname = Objects.requireNonNull(surname);
+		this.country = Objects.requireNonNull(country);
 	}
 
 	@Override

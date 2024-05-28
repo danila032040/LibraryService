@@ -1,6 +1,9 @@
 package domain.library;
 
 import base.ddd.Entity;
+
+import java.util.Objects;
+
 import base.cloneable.Cloneable;
 import domain.common.Address;
 import domain.library.events.LibraryAddressChangedDomainEvent;
@@ -10,8 +13,8 @@ public class Library extends Entity<LibraryId> implements Cloneable<Library> {
 	private Address address;
 
 	private Library(LibraryId id, Address address) {
-		super(id);
-		this.address = address;
+		super(Objects.requireNonNull(id));
+		this.address = Objects.requireNonNull(address);
 	}
 
 	public static Library createNewLibrary(LibraryId id, Address address) {

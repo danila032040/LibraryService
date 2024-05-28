@@ -9,14 +9,14 @@ public class BookIsAlreadyBorrowedByAnotherUserDomainException
 	private static final long serialVersionUID = 1L;
 	private BookId bookId;
 
-	private UserId userIdThatHadTriedToBorrowedTheBook;
+	private UserId userIdThatHadTriedToBorrowTheBook;
 	private UserId userIdThatHadBorrowedTheBook;
 
 	public BookIsAlreadyBorrowedByAnotherUserDomainException(BookId bookId,
-			UserId userIdThatHadTriedToBorrowedTheBook,
+			UserId userIdThatHadTriedToBorrowTheBook,
 			UserId userIdThatHadBorrowedTheBook) {
 		this.bookId = bookId;
-		this.userIdThatHadTriedToBorrowedTheBook = userIdThatHadTriedToBorrowedTheBook;
+		this.userIdThatHadTriedToBorrowTheBook = userIdThatHadTriedToBorrowTheBook;
 		this.userIdThatHadBorrowedTheBook = userIdThatHadBorrowedTheBook;
 	}
 	public BookId getBookId() {
@@ -24,7 +24,7 @@ public class BookIsAlreadyBorrowedByAnotherUserDomainException
 	}
 
 	public UserId getUserId() {
-		return userIdThatHadTriedToBorrowedTheBook;
+		return userIdThatHadTriedToBorrowTheBook;
 	}
 	public UserId getUserIdThatHadBorrowedTheBook() {
 		return userIdThatHadBorrowedTheBook;
