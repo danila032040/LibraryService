@@ -40,8 +40,13 @@ public class User extends Entity<UserId> implements Cloneable<User> {
 	private String surname;
 
 	private User(UserId id, String name, String surname, Address address,
-			Optional<String> phoneNumber, Collection<BookId> reservedBookIds) {
+			Optional<String> phoneNumber, Collection<BookId> borrowedBookIds) {
 		super(id);
+		this.name = name;
+		this.surname = surname;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
+		this.borrowedBookIds = borrowedBookIds;
 	}
 
 	public void addBorrowedBook(BookId bookId) {

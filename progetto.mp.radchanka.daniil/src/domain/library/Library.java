@@ -11,6 +11,7 @@ public class Library extends Entity<LibraryId> implements Cloneable<Library> {
 
 	private Library(LibraryId id, Address address) {
 		super(id);
+		this.address = address;
 	}
 
 	public static Library createNewLibrary(LibraryId id, Address address) {

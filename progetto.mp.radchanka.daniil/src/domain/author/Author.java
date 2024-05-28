@@ -23,6 +23,9 @@ public class Author extends Entity<AuthorId> implements Cloneable<Author> {
 
 	private Author(AuthorId id, String name, String surname, String country) {
 		super(id);
+		this.name = name;
+		this.surname = surname;
+		this.country = country;
 	}
 
 	@Override
