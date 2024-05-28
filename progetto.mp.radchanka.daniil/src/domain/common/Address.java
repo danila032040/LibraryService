@@ -2,6 +2,7 @@ package domain.common;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import base.ddd.ValueObject;
@@ -18,12 +19,12 @@ public class Address extends ValueObject implements Cloneable<Address> {
 	public Address(Optional<String> building, Optional<String> city,
 			Optional<String> countryRegion, Optional<String> postalCode,
 			Optional<String> stateProvince, Optional<String> street) {
-		this.building = building;
-		this.city = city;
-		this.countryRegion = countryRegion;
-		this.postalCode = postalCode;
-		this.stateProvince = stateProvince;
-		this.street = street;
+		this.building = Objects.requireNonNull(building);
+		this.city = Objects.requireNonNull(city);
+		this.countryRegion = Objects.requireNonNull(countryRegion);
+		this.postalCode = Objects.requireNonNull(postalCode);
+		this.stateProvince = Objects.requireNonNull(stateProvince);
+		this.street = Objects.requireNonNull(street);
 	}
 	public Optional<String> getBuilding() {
 		return building;
