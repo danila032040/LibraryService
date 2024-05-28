@@ -13,6 +13,7 @@ import base.mediator.Mediator;
 import base.mediator.MediatorImpl;
 import base.mediator.NotificationDispatcher;
 import base.mediator.NotificationDispatcherImpl;
+import base.mediator.RequestDispatcher;
 import base.mediator.RequestDispatcherImpl;
 import base.mediator.ddd.DomainEventNotificationPublisher;
 import domain.author.Author;
@@ -65,11 +66,10 @@ public class AppStartup {
 		registerRequestHandlers(mediator);
 	}
 
-	private void registerNotificationHandlers(Mediator mediator) {
-
+	private void registerNotificationHandlers(NotificationDispatcher mediator) {
 	}
 
-	private void registerRequestHandlers(Mediator mediator) {
+	private void registerRequestHandlers(RequestDispatcher mediator) {
 
 	}
 
