@@ -70,11 +70,11 @@ public class BookIdUnitTests {
 	}
 
 	@Test
-	public void createClone_ShouldCreateEqualButNotTheSameInstance() {
-		BookId expected = new BookId(0);
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		BookId id = new BookId(0);
 
-		BookId actual = expected.createClone();
+		BookId actual = id.createClone();
 
-		assertThat(actual).isNotSameAs(expected).isEqualTo(expected);
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }

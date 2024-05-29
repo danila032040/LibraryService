@@ -1,33 +1,31 @@
 package domain.book.exceptions;
 
-import domain.book.BookId;
+import domain.book.Book;
 import domain.user.UserId;
 
-public class BookIsAlreadyBorrowedByAnotherUserDomainException
-		extends
-			Exception {
+public class BookIsAlreadyBorrowedByAnotherUserDomainException extends Exception {
 	private static final long serialVersionUID = 1L;
-	private BookId bookId;
+	private Book book;
 
 	private UserId userIdThatHadTriedToBorrowTheBook;
 	private UserId userIdThatHadBorrowedTheBook;
 
-	public BookIsAlreadyBorrowedByAnotherUserDomainException(BookId bookId,
-			UserId userIdThatHadTriedToBorrowTheBook,
+	public BookIsAlreadyBorrowedByAnotherUserDomainException(Book book, UserId userIdThatHadTriedToBorrowTheBook,
 			UserId userIdThatHadBorrowedTheBook) {
-		this.bookId = bookId;
+		this.book = book;
 		this.userIdThatHadTriedToBorrowTheBook = userIdThatHadTriedToBorrowTheBook;
 		this.userIdThatHadBorrowedTheBook = userIdThatHadBorrowedTheBook;
 	}
-	public BookId getBookId() {
-		return bookId;
+
+	public Book getBook() {
+		return book;
 	}
 
-	public UserId getUserId() {
+	public UserId getUserIdThatHadTriedToBorrowTheBook() {
 		return userIdThatHadTriedToBorrowTheBook;
 	}
+
 	public UserId getUserIdThatHadBorrowedTheBook() {
 		return userIdThatHadBorrowedTheBook;
 	}
-
 }

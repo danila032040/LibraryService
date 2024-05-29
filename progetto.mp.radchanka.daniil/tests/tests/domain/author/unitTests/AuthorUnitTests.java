@@ -11,71 +11,56 @@ import org.junit.Test;
 import base.ddd.DomainEvent;
 import domain.author.Author;
 import domain.author.AuthorId;
-import domain.common.Address;
+import domain.author.events.AuthorCreatedDomainEvent;
 
 public class AuthorUnitTests {
 
 	@Test
 	public void createNewAuthor_WhenIdIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Author
-				.createNewAuthor(null, "", "", "");
+		ThrowingCallable actual = () -> Author.createNewAuthor(null, "", "", "");
 
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
 	}
 
 	@Test
 	public void createNewAuthor_WhenNameIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Author
-				.createNewAuthor(new AuthorId(1), null, "", "");
+		ThrowingCallable actual = () -> Author.createNewAuthor(new AuthorId(1), null, "", "");
 
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
 	}
 
 	@Test
 	public void createNewAuthor_WhenSurnameIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Author
-				.createNewAuthor(new AuthorId(1), "", null, "");
+		ThrowingCallable actual = () -> Author.createNewAuthor(new AuthorId(1), "", null, "");
 
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
 	}
 
 	@Test
 	public void createNewAuthor_WhenCountryIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Author
-				.createNewAuthor(new AuthorId(1), "", "", null);
+		ThrowingCallable actual = () -> Author.createNewAuthor(new AuthorId(1), "", "", null);
 
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
 	}
 
 	@Test
 	public void createNewAuthor_ShouldAddAuthorCreatedDomainEvent() {
-		Author expected = Author.createNewAuthor(new AuthorId(1), "", "", "");
+		Author author = Author.createNewAuthor(new AuthorId(1), "", "", "");
 
-		Collection<DomainEvent> actual = expected.extractAllDomainEvents();
+		Collection<DomainEvent> actual = author.extractAllDomainEvents();
 
-		assertThat(actual)
-				.satisfiesExactly(
-						x -> assertThat(x)
-								.isInstanceOfSatisfying(
-										domain.author.events.AuthorCreatedDomainEvent.class,
-										domainEvent -> {
-											assertThat(
-													domainEvent
-															.getAuthor())
-													.isSameAs(expected);
-										}));
+		assertThat(actual).satisfiesExactly(
+				x -> assertThat(x).isInstanceOfSatisfying(AuthorCreatedDomainEvent.class, domainEvent -> {
+					assertThat(domainEvent.getAuthor()).isSameAs(author);
+				}));
 	}
 
 	@Test
-	public void createClone_ShouldCreateEqualButNotTheSameInstance() {
-		Author expected = Author.createNewAuthor(new AuthorId(1), "", "", "");
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		Author author = Author.createNewAuthor(new AuthorId(1), "", "", "");
 
-		Author actual = expected.createClone();
+		Author actual = author.createClone();
 
-		assertThat(actual).isNotSameAs(expected).isEqualTo(expected);
+		assertThat(actual).isNotSameAs(author).isEqualTo(author);
 	}
 }

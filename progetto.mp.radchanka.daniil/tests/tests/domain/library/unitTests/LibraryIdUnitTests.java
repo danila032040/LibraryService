@@ -70,11 +70,11 @@ public class LibraryIdUnitTests {
 	}
 
 	@Test
-	public void createClone_ShouldCreateEqualButNotTheSameInstance() {
-		LibraryId expected = new LibraryId(0);
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		LibraryId id = new LibraryId(0);
 
-		LibraryId actual = expected.createClone();
+		LibraryId actual = id.createClone();
 
-		assertThat(actual).isNotSameAs(expected).isEqualTo(expected);
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }

@@ -124,14 +124,14 @@ public class AddressUnitTests {
 	}
 
 	@Test
-	public void createClone_ShouldCreateEqualButNotTheSameInstance() {
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
 		Optional<String> building = Optional.empty();
 		Optional<String> city = Optional.empty();
 		Optional<String> countryRegion = Optional.empty();
 		Optional<String> postalCode = Optional.empty();
 		Optional<String> stateProvince = Optional.empty();
 		Optional<String> street = Optional.empty();
-		Address expected = new Address(
+		Address address = new Address(
 				building,
 				city,
 				countryRegion,
@@ -139,8 +139,8 @@ public class AddressUnitTests {
 				stateProvince,
 				street);
 
-		Address actual = expected.createClone();
+		Address actual = address.createClone();
 
-		assertThat(actual).isNotSameAs(expected).isEqualTo(expected);
+		assertThat(actual).isNotSameAs(address).isEqualTo(address);
 	}
 }

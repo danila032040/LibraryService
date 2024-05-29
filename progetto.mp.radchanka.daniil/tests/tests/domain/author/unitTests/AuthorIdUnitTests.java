@@ -70,11 +70,11 @@ public class AuthorIdUnitTests {
 	}
 
 	@Test
-	public void createClone_ShouldCreateEqualButNotTheSameInstance() {
-		AuthorId expected = new AuthorId(0);
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		AuthorId id = new AuthorId(0);
 
-		AuthorId actual = expected.createClone();
+		AuthorId actual = id.createClone();
 
-		assertThat(actual).isNotSameAs(expected).isEqualTo(expected);
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }

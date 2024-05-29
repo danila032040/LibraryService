@@ -70,11 +70,11 @@ public class UserIdUnitTests {
 	}
 
 	@Test
-	public void createClone_ShouldCreateEqualButNotTheSameInstance() {
-		UserId expected = new UserId(0);
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		UserId id = new UserId(0);
 
-		UserId actual = expected.createClone();
+		UserId actual = id.createClone();
 
-		assertThat(actual).isNotSameAs(expected).isEqualTo(expected);
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }
