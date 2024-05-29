@@ -4,8 +4,7 @@ import base.ddd.DomainEvent;
 import domain.book.Book;
 
 public class BookCreatedDomainEvent implements DomainEvent {
-
-	private Book book;
+	private final Book book;
 
 	public BookCreatedDomainEvent(Book book) {
 		this.book = book;
@@ -14,5 +13,4 @@ public class BookCreatedDomainEvent implements DomainEvent {
 	public Book getBook() {
 		return book;
 	}
-
 }

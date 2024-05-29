@@ -3,14 +3,14 @@ package tests.base.mediator.ddd.mocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import base.mediator.Notification;
-import base.mediator.NotificationDispatcher;
-import base.mediator.NotificationHandler;
+import base.mediator.notification.Notification;
+import base.mediator.notification.NotificationDispatcher;
+import base.mediator.notification.NotificationHandler;
 
 public class NotificationDispatcherMock implements NotificationDispatcher {
 	private int registerHandlerExecutionsCount;
 	private int sendNotificationExecutionsCount;
-	private List<Notification> sumbetedNotifications = new ArrayList<>();
+	private final List<Notification> sumbetedNotifications = new ArrayList<>();
 
 	public int getRegisterHandlerExecutionsCount() {
 		return registerHandlerExecutionsCount;

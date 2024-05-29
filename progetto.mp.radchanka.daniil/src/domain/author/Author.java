@@ -18,9 +18,8 @@ public class Author extends Entity<AuthorId> implements Cloneable<Author> {
 						new AuthorCreatedDomainEvent(createdAuthor));
 		return createdAuthor;
 	}
-	private String country;
+	private final String country;
 	private String name;
-
 	private String surname;
 
 	private Author(AuthorId id, String name, String surname, String country) {

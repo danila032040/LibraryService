@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import base.log.GlobalLogConfiguration;
+import base.log.LogConfiguration;
 import base.log.LogEntry;
 import base.log.LogLevelType;
 import base.log.Logger;
@@ -23,7 +23,7 @@ public class LoggerImplUnitTests {
 		Object[] expectedArguments = new Object[]{2};
 		String expectedCompiledMessage = "Test 2";
 		LogLevelType expectedLogLevelType = LogLevelType.Information;
-		GlobalLogConfiguration logConfiguration = new GlobalLogConfiguration();
+		LogConfiguration logConfiguration = new LogConfiguration();
 		LogEntryPublisherMock logEntryPublisher = new LogEntryPublisherMock();
 		logConfiguration.setMinimalLogLevel(LogLevelType.Information);
 		logConfiguration.setLocalDateTimeProvider(() -> expectedDateTime);
@@ -50,7 +50,7 @@ public class LoggerImplUnitTests {
 
 	@Test
 	public void log_WithLogLevelTypeLowerThanMinimumLogLevelType_ShouldNotPublishAnyLogEntry() {
-		GlobalLogConfiguration logConfiguration = new GlobalLogConfiguration();
+		LogConfiguration logConfiguration = new LogConfiguration();
 		LogEntryPublisherMock logEntryPublisher = new LogEntryPublisherMock();
 		logConfiguration.setMinimalLogLevel(LogLevelType.Fatal);
 		Logger loggerToTest = new LoggerImpl(

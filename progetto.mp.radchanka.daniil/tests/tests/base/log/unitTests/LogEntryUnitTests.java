@@ -3,10 +3,6 @@ package tests.base.log.unitTests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Formatter;
-import java.util.Locale;
-import java.util.Optional;
 
 import org.junit.Test;
 

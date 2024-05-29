@@ -1,17 +1,15 @@
 package base.log;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-import java.util.function.BiFunction;
 
 import base.lazyLoading.LazyLoad;
 
 public class LogEntry {
-	private LogLevelType logLevel;
-	private LocalDateTime dateTime;
-	private String originalMessage;
-	private LazyLoad<String> compiledMessage;
-	private Object[] arguments;
+	private final Object[] arguments;
+	private final LazyLoad<String> compiledMessage;
+	private final LocalDateTime dateTime;
+	private final LogLevelType logLevel;
+	private final String originalMessage;
 
 	public LogEntry(LogLevelType logLevel, LocalDateTime dateTime,
 			String originalMessage, Object[] arguments,
@@ -25,6 +23,14 @@ public class LogEntry {
 						.compileMessage(originalMessage, arguments));
 	}
 
+	public Object[] getArguments() {
+		return arguments;
+	}
+
+	public String getCompiledMessage() {
+		return compiledMessage.getValue();
+	}
+
 	public LocalDateTime getDateTime() {
 		return dateTime;
 	}
@@ -35,13 +41,5 @@ public class LogEntry {
 
 	public String getOriginalMessage() {
 		return originalMessage;
-	}
-
-	public Object[] getArguments() {
-		return arguments;
-	}
-
-	public String getCompiledMessage() {
-		return compiledMessage.getValue();
 	}
 }

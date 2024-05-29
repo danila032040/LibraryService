@@ -20,18 +20,18 @@ public class ConverterChainElementImplUnitTests {
 	}
 
 	@Test
-	public void fromWithOnlyOneConverter_WhenConverterIsNull_ShouldThrowNullPointerException() {
+	public void from_WhenPredicateIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> ConverterChainElementImpl
-				.<Object, String>from(null);
+				.<Object, String>from(null, (obj) -> (String) obj);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
 	}
 
 	@Test
-	public void from_WhenPredicateIsNull_ShouldThrowNullPointerException() {
+	public void fromWithOnlyOneConverter_WhenConverterIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> ConverterChainElementImpl
-				.<Object, String>from(null, (obj) -> (String) obj);
+				.<Object, String>from(null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);

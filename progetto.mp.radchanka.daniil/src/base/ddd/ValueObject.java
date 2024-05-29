@@ -6,7 +6,6 @@ import java.util.Objects;
 import base.utils.IteratorUtils;
 
 public abstract class ValueObject {
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -20,6 +19,7 @@ public abstract class ValueObject {
 						this.getEqualityComponentsIterator(),
 						other.getEqualityComponentsIterator());
 	}
+	
 	public abstract Iterator<Object> getEqualityComponentsIterator();
 
 	@Override

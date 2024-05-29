@@ -1,20 +1,21 @@
 package tests.base.repository.mocks;
 
-import base.ddd.Entity;
 import base.cloneable.Cloneable;
+import base.ddd.Entity;
 
 public class EntityMock extends Entity<Integer>
 		implements
 			Cloneable<EntityMock> {
-	private int someIntUsedForSortBy;
+	private final int someIntUsedForSortBy;
 
 	public EntityMock(int id, int someFieldUsedForSortBy) {
 		super(id);
 		this.someIntUsedForSortBy = someFieldUsedForSortBy;
 	}
 
-	public int getSomeFieldUsedForSortBy() {
-		return someIntUsedForSortBy;
+	@Override
+	public EntityMock createClone() {
+		return new EntityMock(getId(), getSomeFieldUsedForSortBy());
 	}
 
 	public boolean equalsUsingAllFields(EntityMock otherEntity) {
@@ -23,9 +24,8 @@ public class EntityMock extends Entity<Integer>
 						.getSomeFieldUsedForSortBy();
 	}
 
-	@Override
-	public EntityMock createClone() {
-		return new EntityMock(getId(), getSomeFieldUsedForSortBy());
+	public int getSomeFieldUsedForSortBy() {
+		return someIntUsedForSortBy;
 	}
 
 }

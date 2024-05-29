@@ -1,8 +1,8 @@
 package tests.base.mediator.mocks;
 
-import base.mediator.Notification;
-import base.mediator.NotificationDispatcher;
-import base.mediator.NotificationHandler;
+import base.mediator.notification.Notification;
+import base.mediator.notification.NotificationDispatcher;
+import base.mediator.notification.NotificationHandler;
 
 public class NotificationDispatcherMock implements NotificationDispatcher{
 	private int registerHandlerExecutionsCount;

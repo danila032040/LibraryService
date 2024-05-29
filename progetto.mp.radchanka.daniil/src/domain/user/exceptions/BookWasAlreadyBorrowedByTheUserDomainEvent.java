@@ -6,8 +6,8 @@ import domain.user.User;
 public class BookWasAlreadyBorrowedByTheUserDomainEvent extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	private User user;
-	private BookId bookIdThatWasAlreadyBorrowed;
+	private final User user;
+	private final BookId bookIdThatWasAlreadyBorrowed;
 
 	public BookWasAlreadyBorrowedByTheUserDomainEvent(User user,
 			BookId bookIdThatWasAlreadyBorrowed) {
@@ -16,11 +16,11 @@ public class BookWasAlreadyBorrowedByTheUserDomainEvent extends Exception {
 		this.bookIdThatWasAlreadyBorrowed = bookIdThatWasAlreadyBorrowed;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
 	public BookId getBookIdThatWasAlreadyBorrowed() {
 		return bookIdThatWasAlreadyBorrowed;
+	}
+
+	public User getUser() {
+		return user;
 	}
 }

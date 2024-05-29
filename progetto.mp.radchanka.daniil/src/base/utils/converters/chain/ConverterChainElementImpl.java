@@ -10,16 +10,12 @@ public class ConverterChainElementImpl<TFrom, TTo>
 			Converter<TFrom, TTo>,
 			ConverterChainElement<TFrom, TTo> {
 
-	private Predicate<TFrom> canHandlePredicate;
-	private Converter<TFrom, TTo> converter;
-	private ConverterChainElement<TFrom, TTo> nextConverter;
-
-	private ConverterChainElementImpl(Predicate<TFrom> canHandlePredicate,
+	public static <TFrom, TTo> ConverterChainElementImpl<TFrom, TTo> from(
 			Converter<TFrom, TTo> converter) {
-		this.canHandlePredicate = Objects.requireNonNull(canHandlePredicate);
-		this.converter = Objects.requireNonNull(converter);
+		return new ConverterChainElementImpl<TFrom, TTo>(
+				(from) -> true,
+				converter);
 	}
-
 	public static <TFrom, TTo> ConverterChainElementImpl<TFrom, TTo> from(
 			Predicate<TFrom> canHandlePredicate,
 			Converter<TFrom, TTo> converter) {
@@ -27,12 +23,16 @@ public class ConverterChainElementImpl<TFrom, TTo>
 				canHandlePredicate,
 				converter);
 	}
+	private final Predicate<TFrom> canHandlePredicate;
 
-	public static <TFrom, TTo> ConverterChainElementImpl<TFrom, TTo> from(
+	private final Converter<TFrom, TTo> converter;
+
+	private ConverterChainElement<TFrom, TTo> nextConverter;
+
+	private ConverterChainElementImpl(Predicate<TFrom> canHandlePredicate,
 			Converter<TFrom, TTo> converter) {
-		return new ConverterChainElementImpl<TFrom, TTo>(
-				(from) -> true,
-				converter);
+		this.canHandlePredicate = Objects.requireNonNull(canHandlePredicate);
+		this.converter = Objects.requireNonNull(converter);
 	}
 
 	@Override
@@ -43,12 +43,12 @@ public class ConverterChainElementImpl<TFrom, TTo>
 	}
 
 	@Override
-	public void setNext(ConverterChainElement<TFrom, TTo> converter) {
-		this.nextConverter = Objects.requireNonNull(converter);
+	public ConverterChainElement<TFrom, TTo> getNext() {
+		return this.nextConverter;
 	}
 
 	@Override
-	public ConverterChainElement<TFrom, TTo> getNext() {
-		return this.nextConverter;
+	public void setNext(ConverterChainElement<TFrom, TTo> converter) {
+		this.nextConverter = Objects.requireNonNull(converter);
 	}
 }

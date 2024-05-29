@@ -1,15 +1,17 @@
 package base.mediator.ddd;
 
 import base.ddd.DomainEvent;
-import base.mediator.Notification;
+import base.mediator.notification.Notification;
 
-public class DomainEventNotification<TDomainEvent extends DomainEvent> implements Notification {
+public class DomainEventNotification<TDomainEvent extends DomainEvent>
+		implements
+			Notification {
 	public static <TDomainEvent extends DomainEvent> DomainEventNotification<TDomainEvent> fromDomainEvent(
 			TDomainEvent domainEvent) {
 		return new DomainEventNotification<TDomainEvent>(domainEvent);
 	}
 
-	private TDomainEvent domainEvent;
+	private final TDomainEvent domainEvent;
 
 	private DomainEventNotification(TDomainEvent domainEvent) {
 		this.domainEvent = domainEvent;

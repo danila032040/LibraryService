@@ -5,9 +5,10 @@ import java.util.function.BiFunction;
 import base.log.CompiledMessageBuilder;
 
 public class CompiledMessageBuilderMock implements CompiledMessageBuilder {
-	private BiFunction<String, Object[], String> resultStringBuilder;
-	private String lastSpecifiedOriginalMessage;
+	private final BiFunction<String, Object[], String> resultStringBuilder;
+
 	private Object[] lastSpecifiedArguments;
+	private String lastSpecifiedOriginalMessage;
 
 	public CompiledMessageBuilderMock(
 			BiFunction<String, Object[], String> resultStringBuilder) {
@@ -22,12 +23,11 @@ public class CompiledMessageBuilderMock implements CompiledMessageBuilder {
 		return resultStringBuilder.apply(originalMessage, arguments);
 	}
 
-	public String getLastSpecifiedOriginalMessage() {
-		return lastSpecifiedOriginalMessage;
-	}
-
 	public Object[] getLastSpecifiedArguments() {
 		return lastSpecifiedArguments;
 	}
 
+	public String getLastSpecifiedOriginalMessage() {
+		return lastSpecifiedOriginalMessage;
+	}
 }

@@ -7,6 +7,14 @@ import org.junit.Test;
 import domain.library.LibraryId;
 
 public class LibraryIdUnitTests {
+	@Test
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		LibraryId id = new LibraryId(0);
+
+		LibraryId actual = id.createClone();
+
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
+	}
 
 	@Test
 	public void equals_WhenComparedWithTheDifferentClassObject_ShouldBeFalse() {
@@ -18,7 +26,6 @@ public class LibraryIdUnitTests {
 
 		assertThat(actual).isFalse();
 	}
-
 	@Test
 	public void equals_WhenComparingWithTheSameInstance_ShouldBeTrue() {
 		LibraryId id = new LibraryId(1);
@@ -27,6 +34,7 @@ public class LibraryIdUnitTests {
 
 		assertThat(actual).isTrue();
 	}
+
 	@Test
 	public void equals_WhenIdsAreEqual_ShouldBeTrue() {
 		LibraryId id1 = new LibraryId(5);
@@ -67,14 +75,5 @@ public class LibraryIdUnitTests {
 		int actual2 = id2.hashCode();
 
 		assertThat(actual1).isNotEqualTo(actual2);
-	}
-
-	@Test
-	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
-		LibraryId id = new LibraryId(0);
-
-		LibraryId actual = id.createClone();
-
-		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }

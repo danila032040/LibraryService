@@ -4,28 +4,27 @@ import base.ddd.DomainEvent;
 import domain.user.User;
 
 public class UserChangedPhoneNumberDomainEvent implements DomainEvent {
+	private final User user;
+	private final String previousPhoneNumber;
+	private final String currentPhoneNumber;
 
-	private User user;
-	private String previousPhoneNumber;
-	private String newPhoneNumber;
-
-	public UserChangedPhoneNumberDomainEvent(User user, String previousPhoneNumber,
-			String newPhoneNumber) {
+	public UserChangedPhoneNumberDomainEvent(User user,
+			String previousPhoneNumber, String currentPhoneNumber) {
 		this.user = user;
 		this.previousPhoneNumber = previousPhoneNumber;
-		this.newPhoneNumber = newPhoneNumber;
+		this.currentPhoneNumber = currentPhoneNumber;
 	}
 
-	public User getUser() {
-		return user;
+	public String getCurrentPhoneNumber() {
+		return currentPhoneNumber;
 	}
 
 	public String getPreviousPhoneNumber() {
 		return previousPhoneNumber;
 	}
 
-	public String getNewPhoneNumber() {
-		return newPhoneNumber;
+	public User getUser() {
+		return user;
 	}
 
 }

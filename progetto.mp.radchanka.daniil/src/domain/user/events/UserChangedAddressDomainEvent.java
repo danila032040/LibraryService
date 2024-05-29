@@ -5,10 +5,9 @@ import domain.common.Address;
 import domain.user.User;
 
 public class UserChangedAddressDomainEvent implements DomainEvent {
-
-	private User user;
-	private Address previousAddress;
-	private Address newAddress;
+	private final User user;
+	private final Address previousAddress;
+	private final Address newAddress;
 
 	public UserChangedAddressDomainEvent(User user, Address previousAddress,
 			Address newAddress) {
@@ -17,15 +16,15 @@ public class UserChangedAddressDomainEvent implements DomainEvent {
 		this.newAddress = newAddress;
 	}
 
-	public User getUser() {
-		return user;
+	public Address getNewAddress() {
+		return newAddress;
 	}
 
 	public Address getPreviousAddress() {
 		return previousAddress;
 	}
 
-	public Address getNewAddress() {
-		return newAddress;
+	public User getUser() {
+		return user;
 	}
 }

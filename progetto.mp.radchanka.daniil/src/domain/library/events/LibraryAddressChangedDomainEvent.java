@@ -5,10 +5,9 @@ import domain.common.Address;
 import domain.library.Library;
 
 public class LibraryAddressChangedDomainEvent implements DomainEvent {
-
-	private Address previousAddress;
-	private Address currentAddress;
-	private Library library;
+	private final Library library;
+	private final Address previousAddress;
+	private final Address currentAddress;
 
 	public LibraryAddressChangedDomainEvent(Library library,
 			Address previousAddress, Address currentAddress) {
@@ -17,16 +16,16 @@ public class LibraryAddressChangedDomainEvent implements DomainEvent {
 		this.currentAddress = currentAddress;
 	}
 
+	public Address getCurrentAddress() {
+		return currentAddress;
+	}
+
 	public Library getLibrary() {
 		return library;
 	}
 
 	public Address getPreviousAddress() {
 		return previousAddress;
-	}
-
-	public Address getCurrentAddress() {
-		return currentAddress;
 	}
 
 }

@@ -15,6 +15,26 @@ import domain.common.Address;
 
 public class AddressUnitTests {
 	@Test
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		Optional<String> building = Optional.empty();
+		Optional<String> city = Optional.empty();
+		Optional<String> countryRegion = Optional.empty();
+		Optional<String> postalCode = Optional.empty();
+		Optional<String> stateProvince = Optional.empty();
+		Optional<String> street = Optional.empty();
+		Address address = new Address(
+				building,
+				city,
+				countryRegion,
+				postalCode,
+				stateProvince,
+				street);
+
+		Address actual = address.createClone();
+
+		assertThat(actual).isNotSameAs(address).isEqualTo(address);
+	}
+	@Test
 	public void createInstance_WhenBuildingIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> new Address(
 				null,
@@ -33,19 +53,6 @@ public class AddressUnitTests {
 				Optional.empty(),
 				null,
 				Optional.empty(),
-				Optional.empty(),
-				Optional.empty(),
-				Optional.empty());
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-	@Test
-	public void createInstance_WhenOptionnalCountryRegionIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> new Address(
-				Optional.empty(),
-				Optional.empty(),
-				null,
 				Optional.empty(),
 				Optional.empty(),
 				Optional.empty());
@@ -94,6 +101,20 @@ public class AddressUnitTests {
 	}
 
 	@Test
+	public void createInstance_WhenOptionnalCountryRegionIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> new Address(
+				Optional.empty(),
+				Optional.empty(),
+				null,
+				Optional.empty(),
+				Optional.empty(),
+				Optional.empty());
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
 	public void getEqualityComponents_ShouldReturnCorrectEqualityComponents() {
 		Optional<String> building = Optional.empty();
 		Optional<String> city = Optional.empty();
@@ -121,26 +142,5 @@ public class AddressUnitTests {
 						postalCode,
 						stateProvince,
 						street);
-	}
-
-	@Test
-	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
-		Optional<String> building = Optional.empty();
-		Optional<String> city = Optional.empty();
-		Optional<String> countryRegion = Optional.empty();
-		Optional<String> postalCode = Optional.empty();
-		Optional<String> stateProvince = Optional.empty();
-		Optional<String> street = Optional.empty();
-		Address address = new Address(
-				building,
-				city,
-				countryRegion,
-				postalCode,
-				stateProvince,
-				street);
-
-		Address actual = address.createClone();
-
-		assertThat(actual).isNotSameAs(address).isEqualTo(address);
 	}
 }

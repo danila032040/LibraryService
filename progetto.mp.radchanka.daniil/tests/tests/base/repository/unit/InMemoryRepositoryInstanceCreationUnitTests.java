@@ -12,11 +12,11 @@ import tests.base.repository.mocks.EntityMock;
 
 public class InMemoryRepositoryInstanceCreationUnitTests {
 	@Test
-	public void createInstance_WhenStorageIsNull_ThrowsNullPointerException() {
+	public void createInstance_WhenEntityCloneFactoryIsNull_ThrowsNullPointerException() {
 		ThrowingCallable actual = () -> new InMemoryRepository<EntityMock, Integer>(
-				null,
+				new ArrayList<EntityMock>(),
 				ArrayList::new,
-				EntityMock::createClone);
+				null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
@@ -34,11 +34,11 @@ public class InMemoryRepositoryInstanceCreationUnitTests {
 	}
 
 	@Test
-	public void createInstance_WhenEntityCloneFactoryIsNull_ThrowsNullPointerException() {
+	public void createInstance_WhenStorageIsNull_ThrowsNullPointerException() {
 		ThrowingCallable actual = () -> new InMemoryRepository<EntityMock, Integer>(
-				new ArrayList<EntityMock>(),
+				null,
 				ArrayList::new,
-				null);
+				EntityMock::createClone);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);

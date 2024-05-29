@@ -4,11 +4,11 @@ import java.util.Collection;
 
 import base.ddd.DomainEvent;
 import base.ddd.DomainEventPublisher;
-import base.mediator.NotificationDispatcher;
+import base.mediator.notification.NotificationDispatcher;
 
 public class DomainEventNotificationPublisher implements DomainEventPublisher {
 
-	private NotificationDispatcher notificationDispatcher;
+	private final NotificationDispatcher notificationDispatcher;
 
 	public DomainEventNotificationPublisher(
 			NotificationDispatcher notificationDispatcher) {
@@ -18,7 +18,7 @@ public class DomainEventNotificationPublisher implements DomainEventPublisher {
 	public void publishDomainEvents(Collection<DomainEvent> domainEvents) {
 		domainEvents
 				.stream()
-				.map(domainEvent->domainEvent.getClass().cast(domainEvent))
+				.map(domainEvent -> domainEvent.getClass().cast(domainEvent))
 				.map(DomainEventNotification::fromDomainEvent)
 				.forEach(notificationDispatcher::sendNotification);
 	}

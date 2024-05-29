@@ -6,7 +6,7 @@ import domain.user.UserId;
 
 public class UserByIdSpecification implements Specification<User> {
 
-	private UserId userId;
+	private final UserId userId;
 
 	public UserByIdSpecification(UserId userId) {
 		this.userId = userId;

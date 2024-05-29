@@ -12,11 +12,11 @@ import infrastructure.library.repositories.LibraryRepositoryImpl;
 
 public class LibraryRepositoryImplUnitTests {
 	@Test
-	public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
+	public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> new LibraryRepositoryImpl(
-				null,
+				new ArrayList<Library>(),
 				ArrayList::new,
-				Library::createClone);
+				null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
@@ -34,11 +34,11 @@ public class LibraryRepositoryImplUnitTests {
 	}
 
 	@Test
-	public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
+	public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> new LibraryRepositoryImpl(
-				new ArrayList<Library>(),
+				null,
 				ArrayList::new,
-				null);
+				Library::createClone);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);

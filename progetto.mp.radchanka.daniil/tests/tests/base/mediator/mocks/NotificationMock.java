@@ -1,6 +1,6 @@
 package tests.base.mediator.mocks;
 
-import base.mediator.Notification;
+import base.mediator.notification.Notification;
 
 public class NotificationMock implements Notification {
 

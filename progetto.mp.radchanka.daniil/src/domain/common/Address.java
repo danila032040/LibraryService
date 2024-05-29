@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import base.ddd.ValueObject;
 import base.cloneable.Cloneable;
+import base.ddd.ValueObject;
 
 public class Address extends ValueObject implements Cloneable<Address> {
-	private Optional<String> building;
-	private Optional<String> city;
-	private Optional<String> countryRegion;
-	private Optional<String> postalCode;
-	private Optional<String> stateProvince;
-	private Optional<String> street;
+	private final Optional<String> building;
+	private final Optional<String> city;
+	private final Optional<String> countryRegion;
+	private final Optional<String> postalCode;
+	private final Optional<String> stateProvince;
+	private final Optional<String> street;
 
 	public Address() {
 		this(Optional.empty(), Optional.empty(), Optional.empty(),
@@ -30,6 +30,16 @@ public class Address extends ValueObject implements Cloneable<Address> {
 		this.postalCode = Objects.requireNonNull(postalCode);
 		this.stateProvince = Objects.requireNonNull(stateProvince);
 		this.street = Objects.requireNonNull(street);
+	}
+	@Override
+	public Address createClone() {
+		return new Address(
+				building,
+				city,
+				countryRegion,
+				postalCode,
+				stateProvince,
+				street);
 	}
 	public Optional<String> getBuilding() {
 		return building;
@@ -55,21 +65,11 @@ public class Address extends ValueObject implements Cloneable<Address> {
 	public Optional<String> getPostalCode() {
 		return postalCode;
 	}
+
 	public Optional<String> getStateProvince() {
 		return stateProvince;
 	}
-
 	public Optional<String> getStreet() {
 		return street;
-	}
-	@Override
-	public Address createClone() {
-		return new Address(
-				building,
-				city,
-				countryRegion,
-				postalCode,
-				stateProvince,
-				street);
 	}
 }

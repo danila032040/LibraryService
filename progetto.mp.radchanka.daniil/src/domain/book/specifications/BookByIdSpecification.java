@@ -5,8 +5,7 @@ import domain.book.Book;
 import domain.book.BookId;
 
 public class BookByIdSpecification implements Specification<Book> {
-
-	private BookId bookId;
+	private final BookId bookId;
 
 	public BookByIdSpecification(BookId authorId) {
 		this.bookId = authorId;

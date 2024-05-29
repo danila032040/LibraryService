@@ -12,11 +12,11 @@ import infrastructure.book.repositories.BookRepositoryImpl;
 
 public class BookRepositoryImplUnitTests {
 	@Test
-	public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
+	public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> new BookRepositoryImpl(
-				null,
+				new ArrayList<Book>(),
 				ArrayList::new,
-				Book::createClone);
+				null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
@@ -34,11 +34,11 @@ public class BookRepositoryImplUnitTests {
 	}
 
 	@Test
-	public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
+	public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> new BookRepositoryImpl(
-				new ArrayList<Book>(),
+				null,
 				ArrayList::new,
-				null);
+				Book::createClone);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);

@@ -4,7 +4,6 @@ import base.log.LogEntry;
 import base.log.LogEntryPublisher;
 
 public class LogEntryPublisherMock implements LogEntryPublisher {
-
 	private LogEntry lastPublishedLogEntry;
 
 	public LogEntry getLastPublishedLogEntry() {

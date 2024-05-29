@@ -1,4 +1,4 @@
-package base.mediator;
+package base.mediator.notification;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import base.mediator.notification.exceptions.NotificationHandlerNotFoundException;
 
 public class NotificationDispatcherImpl implements NotificationDispatcher {
 	private final Map<Class<? extends Notification>, Collection<NotificationHandler<? extends Notification>>> handlersByNotificationType;

@@ -15,7 +15,6 @@ import org.junit.Test;
 import base.utils.IteratorUtils;
 
 public class IteratorUtilsUnitTest {
-
 	@Test
 	public void elementsEqual_WhenAllElementsAreEqual_ShouldBeTrue() {
 		ArrayList<Integer> list1 = Lists.newArrayList(1, 2, 3, 4, 5);

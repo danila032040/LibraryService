@@ -3,7 +3,7 @@ package tests.base.ddd.mocks;
 import java.util.Objects;
 
 public class EntityIdMock {
-	private int identificationNumder;
+	private final int identificationNumder;
 
 	public EntityIdMock(int id) {
 		this.identificationNumder = id;

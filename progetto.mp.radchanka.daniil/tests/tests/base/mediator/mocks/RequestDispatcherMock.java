@@ -1,9 +1,9 @@
 package tests.base.mediator.mocks;
 
-import base.mediator.Request;
-import base.mediator.RequestDispatcher;
-import base.mediator.RequestHandler;
-import base.mediator.RequestHandlerAlreadyRegisteredException;
+import base.mediator.request.Request;
+import base.mediator.request.RequestDispatcher;
+import base.mediator.request.RequestHandler;
+import base.mediator.request.exceptions.RequestHandlerAlreadyRegisteredException;
 
 public class RequestDispatcherMock implements RequestDispatcher{
 	private int registerHandlerExecutionsCount;

@@ -5,8 +5,7 @@ import domain.library.Library;
 import domain.library.LibraryId;
 
 public class LibraryByIdSpecification implements Specification<Library> {
-
-	private LibraryId libraryId;
+	private final LibraryId libraryId;
 
 	public LibraryByIdSpecification(LibraryId libraryId) {
 		this.libraryId = libraryId;

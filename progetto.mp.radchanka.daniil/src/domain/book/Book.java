@@ -40,7 +40,6 @@ public class Book extends Entity<BookId> implements Cloneable<Book> {
 	private String genre;
 	private Optional<LibraryId> libraryId;
 	private String name;
-
 	private int publicationYear;
 
 	private Book(BookId id, String name, String genre, int publicationYear,
@@ -86,6 +85,10 @@ public class Book extends Entity<BookId> implements Cloneable<Book> {
 		return authorId;
 	}
 
+	public Optional<UserId> getBorrowedByUserId() {
+		return borrowedByUserId;
+	}
+
 	public String getGenre() {
 		return genre;
 	}
@@ -96,10 +99,6 @@ public class Book extends Entity<BookId> implements Cloneable<Book> {
 
 	public String getName() {
 		return name;
-	}
-
-	public Optional<UserId> getBorrowedByUserId() {
-		return borrowedByUserId;
 	}
 
 	public int getPublicationYear() {
@@ -126,8 +125,16 @@ public class Book extends Entity<BookId> implements Cloneable<Book> {
 
 	}
 
+	public void setAuthor(AuthorId authorId) {
+		this.authorId = Optional.of(authorId);
+	}
+
 	public void setGenre(String genre) {
 		this.genre = Objects.requireNonNull(genre);
+	}
+
+	public void setLibrary(LibraryId libraryId) {
+		this.libraryId = Optional.of(libraryId);
 	}
 
 	public void setName(String name) {

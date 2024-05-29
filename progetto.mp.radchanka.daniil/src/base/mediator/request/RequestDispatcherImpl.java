@@ -1,8 +1,11 @@
-package base.mediator;
+package base.mediator.request;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import base.mediator.request.exceptions.RequestHandlerAlreadyRegisteredException;
+import base.mediator.request.exceptions.RequestHandlerNotFoundException;
 
 public class RequestDispatcherImpl implements RequestDispatcher {
 	private final Map<Class<? extends Request<?>>, RequestHandler<? extends Request<?>, ?>> handlers;

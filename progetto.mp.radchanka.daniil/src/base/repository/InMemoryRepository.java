@@ -19,7 +19,6 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 
 	private final CloneFactory<TEntity> entityCloneFactory;
 	private final Supplier<Collection<TEntity>> resultCollectionFactory;
-
 	private final Collection<TEntity> storage;
 
 	public InMemoryRepository(Collection<TEntity> storage,
@@ -48,7 +47,7 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 	public void addRange(Collection<TEntity> entities)
 			throws AlreadyExistsException {
 		List<TId> alreadyPresentIds = StreamUtils
-				.filterDuplicates(
+				.distinct(
 						Stream
 								.concat(
 										this.storage
@@ -194,7 +193,10 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId>
 			exceptionMessage.append(alreadyPresentId);
 			exceptionMessage.append(", ");
 		}
-		exceptionMessage.delete(exceptionMessage.length() - 2, exceptionMessage.length());
+		exceptionMessage
+				.delete(
+						exceptionMessage.length() - 2,
+						exceptionMessage.length());
 		exceptionMessage.append("} are already in the storage");
 
 		return exceptionMessage.toString();

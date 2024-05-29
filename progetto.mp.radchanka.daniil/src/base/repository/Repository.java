@@ -16,11 +16,11 @@ public interface Repository<TEntity extends Entity<TId>, TId> {
 
 	public Collection<TEntity> get(
 			Specification<TEntity> specification,
-			SortCriteria<TEntity> sortCriteria,
 			Pagination pagination);
 
 	public Collection<TEntity> get(
 			Specification<TEntity> specification,
+			SortCriteria<TEntity> sortCriteria,
 			Pagination pagination);
 
 	public Collection<TEntity> getAll();

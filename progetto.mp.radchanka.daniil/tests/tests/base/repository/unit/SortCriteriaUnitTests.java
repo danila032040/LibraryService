@@ -18,7 +18,7 @@ public class SortCriteriaUnitTests {
 	private ArrayList<EntityMock> entitiesUsedForCheckingCorrectnessOfComparator;
 
 	@Before
-	public void Setup() {
+	public void setup() {
 		entitiesUsedForCheckingCorrectnessOfComparator = Lists
 				.newArrayList(
 						new EntityMock(3, -1),

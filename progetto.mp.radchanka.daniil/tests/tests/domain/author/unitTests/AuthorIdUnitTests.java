@@ -7,6 +7,14 @@ import org.junit.Test;
 import domain.author.AuthorId;
 
 public class AuthorIdUnitTests {
+	@Test
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		AuthorId id = new AuthorId(0);
+
+		AuthorId actual = id.createClone();
+
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
+	}
 
 	@Test
 	public void equals_WhenComparedWithTheDifferentClassObject_ShouldBeFalse() {
@@ -18,7 +26,6 @@ public class AuthorIdUnitTests {
 
 		assertThat(actual).isFalse();
 	}
-
 	@Test
 	public void equals_WhenComparingWithTheSameInstance_ShouldBeTrue() {
 		AuthorId id = new AuthorId(1);
@@ -27,6 +34,7 @@ public class AuthorIdUnitTests {
 
 		assertThat(actual).isTrue();
 	}
+
 	@Test
 	public void equals_WhenIdsAreEqual_ShouldBeTrue() {
 		AuthorId id1 = new AuthorId(5);
@@ -67,14 +75,5 @@ public class AuthorIdUnitTests {
 		int actual2 = id2.hashCode();
 
 		assertThat(actual1).isNotEqualTo(actual2);
-	}
-
-	@Test
-	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
-		AuthorId id = new AuthorId(0);
-
-		AuthorId actual = id.createClone();
-
-		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }

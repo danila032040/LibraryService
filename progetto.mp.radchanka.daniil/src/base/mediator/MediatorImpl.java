@@ -1,5 +1,13 @@
 package base.mediator;
 
+import base.mediator.notification.Notification;
+import base.mediator.notification.NotificationDispatcher;
+import base.mediator.notification.NotificationHandler;
+import base.mediator.request.Request;
+import base.mediator.request.RequestDispatcher;
+import base.mediator.request.RequestHandler;
+import base.mediator.request.exceptions.RequestHandlerAlreadyRegisteredException;
+
 public class MediatorImpl implements Mediator {
 	private final NotificationDispatcher notificationDispatcher;
 	private final RequestDispatcher requestDispatcher;
@@ -34,5 +42,4 @@ public class MediatorImpl implements Mediator {
 			TRequest request) {
 		return this.requestDispatcher.sendRequest(request);
 	}
-
 }

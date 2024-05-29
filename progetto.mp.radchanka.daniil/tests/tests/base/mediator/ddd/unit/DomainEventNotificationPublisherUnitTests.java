@@ -6,17 +6,22 @@ import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
-import base.ddd.DomainEvent;
-import base.mediator.Notification;
 import base.mediator.ddd.DomainEventNotification;
 import base.mediator.ddd.DomainEventNotificationPublisher;
+import base.mediator.notification.Notification;
 import tests.base.mediator.ddd.mocks.DomainEventMock;
 import tests.base.mediator.ddd.mocks.NotificationDispatcherMock;
 
 public class DomainEventNotificationPublisherUnitTests {
-
 	private DomainEventNotificationPublisher domainEventPublisher;
 	private NotificationDispatcherMock notificationDispatcher;
+
+	@Before
+	public void setUp() {
+		notificationDispatcher = new NotificationDispatcherMock();
+		domainEventPublisher = new DomainEventNotificationPublisher(
+				notificationDispatcher);
+	}
 
 	@Test
 	public void publishDomainEvents_ShouldSendNotificationOfTheNotificationDispatcherExactlyOnce() {
@@ -39,20 +44,14 @@ public class DomainEventNotificationPublisherUnitTests {
 		Notification actualNotification = notificationDispatcher
 				.getSubmitedNotifications()
 				.get(0);
-		DomainEvent actualDomainEvent = ((DomainEventNotification) actualNotification)
-				.getDomainEvent();
 
 		assertThat(actualNotification)
-				.isExactlyInstanceOf(DomainEventNotification.class);
-		assertThat(actualDomainEvent)
-				.isExactlyInstanceOf(DomainEventMock.class)
-				.isSameAs(domainEvent);
-	}
-
-	@Before
-	public void setUp() {
-		notificationDispatcher = new NotificationDispatcherMock();
-		domainEventPublisher = new DomainEventNotificationPublisher(
-				notificationDispatcher);
+				.isInstanceOfSatisfying(
+						DomainEventNotification.class,
+						(domainEventNotification) -> {
+							assertThat(domainEventNotification.getDomainEvent())
+									.isExactlyInstanceOf(DomainEventMock.class)
+									.isSameAs(domainEvent);
+						});
 	}
 }

@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import base.ddd.DomainEvent;
 import domain.book.BookId;
-import domain.book.events.BookBorrowedByUserDomainEvent;
 import domain.common.Address;
 import domain.user.User;
 import domain.user.UserId;
@@ -23,7 +22,6 @@ import domain.user.exceptions.BookWasAlreadyBorrowedByTheUserDomainEvent;
 import domain.user.exceptions.BookWasNotBorrowedByTheUserDomainEvent;
 
 public class UserUnitTests {
-
 	@Test
 	public void addBorrowedBook_ShouldAddACloneOfTheBorrowedBook()
 			throws BookWasAlreadyBorrowedByTheUserDomainEvent {
@@ -88,22 +86,6 @@ public class UserUnitTests {
 	}
 
 	@Test
-	public void changeAddress_WhenAddressIsNull_ShouldThrowNullPointerException() {
-		User user = User
-				.createNewUser(
-						new UserId(0),
-						"",
-						"",
-						new Address(),
-						Optional.empty());
-
-		ThrowingCallable actual = () -> user.changeAddress(null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
 	public void changeAddress_ShouldChangeAddressAndRegisterUserChangedAddressDomainEvent() {
 		Address previousAddress = new Address();
 		Address currentAddress = new Address();
@@ -141,7 +123,7 @@ public class UserUnitTests {
 	}
 
 	@Test
-	public void changePhoneNumber_WhenPhoneNumberIsNull_ShouldThrowNullPointerException() {
+	public void changeAddress_WhenAddressIsNull_ShouldThrowNullPointerException() {
 		User user = User
 				.createNewUser(
 						new UserId(0),
@@ -150,42 +132,10 @@ public class UserUnitTests {
 						new Address(),
 						Optional.empty());
 
-		ThrowingCallable actual = () -> user.changePhoneNumber(null);
+		ThrowingCallable actual = () -> user.changeAddress(null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
-	}
-	@Test
-	public void changePhoneNumber_WhenPhoneNumberWasNotSpecifiedPreviously_ShouldSetPhoneNumberAndRegisterUserSpecifiedPhoneNumberDomainEvent() {
-		String phoneNumber = "";
-		User user = User
-				.createNewUser(
-						new UserId(0),
-						"",
-						"",
-						new Address(),
-						Optional.empty());
-		user.extractAllDomainEvents();
-		user.changePhoneNumber(phoneNumber);
-
-		Optional<String> actualPhoneNumber = user.getPhoneNumber();
-		Collection<DomainEvent> actualDomainEvents = user
-				.extractAllDomainEvents();
-
-		assertThat(actualPhoneNumber).hasValue(phoneNumber);
-		assertThat(actualDomainEvents)
-				.satisfiesExactly(
-						x -> assertThat(x)
-								.isInstanceOfSatisfying(
-										UserSpecifiedPhoneNumberDomainEvent.class,
-										domainEvent -> {
-											assertThat(domainEvent.getUser())
-													.isSameAs(user);
-											assertThat(
-													domainEvent
-															.getSpecifiedPhoneNumber())
-													.isSameAs(phoneNumber);
-										}));
 	}
 
 	@Test
@@ -222,9 +172,57 @@ public class UserUnitTests {
 															previousPhoneNumber);
 											assertThat(
 													domainEvent
-															.getNewPhoneNumber())
+															.getCurrentPhoneNumber())
 													.isSameAs(
 															currentPhoneNumber);
+										}));
+	}
+	@Test
+	public void changePhoneNumber_WhenPhoneNumberIsNull_ShouldThrowNullPointerException() {
+		User user = User
+				.createNewUser(
+						new UserId(0),
+						"",
+						"",
+						new Address(),
+						Optional.empty());
+
+		ThrowingCallable actual = () -> user.changePhoneNumber(null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void changePhoneNumber_WhenPhoneNumberWasNotSpecifiedPreviously_ShouldSetPhoneNumberAndRegisterUserSpecifiedPhoneNumberDomainEvent() {
+		String phoneNumber = "";
+		User user = User
+				.createNewUser(
+						new UserId(0),
+						"",
+						"",
+						new Address(),
+						Optional.empty());
+		user.extractAllDomainEvents();
+		user.changePhoneNumber(phoneNumber);
+
+		Optional<String> actualPhoneNumber = user.getPhoneNumber();
+		Collection<DomainEvent> actualDomainEvents = user
+				.extractAllDomainEvents();
+
+		assertThat(actualPhoneNumber).hasValue(phoneNumber);
+		assertThat(actualDomainEvents)
+				.satisfiesExactly(
+						x -> assertThat(x)
+								.isInstanceOfSatisfying(
+										UserSpecifiedPhoneNumberDomainEvent.class,
+										domainEvent -> {
+											assertThat(domainEvent.getUser())
+													.isSameAs(user);
+											assertThat(
+													domainEvent
+															.getSpecifiedPhoneNumber())
+													.isSameAs(phoneNumber);
 										}));
 	}
 
@@ -333,6 +331,26 @@ public class UserUnitTests {
 	}
 
 	@Test
+	public void returnBorrowedBook_ShouldRemoveBorrowedBookCorrectly()
+			throws BookWasAlreadyBorrowedByTheUserDomainEvent,
+			BookWasNotBorrowedByTheUserDomainEvent {
+		BookId bookId = new BookId(0);
+		User user = User
+				.createNewUser(
+						new UserId(0),
+						"",
+						"",
+						new Address(),
+						Optional.empty());
+		user.addBorrowedBook(bookId);
+		user.returnBorrowedBook(bookId);
+
+		Collection<BookId> actualBorrowedBookIds = user.getBorrowedBookIds();
+
+		assertThat(actualBorrowedBookIds).isEmpty();
+	}
+
+	@Test
 	public void returnBorrowedBook_WhenBookIdIsNull_ShouldThrowNullPointerException() {
 		User user = User
 				.createNewUser(
@@ -368,25 +386,5 @@ public class UserUnitTests {
 					assertThat(exception.getBookIdThatWasNotBorrowed())
 							.isSameAs(bookId);
 				});
-	}
-
-	@Test
-	public void returnBorrowedBook_ShouldRemoveBorrowedBookCorrectly()
-			throws BookWasAlreadyBorrowedByTheUserDomainEvent,
-			BookWasNotBorrowedByTheUserDomainEvent {
-		BookId bookId = new BookId(0);
-		User user = User
-				.createNewUser(
-						new UserId(0),
-						"",
-						"",
-						new Address(),
-						Optional.empty());
-		user.addBorrowedBook(bookId);
-		user.returnBorrowedBook(bookId);
-
-		Collection<BookId> actualBorrowedBookIds = user.getBorrowedBookIds();
-
-		assertThat(actualBorrowedBookIds).isEmpty();
 	}
 }

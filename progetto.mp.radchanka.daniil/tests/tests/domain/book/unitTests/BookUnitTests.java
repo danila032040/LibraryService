@@ -21,160 +21,6 @@ import domain.book.exceptions.UserTriedToReturnTheBookThatWereNotBorrowedDomainE
 import domain.user.UserId;
 
 public class BookUnitTests {
-
-	@Test
-	public void createNewBook_WhenNameIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Book
-				.createNewBook(
-						new BookId(0),
-						null,
-						"",
-						2000,
-						Optional.empty(),
-						Optional.empty());
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createNewBook_WhenGenreIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Book
-				.createNewBook(
-						new BookId(0),
-						"",
-						null,
-						2000,
-						Optional.empty(),
-						Optional.empty());
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createNewBook_WhenPublicationYearIsNegative_ShouldThrowIllegalArgumentException() {
-		ThrowingCallable actual = () -> Book
-				.createNewBook(
-						new BookId(0),
-						"",
-						"",
-						-1,
-						Optional.empty(),
-						Optional.empty());
-
-		assertThatExceptionOfType(IllegalArgumentException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createNewBook_WhenOptionalAuthorIdIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Book
-				.createNewBook(
-						new BookId(0),
-						"",
-						"",
-						2000,
-						null,
-						Optional.empty());
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createNewBook_WhenOptionalLibraryIdIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Book
-				.createNewBook(
-						new BookId(0),
-						"",
-						"",
-						2000,
-						Optional.empty(),
-						null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createNewBook_ShouldRegisterBookCreatedDomainEvent() {
-		Book book = Book
-				.createNewBook(
-						new BookId(1),
-						"",
-						"",
-						2000,
-						Optional.empty(),
-						Optional.empty());
-
-		Collection<DomainEvent> actual = book.extractAllDomainEvents();
-
-		assertThat(actual)
-				.satisfiesExactly(
-						x -> assertThat(x)
-								.isInstanceOfSatisfying(
-										BookCreatedDomainEvent.class,
-										domainEvent -> {
-											assertThat(domainEvent.getBook())
-													.isSameAs(book);
-										}));
-	}
-
-	@Test
-	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
-		Book book = Book
-				.createNewBook(
-						new BookId(1),
-						"",
-						"",
-						2000,
-						Optional.empty(),
-						Optional.empty());
-
-		Book actual = book.createClone();
-
-		assertThat(actual).isNotSameAs(book).isEqualTo(book);
-	}
-
-	@Test
-	public void borrowByUser_WhenBookWereNotBorrowedByAnyOne_ShouldSetBorrowedByUserAndRegisterBookBorrowedByUserDomainEvent()
-			throws BookIsAlreadyBorrowedByAnotherUserDomainException {
-		UserId userId = new UserId(0);
-		Book book = Book
-				.createNewBook(
-						new BookId(1),
-						"",
-						"",
-						2000,
-						Optional.empty(),
-						Optional.empty());
-		book.extractAllDomainEvents();
-
-		book.borrowByUser(userId);
-
-		Optional<UserId> actualBorrowedByUserId = book.getBorrowedByUserId();
-		Collection<DomainEvent> actualDomainEvents = book
-				.extractAllDomainEvents();
-
-		assertThat(actualBorrowedByUserId).hasValue(userId);
-		assertThat(actualDomainEvents)
-				.satisfiesExactly(
-						x -> assertThat(x)
-								.isInstanceOfSatisfying(
-										BookBorrowedByUserDomainEvent.class,
-										domainEvent -> {
-											assertThat(
-													domainEvent
-															.getBorrowedBook())
-													.isSameAs(book);
-											assertThat(
-													domainEvent
-															.getUserIdThatHadBorrowedTheBook())
-													.isSameAs(userId);
-										}));
-	}
-
 	@Test
 	public void borrowByUser_WhenBookWereBorrowedByOtherUser_ShouldThrowBookIsAlreadyBorrowedByAnotherUserDomainException()
 			throws BookIsAlreadyBorrowedByAnotherUserDomainException {
@@ -235,9 +81,8 @@ public class BookUnitTests {
 	}
 
 	@Test
-	public void returnByUser_WhenBookWereNotBorrowedByAnyOne_ShouldThrowUserTriedToReturnTheBookThatWereNotBorrowedDomainException()
-			throws UserTriedToReturnTheBookOfAnotherUserDomainException,
-			UserTriedToReturnTheBookThatWereNotBorrowedDomainException {
+	public void borrowByUser_WhenBookWereNotBorrowedByAnyOne_ShouldSetBorrowedByUserAndRegisterBookBorrowedByUserDomainEvent()
+			throws BookIsAlreadyBorrowedByAnotherUserDomainException {
 		UserId userId = new UserId(0);
 		Book book = Book
 				.createNewBook(
@@ -249,16 +94,143 @@ public class BookUnitTests {
 						Optional.empty());
 		book.extractAllDomainEvents();
 
-		ThrowingCallable actual = () -> book.returnByUser(userId);
+		book.borrowByUser(userId);
 
-		assertThatExceptionOfType(
-				UserTriedToReturnTheBookThatWereNotBorrowedDomainException.class)
-				.isThrownBy(actual)
-				.satisfies(exception -> {
-					assertThat(exception.getBook()).isSameAs(book);
-					assertThat(exception.getUserIdThatHadTriedToReturnTheBook())
-							.isSameAs(userId);
-				});
+		Optional<UserId> actualBorrowedByUserId = book.getBorrowedByUserId();
+		Collection<DomainEvent> actualDomainEvents = book
+				.extractAllDomainEvents();
+
+		assertThat(actualBorrowedByUserId).hasValue(userId);
+		assertThat(actualDomainEvents)
+				.satisfiesExactly(
+						x -> assertThat(x)
+								.isInstanceOfSatisfying(
+										BookBorrowedByUserDomainEvent.class,
+										domainEvent -> {
+											assertThat(
+													domainEvent
+															.getBorrowedBook())
+													.isSameAs(book);
+											assertThat(
+													domainEvent
+															.getUserIdThatHadBorrowedTheBook())
+													.isSameAs(userId);
+										}));
+	}
+
+	@Test
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		Book book = Book
+				.createNewBook(
+						new BookId(1),
+						"",
+						"",
+						2000,
+						Optional.empty(),
+						Optional.empty());
+
+		Book actual = book.createClone();
+
+		assertThat(actual).isNotSameAs(book).isEqualTo(book);
+	}
+
+	@Test
+	public void createNewBook_ShouldRegisterBookCreatedDomainEvent() {
+		Book book = Book
+				.createNewBook(
+						new BookId(1),
+						"",
+						"",
+						2000,
+						Optional.empty(),
+						Optional.empty());
+
+		Collection<DomainEvent> actual = book.extractAllDomainEvents();
+
+		assertThat(actual)
+				.satisfiesExactly(
+						x -> assertThat(x)
+								.isInstanceOfSatisfying(
+										BookCreatedDomainEvent.class,
+										domainEvent -> {
+											assertThat(domainEvent.getBook())
+													.isSameAs(book);
+										}));
+	}
+
+	@Test
+	public void createNewBook_WhenGenreIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> Book
+				.createNewBook(
+						new BookId(0),
+						"",
+						null,
+						2000,
+						Optional.empty(),
+						Optional.empty());
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void createNewBook_WhenNameIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> Book
+				.createNewBook(
+						new BookId(0),
+						null,
+						"",
+						2000,
+						Optional.empty(),
+						Optional.empty());
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void createNewBook_WhenOptionalAuthorIdIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> Book
+				.createNewBook(
+						new BookId(0),
+						"",
+						"",
+						2000,
+						null,
+						Optional.empty());
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void createNewBook_WhenOptionalLibraryIdIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> Book
+				.createNewBook(
+						new BookId(0),
+						"",
+						"",
+						2000,
+						Optional.empty(),
+						null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void createNewBook_WhenPublicationYearIsNegative_ShouldThrowIllegalArgumentException() {
+		ThrowingCallable actual = () -> Book
+				.createNewBook(
+						new BookId(0),
+						"",
+						"",
+						-1,
+						Optional.empty(),
+						Optional.empty());
+
+		assertThatExceptionOfType(IllegalArgumentException.class)
+				.isThrownBy(actual);
 	}
 
 	@Test
@@ -290,6 +262,7 @@ public class BookUnitTests {
 							.isSameAs(userId2);
 				});
 	}
+
 	@Test
 	public void returnByUser_WhenBookWereBorrowedByTheSameUser_ShouldResetBorrowedByUserAndRegisterBookReturnedByUserDomainEvent()
 			throws BookIsAlreadyBorrowedByAnotherUserDomainException,
@@ -331,6 +304,32 @@ public class BookUnitTests {
 													.isSameAs(userId);
 										}));
 	}
+	@Test
+	public void returnByUser_WhenBookWereNotBorrowedByAnyOne_ShouldThrowUserTriedToReturnTheBookThatWereNotBorrowedDomainException()
+			throws UserTriedToReturnTheBookOfAnotherUserDomainException,
+			UserTriedToReturnTheBookThatWereNotBorrowedDomainException {
+		UserId userId = new UserId(0);
+		Book book = Book
+				.createNewBook(
+						new BookId(1),
+						"",
+						"",
+						2000,
+						Optional.empty(),
+						Optional.empty());
+		book.extractAllDomainEvents();
+
+		ThrowingCallable actual = () -> book.returnByUser(userId);
+
+		assertThatExceptionOfType(
+				UserTriedToReturnTheBookThatWereNotBorrowedDomainException.class)
+				.isThrownBy(actual)
+				.satisfies(exception -> {
+					assertThat(exception.getBook()).isSameAs(book);
+					assertThat(exception.getUserIdThatHadTriedToReturnTheBook())
+							.isSameAs(userId);
+				});
+	}
 
 	@Test
 	public void setGenre_WhenGenreIsNull_ShouldThrowNullPointerException() {
@@ -364,7 +363,7 @@ public class BookUnitTests {
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
 	}
-	
+
 	@Test
 	public void setPublicationYear_WhenPublicationYearIsNegative_ShouldThrowNullPointerException() {
 		Book book = Book

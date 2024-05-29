@@ -7,6 +7,14 @@ import org.junit.Test;
 import domain.user.UserId;
 
 public class UserIdUnitTests {
+	@Test
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		UserId id = new UserId(0);
+
+		UserId actual = id.createClone();
+
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
+	}
 
 	@Test
 	public void equals_WhenComparedWithTheDifferentClassObject_ShouldBeFalse() {
@@ -18,7 +26,6 @@ public class UserIdUnitTests {
 
 		assertThat(actual).isFalse();
 	}
-
 	@Test
 	public void equals_WhenComparingWithTheSameInstance_ShouldBeTrue() {
 		UserId id = new UserId(1);
@@ -27,6 +34,7 @@ public class UserIdUnitTests {
 
 		assertThat(actual).isTrue();
 	}
+
 	@Test
 	public void equals_WhenIdsAreEqual_ShouldBeTrue() {
 		UserId id1 = new UserId(5);
@@ -67,14 +75,5 @@ public class UserIdUnitTests {
 		int actual2 = id2.hashCode();
 
 		assertThat(actual1).isNotEqualTo(actual2);
-	}
-
-	@Test
-	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
-		UserId id = new UserId(0);
-
-		UserId actual = id.createClone();
-
-		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }

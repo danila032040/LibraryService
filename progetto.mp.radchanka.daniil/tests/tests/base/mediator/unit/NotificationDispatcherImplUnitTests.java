@@ -8,8 +8,8 @@ import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
-import base.mediator.NotificationDispatcherImpl;
-import base.mediator.NotificationHandlerNotFoundException;
+import base.mediator.notification.NotificationDispatcherImpl;
+import base.mediator.notification.exceptions.NotificationHandlerNotFoundException;
 import tests.base.mediator.mocks.NotificationHandlerMock;
 import tests.base.mediator.mocks.NotificationHandlerMock2;
 import tests.base.mediator.mocks.NotificationMock;
@@ -20,7 +20,7 @@ public class NotificationDispatcherImplUnitTests {
 	private NotificationDispatcherImpl notificationDispatcher;
 
 	@Before
-	public void Before() {
+	public void setup() {
 		notificationDispatcher = new NotificationDispatcherImpl();
 	}
 

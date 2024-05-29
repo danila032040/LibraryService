@@ -1,4 +1,4 @@
-package base.mediator;
+package base.mediator.request.exceptions;
 
 public class RequestHandlerAlreadyRegisteredException extends Exception {
 	private static final long serialVersionUID = 1L;

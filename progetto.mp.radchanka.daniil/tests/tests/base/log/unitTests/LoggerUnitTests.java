@@ -10,16 +10,6 @@ import tests.base.log.mocks.LoggerMock;
 public class LoggerUnitTests {
 
 	@Test
-	public void logInformation_ShouldSpecifyInformationLogLevelType() {
-		LoggerMock logger = new LoggerMock();
-		LogLevelType expected = LogLevelType.Information;
-
-		logger.logInformation(null);
-		LogLevelType actual = logger.getLastSpecifiedLogLevel();
-
-		assertThat(actual).isEqualTo(expected);
-	}
-	@Test
 	public void logDebug_ShouldSpecifyDebugLogLevelType() {
 		LoggerMock logger = new LoggerMock();
 		LogLevelType expected = LogLevelType.Debug;
@@ -29,18 +19,6 @@ public class LoggerUnitTests {
 
 		assertThat(actual).isEqualTo(expected);
 	}
-
-	@Test
-	public void logWarning_ShouldSpecifyWarningLogLevelType() {
-		LoggerMock logger = new LoggerMock();
-		LogLevelType expected = LogLevelType.Warning;
-
-		logger.logWarning(null);
-		LogLevelType actual = logger.getLastSpecifiedLogLevel();
-
-		assertThat(actual).isEqualTo(expected);
-	}
-
 	@Test
 	public void logError_ShouldSpecifyErrorLogLevelType() {
 		LoggerMock logger = new LoggerMock();
@@ -58,6 +36,28 @@ public class LoggerUnitTests {
 		LogLevelType expected = LogLevelType.Fatal;
 
 		logger.logFatal(null);
+		LogLevelType actual = logger.getLastSpecifiedLogLevel();
+
+		assertThat(actual).isEqualTo(expected);
+	}
+
+	@Test
+	public void logInformation_ShouldSpecifyInformationLogLevelType() {
+		LoggerMock logger = new LoggerMock();
+		LogLevelType expected = LogLevelType.Information;
+
+		logger.logInformation(null);
+		LogLevelType actual = logger.getLastSpecifiedLogLevel();
+
+		assertThat(actual).isEqualTo(expected);
+	}
+
+	@Test
+	public void logWarning_ShouldSpecifyWarningLogLevelType() {
+		LoggerMock logger = new LoggerMock();
+		LogLevelType expected = LogLevelType.Warning;
+
+		logger.logWarning(null);
 		LogLevelType actual = logger.getLastSpecifiedLogLevel();
 
 		assertThat(actual).isEqualTo(expected);

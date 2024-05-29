@@ -4,7 +4,6 @@ import base.log.LogLevelType;
 import base.log.Logger;
 
 public class LoggerMock implements Logger {
-
 	private LogLevelType lastSpecifiedLogLevel;
 	private String lastSpecifiedMessage;
 	private Object[] lastSpecifiedArgs;
@@ -27,5 +26,4 @@ public class LoggerMock implements Logger {
 	public Object[] getLastSpecifiedArgs() {
 		return lastSpecifiedArgs;
 	}
-
 }

@@ -16,43 +16,6 @@ import domain.library.events.LibraryAddressChangedDomainEvent;
 import domain.library.events.LibraryCreatedDomainEvent;
 
 public class LibraryUnitTests {
-
-	@Test
-	public void createNewLibrary_WhenIdIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Library
-				.createNewLibrary(null, new Address());
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createNewLibrary_WhenAddressIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> Library
-				.createNewLibrary(new LibraryId(1), null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createNewLibrary_ShouldAddLibraryCreatedDomainEvent() {
-		Library expected = Library
-				.createNewLibrary(new LibraryId(1), new Address());
-
-		Collection<DomainEvent> actual = expected.extractAllDomainEvents();
-
-		assertThat(actual)
-				.satisfiesExactly(
-						x -> assertThat(x)
-								.isInstanceOfSatisfying(
-										LibraryCreatedDomainEvent.class,
-										domainEvent -> {
-											assertThat(domainEvent.getLibrary())
-													.isSameAs(expected);
-										}));
-	}
-
 	@Test
 	public void changeAddress_ShouldAddLibraryAddressChangedDomainEvent() {
 		Address expectedPreviousAddress = new Address();
@@ -87,6 +50,17 @@ public class LibraryUnitTests {
 	}
 
 	@Test
+	public void changeAddress_WhenAddressIsNull_ShouldThrowNullPointerException() {
+		Library library = Library
+				.createNewLibrary(new LibraryId(1), new Address());
+
+		ThrowingCallable actual = () -> library.changeAddress(null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
 	public void createClone_ShouldCreateEqualButNotTheSameInstance() {
 		Library expected = Library
 				.createNewLibrary(new LibraryId(1), new Address());
@@ -97,11 +71,36 @@ public class LibraryUnitTests {
 	}
 
 	@Test
-	public void changeAddress_WhenAddressIsNull_ShouldThrowNullPointerException() {
-		Library library = Library
+	public void createNewLibrary_ShouldAddLibraryCreatedDomainEvent() {
+		Library expected = Library
 				.createNewLibrary(new LibraryId(1), new Address());
 
-		ThrowingCallable actual = () -> library.changeAddress(null);
+		Collection<DomainEvent> actual = expected.extractAllDomainEvents();
+
+		assertThat(actual)
+				.satisfiesExactly(
+						x -> assertThat(x)
+								.isInstanceOfSatisfying(
+										LibraryCreatedDomainEvent.class,
+										domainEvent -> {
+											assertThat(domainEvent.getLibrary())
+													.isSameAs(expected);
+										}));
+	}
+
+	@Test
+	public void createNewLibrary_WhenAddressIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> Library
+				.createNewLibrary(new LibraryId(1), null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void createNewLibrary_WhenIdIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> Library
+				.createNewLibrary(null, new Address());
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);

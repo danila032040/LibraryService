@@ -1,6 +1,6 @@
 package tests.base.mediator.mocks;
 
-import base.mediator.RequestHandler;
+import base.mediator.request.RequestHandler;
 
 public class RequestHandlerMock
 		implements

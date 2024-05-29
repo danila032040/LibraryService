@@ -2,15 +2,14 @@ package tests.base.mediator.unit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Before;
 import org.junit.Test;
 
-import base.mediator.RequestDispatcherImpl;
-import base.mediator.RequestHandlerAlreadyRegisteredException;
-import base.mediator.RequestHandlerNotFoundException;
+import base.mediator.request.RequestDispatcherImpl;
+import base.mediator.request.exceptions.RequestHandlerAlreadyRegisteredException;
+import base.mediator.request.exceptions.RequestHandlerNotFoundException;
 import tests.base.mediator.mocks.RequestHandlerMock;
 import tests.base.mediator.mocks.RequestHandlerMock2;
 import tests.base.mediator.mocks.RequestMock;
@@ -21,7 +20,7 @@ public class RequestDispatcherImplUnitTests {
 	private RequestDispatcherImpl requestDispatcher;
 
 	@Before
-	public void Before() {
+	public void setup() {
 		requestDispatcher = new RequestDispatcherImpl();
 	}
 

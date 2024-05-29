@@ -22,6 +22,20 @@ import org.junit.Test;
 import base.utils.MessageFormatSupportingTimePackage;
 
 public class MessageFormatSupportingAnyTemporalAccessorUnitTests {
+	private static String getTimezoneOffset(TimeZone tz) {
+		Calendar cal = GregorianCalendar.getInstance(tz);
+		int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
+
+		String offset = String
+				.format(
+						"%02d%02d",
+						Math.abs(offsetInMillis / 3600000),
+						Math.abs((offsetInMillis / 60000) % 60));
+		offset = (offsetInMillis >= 0 ? "+" : "-") + offset;
+
+		return offset;
+	}
+
 	@Test
 	public void format_WhenUsingDate_ShouldFormatCorrectly() {
 		String pattern = "{0,date,yyyy-MM-dd HH:mm:ssZ}";
@@ -77,43 +91,14 @@ public class MessageFormatSupportingAnyTemporalAccessorUnitTests {
 	}
 
 	@Test
-	public void format_WhenUsingZonedDateTime_ShouldFormatCorrectly() {
-		String pattern = "{0,date,yyyy-MM-dd HH:mm:ssZ}";
-		ZonedDateTime date = ZonedDateTime
-				.of(2024, 5, 1, 1, 0, 0, 0, ZoneId.of("America/New_York"));
+	public void format_WhenUsingLocalDate_ShouldFormatCorrectly() {
+		String pattern = "{0,date,yyyy-MM-dd}";
+		LocalDate date = LocalDate.of(2024, 5, 01);
 		Object[] arguments = new Object[]{date};
-		String expected = "2024-05-01 01:00:00-0400";
+		String expected = "2024-05-01";
 		Locale locale = Locale.getDefault();
 		MessageFormatSupportingTimePackage messageFormatToTest = MessageFormatSupportingTimePackage
 				.of(pattern, locale);
-		((SimpleDateFormat) messageFormatToTest.getFormats()[0])
-				.setTimeZone(
-						TimeZone.getTimeZone(ZoneId.of("America/New_York")));
-
-		String actual = messageFormatToTest.format(arguments);
-
-		assertThat(actual).isEqualTo(expected);
-	}
-
-	@Test
-	public void format_WhenUsingOffsetDateTime_ShouldFormatCorrectly() {
-		String pattern = "{0,date,yyyy-MM-dd HH:mm:ssZ}";
-		OffsetDateTime date = OffsetDateTime
-				.of(2024, 5, 1, 1, 0, 0, 0, ZoneOffset.ofHours(5));
-		Object[] arguments = new Object[]{date};
-		String expected = "2024-05-01 01:00:00+0500";
-		Locale locale = Locale.getDefault();
-		MessageFormatSupportingTimePackage messageFormatToTest = MessageFormatSupportingTimePackage
-				.of(pattern, locale);
-		((SimpleDateFormat) messageFormatToTest.getFormats()[0])
-				.setTimeZone(
-						TimeZone
-								.getTimeZone(
-										ZoneId
-												.of(
-														ZoneOffset
-																.ofHours(5)
-																.getId())));
 
 		String actual = messageFormatToTest.format(arguments);
 
@@ -152,31 +137,46 @@ public class MessageFormatSupportingAnyTemporalAccessorUnitTests {
 	}
 
 	@Test
-	public void format_WhenUsingLocalDate_ShouldFormatCorrectly() {
-		String pattern = "{0,date,yyyy-MM-dd}";
-		LocalDate date = LocalDate.of(2024, 5, 01);
+	public void format_WhenUsingOffsetDateTime_ShouldFormatCorrectly() {
+		String pattern = "{0,date,yyyy-MM-dd HH:mm:ssZ}";
+		OffsetDateTime date = OffsetDateTime
+				.of(2024, 5, 1, 1, 0, 0, 0, ZoneOffset.ofHours(5));
 		Object[] arguments = new Object[]{date};
-		String expected = "2024-05-01";
+		String expected = "2024-05-01 01:00:00+0500";
 		Locale locale = Locale.getDefault();
 		MessageFormatSupportingTimePackage messageFormatToTest = MessageFormatSupportingTimePackage
 				.of(pattern, locale);
+		((SimpleDateFormat) messageFormatToTest.getFormats()[0])
+				.setTimeZone(
+						TimeZone
+								.getTimeZone(
+										ZoneId
+												.of(
+														ZoneOffset
+																.ofHours(5)
+																.getId())));
 
 		String actual = messageFormatToTest.format(arguments);
 
 		assertThat(actual).isEqualTo(expected);
 	}
 
-	private static String getTimezoneOffset(TimeZone tz) {
-		Calendar cal = GregorianCalendar.getInstance(tz);
-		int offsetInMillis = tz.getOffset(cal.getTimeInMillis());
+	@Test
+	public void format_WhenUsingZonedDateTime_ShouldFormatCorrectly() {
+		String pattern = "{0,date,yyyy-MM-dd HH:mm:ssZ}";
+		ZonedDateTime date = ZonedDateTime
+				.of(2024, 5, 1, 1, 0, 0, 0, ZoneId.of("America/New_York"));
+		Object[] arguments = new Object[]{date};
+		String expected = "2024-05-01 01:00:00-0400";
+		Locale locale = Locale.getDefault();
+		MessageFormatSupportingTimePackage messageFormatToTest = MessageFormatSupportingTimePackage
+				.of(pattern, locale);
+		((SimpleDateFormat) messageFormatToTest.getFormats()[0])
+				.setTimeZone(
+						TimeZone.getTimeZone(ZoneId.of("America/New_York")));
 
-		String offset = String
-				.format(
-						"%02d%02d",
-						Math.abs(offsetInMillis / 3600000),
-						Math.abs((offsetInMillis / 60000) % 60));
-		offset = (offsetInMillis >= 0 ? "+" : "-") + offset;
+		String actual = messageFormatToTest.format(arguments);
 
-		return offset;
+		assertThat(actual).isEqualTo(expected);
 	}
 }

@@ -36,7 +36,7 @@ public class User extends Entity<UserId> implements Cloneable<User> {
 		return createdUser;
 	}
 	private Address address;
-	private Collection<BookId> borrowedBookIds;
+	private final Collection<BookId> borrowedBookIds;
 	private String name;
 	private Optional<String> phoneNumber;
 
@@ -58,6 +58,41 @@ public class User extends Entity<UserId> implements Cloneable<User> {
 		if (borrowedBookIds.contains(bookId))
 			throw new BookWasAlreadyBorrowedByTheUserDomainEvent(this, bookId);
 		borrowedBookIds.add(bookId);
+	}
+
+	public void changeAddress(Address address) {
+		Objects.requireNonNull(address);
+		Address previousAddress = this.address;
+		Address currentAddress = address;
+		this.address = address;
+		this
+				.registerDomainEvent(
+						new UserChangedAddressDomainEvent(
+								this,
+								previousAddress,
+								currentAddress));
+	}
+
+	public void changePhoneNumber(String phoneNumber) {
+		Objects.requireNonNull(phoneNumber);
+		Optional<String> previousPhoneNumber = this.phoneNumber;
+		String currentPhoneNumber = phoneNumber;
+		this.phoneNumber = Optional.of(phoneNumber);
+
+		previousPhoneNumber.ifPresentOrElse(previousPhoneNumberValue -> {
+			this
+					.registerDomainEvent(
+							new UserChangedPhoneNumberDomainEvent(
+									this,
+									previousPhoneNumberValue,
+									currentPhoneNumber));
+		}, () -> {
+			this
+					.registerDomainEvent(
+							new UserSpecifiedPhoneNumberDomainEvent(
+									this,
+									currentPhoneNumber));
+		});
 	}
 
 	@Override
@@ -103,40 +138,5 @@ public class User extends Entity<UserId> implements Cloneable<User> {
 		if (!borrowedBookIds.contains(bookId))
 			throw new BookWasNotBorrowedByTheUserDomainEvent(this, bookId);
 		borrowedBookIds.remove(bookId);
-	}
-
-	public void changeAddress(Address address) {
-		Objects.requireNonNull(address);
-		Address previousAddress = this.address;
-		Address currentAddress = address;
-		this.address = address;
-		this
-				.registerDomainEvent(
-						new UserChangedAddressDomainEvent(
-								this,
-								previousAddress,
-								currentAddress));
-	}
-
-	public void changePhoneNumber(String phoneNumber) {
-		Objects.requireNonNull(phoneNumber);
-		Optional<String> previousPhoneNumber = this.phoneNumber;
-		String currentPhoneNumber = phoneNumber;
-		this.phoneNumber = Optional.of(phoneNumber);
-
-		previousPhoneNumber.ifPresentOrElse(previousPhoneNumberValue -> {
-			this
-					.registerDomainEvent(
-							new UserChangedPhoneNumberDomainEvent(
-									this,
-									previousPhoneNumberValue,
-									currentPhoneNumber));
-		}, () -> {
-			this
-					.registerDomainEvent(
-							new UserSpecifiedPhoneNumberDomainEvent(
-									this,
-									currentPhoneNumber));
-		});
 	}
 }

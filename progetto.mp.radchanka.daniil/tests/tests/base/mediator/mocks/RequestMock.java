@@ -1,6 +1,6 @@
 package tests.base.mediator.mocks;
 
-import base.mediator.Request;
+import base.mediator.request.Request;
 
 public class RequestMock implements Request<Integer> {
 }

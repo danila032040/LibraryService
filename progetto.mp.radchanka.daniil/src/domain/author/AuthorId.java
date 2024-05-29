@@ -1,37 +1,29 @@
 package domain.author;
 
-import java.util.Objects;
+import java.util.Iterator;
+import java.util.List;
 
 import base.cloneable.Cloneable;
+import base.ddd.ValueObject;
 
-public class AuthorId implements Cloneable<AuthorId> {
-	private int id;
+public class AuthorId extends ValueObject implements Cloneable<AuthorId> {
+	private final int id;
 
 	public AuthorId(int id) {
 		this.id = id;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof AuthorId))
-			return false;
-		AuthorId other = (AuthorId) obj;
-		return id == other.id;
+	public AuthorId createClone() {
+		return new AuthorId(this.getId());
+	}
+
+	@Override
+	public Iterator<Object> getEqualityComponentsIterator() {
+		return List.<Object>of(id).iterator();
 	}
 
 	public int getId() {
 		return id;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public AuthorId createClone() {
-		return new AuthorId(this.getId());
 	}
 }

@@ -4,9 +4,8 @@ import base.ddd.DomainEvent;
 import domain.user.User;
 
 public class UserSpecifiedPhoneNumberDomainEvent implements DomainEvent {
-
-	private User user;
-	private String specifiedPhoneNumber;
+	private final User user;
+	private final String specifiedPhoneNumber;
 
 	public UserSpecifiedPhoneNumberDomainEvent(User user,
 			String specifiedPhoneNumber) {
@@ -14,11 +13,11 @@ public class UserSpecifiedPhoneNumberDomainEvent implements DomainEvent {
 		this.specifiedPhoneNumber = specifiedPhoneNumber;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
 	public String getSpecifiedPhoneNumber() {
 		return specifiedPhoneNumber;
+	}
+
+	public User getUser() {
+		return user;
 	}
 }

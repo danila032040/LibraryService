@@ -8,8 +8,8 @@ import java.util.Objects;
 import base.utils.IteratorUtils;
 
 public abstract class Entity<TId> {
-	private Deque<DomainEvent> domainEvents;
-	private TId id;
+	private final Deque<DomainEvent> domainEvents;
+	private final TId id;
 
 	public Entity(TId id) {
 		this.id = id;

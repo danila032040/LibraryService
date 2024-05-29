@@ -4,8 +4,7 @@ import base.ddd.DomainEvent;
 import domain.user.User;
 
 public class UserCreatedDomainEvent implements DomainEvent {
-
-	private User user;
+	private final User user;
 
 	public UserCreatedDomainEvent(User user) {
 		this.user = user;
@@ -15,5 +14,4 @@ public class UserCreatedDomainEvent implements DomainEvent {
 	public User getUser() {
 		return user;
 	}
-
 }

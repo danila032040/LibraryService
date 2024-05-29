@@ -12,7 +12,8 @@ import domain.library.LibraryRepository;
 public class LibraryRepositoryImpl
 		extends
 			InMemoryRepository<Library, LibraryId>
-implements LibraryRepository{
+		implements
+			LibraryRepository {
 
 	public LibraryRepositoryImpl(Collection<Library> storage,
 			Supplier<Collection<Library>> resultCollectionFactory,

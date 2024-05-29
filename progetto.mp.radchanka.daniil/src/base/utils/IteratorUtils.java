@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 
-public class IteratorUtils {
-	private IteratorUtils() {
-
-	}
-
+public final class IteratorUtils {
 	public static <T> boolean elementsEqual(Iterator<T> a, Iterator<T> b) {
 		while (a.hasNext() && b.hasNext()) {
 			if (!Objects.equals(a.next(), b.next())) {
@@ -22,5 +18,9 @@ public class IteratorUtils {
 		ArrayList<T> list = new ArrayList<>();
 		iterator.forEachRemaining(list::add);
 		return list;
+	}
+
+	private IteratorUtils() {
+
 	}
 }

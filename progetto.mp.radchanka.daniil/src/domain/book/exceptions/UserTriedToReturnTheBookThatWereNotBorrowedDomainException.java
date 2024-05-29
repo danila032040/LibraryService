@@ -3,10 +3,12 @@ package domain.book.exceptions;
 import domain.book.Book;
 import domain.user.UserId;
 
-public class UserTriedToReturnTheBookThatWereNotBorrowedDomainException extends Exception {
+public class UserTriedToReturnTheBookThatWereNotBorrowedDomainException
+		extends
+			Exception {
 	private static final long serialVersionUID = 1L;
-	private Book book;
-	private UserId userIdThatTriedToReturnTheBook;
+	private final Book book;
+	private final UserId userIdThatTriedToReturnTheBook;
 
 	public UserTriedToReturnTheBookThatWereNotBorrowedDomainException(Book book,
 			UserId userIdThatHadTriedToReturnTheBook) {

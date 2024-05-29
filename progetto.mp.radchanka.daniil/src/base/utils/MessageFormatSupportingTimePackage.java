@@ -17,9 +17,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
-import java.util.stream.Stream;
 
 import base.utils.converters.Converter;
 import base.utils.converters.chain.ConverterChain;
@@ -29,7 +26,18 @@ public class MessageFormatSupportingTimePackage extends Format {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static MessageFormatSupportingTimePackage of(
+			MessageFormat messageFormat) {
+		return new MessageFormatSupportingTimePackage(messageFormat);
+	}
+	public static MessageFormatSupportingTimePackage of(
+			String pattern,
+			Locale locale) {
+		return of(new MessageFormat(pattern, locale));
+	}
+
 	private MessageFormat messageFormat;
+
 	private Converter<Object, Object> objectToDateIfItIsFromTimePackageOtherwiseToTheSameObjectConverter;
 
 	private MessageFormatSupportingTimePackage(MessageFormat messageFormat) {
@@ -72,17 +80,6 @@ public class MessageFormatSupportingTimePackage extends Format {
 				.buildConverter();
 	}
 
-	public static MessageFormatSupportingTimePackage of(
-			MessageFormat messageFormat) {
-		return new MessageFormatSupportingTimePackage(messageFormat);
-	}
-
-	public static MessageFormatSupportingTimePackage of(
-			String pattern,
-			Locale locale) {
-		return of(new MessageFormat(pattern, locale));
-	}
-
 	public String format(Object... arguments) {
 		Format[] formats = messageFormat.getFormats();
 		for (int i = 0; i < formats.length; ++i) {
@@ -118,15 +115,6 @@ public class MessageFormatSupportingTimePackage extends Format {
 								.toArray());
 	}
 
-	public Format[] getFormats() {
-		return messageFormat.getFormats();
-	}
-
-	private Object convertToDateIfItIsFromTimePackage(Object obj) {
-		return objectToDateIfItIsFromTimePackageOtherwiseToTheSameObjectConverter
-				.convert(obj);
-	}
-
 	@Override
 	public StringBuffer format(
 			Object obj,
@@ -135,8 +123,17 @@ public class MessageFormatSupportingTimePackage extends Format {
 		return messageFormat.format(obj, toAppendTo, pos);
 	}
 
+	public Format[] getFormats() {
+		return messageFormat.getFormats();
+	}
+
 	@Override
 	public Object parseObject(String source, ParsePosition pos) {
 		return messageFormat.parseObject(source, pos);
+	}
+
+	private Object convertToDateIfItIsFromTimePackage(Object obj) {
+		return objectToDateIfItIsFromTimePackageOtherwiseToTheSameObjectConverter
+				.convert(obj);
 	}
 }

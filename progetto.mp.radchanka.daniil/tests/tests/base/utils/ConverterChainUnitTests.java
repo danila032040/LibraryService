@@ -18,44 +18,6 @@ import base.utils.converters.chain.ConverterChainElementImpl;
 
 public class ConverterChainUnitTests {
 	@Test
-	public void withBaseConverter_WhenConverterIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> ConverterChain.withBaseConverter(null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void startWith_WhenConverterChainElementIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> ConverterChain
-				.withBaseConverter((obj) -> obj)
-				.startWith(null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void startWith_WhenPredicateIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> ConverterChain
-				.withBaseConverter((obj) -> obj)
-				.startWith(null, (obj) -> obj);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void startWith_WhenConverterIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> ConverterChain
-				.withBaseConverter((obj) -> obj)
-				.startWith(String.class::isInstance, null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
 	public void continueWith_WhenConverterChainElementIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> ConverterChain
 				.withBaseConverter((obj) -> obj)
@@ -67,22 +29,22 @@ public class ConverterChainUnitTests {
 	}
 
 	@Test
-	public void continueWith_WhenPredicateIsNull_ShouldThrowNullPointerException() {
+	public void continueWith_WhenConverterIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> ConverterChain
 				.withBaseConverter((obj) -> obj)
 				.startWith(String.class::isInstance, obj -> obj)
-				.continueWith(null, obj -> obj);
+				.continueWith(String.class::isInstance, null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
 	}
 
 	@Test
-	public void continueWith_WhenConverterIsNull_ShouldThrowNullPointerException() {
+	public void continueWith_WhenPredicateIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> ConverterChain
 				.withBaseConverter((obj) -> obj)
 				.startWith(String.class::isInstance, obj -> obj)
-				.continueWith(String.class::isInstance, null);
+				.continueWith(null, obj -> obj);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
@@ -105,7 +67,8 @@ public class ConverterChainUnitTests {
 										String.class::isInstance,
 										obj -> (String) obj));
 		String expectedBaseConverterResult = "myResult";
-		Converter<Object, String> baseConverter = (obj) -> expectedBaseConverterResult;
+		Converter<Object, String> baseConverter = (
+				obj) -> expectedBaseConverterResult;
 		ConverterChain
 				.withBaseConverter(baseConverter)
 				.startWith(expectedChainElements.get(0))
@@ -125,5 +88,43 @@ public class ConverterChainUnitTests {
 				.hasSameElementsAs(expectedChainElements);
 		assertThat(actualChain.get(3).convert("asd"))
 				.isSameAs(expectedBaseConverterResult);
+	}
+
+	@Test
+	public void startWith_WhenConverterChainElementIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> ConverterChain
+				.withBaseConverter((obj) -> obj)
+				.startWith(null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void startWith_WhenConverterIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> ConverterChain
+				.withBaseConverter((obj) -> obj)
+				.startWith(String.class::isInstance, null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void startWith_WhenPredicateIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> ConverterChain
+				.withBaseConverter((obj) -> obj)
+				.startWith(null, (obj) -> obj);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
+
+	@Test
+	public void withBaseConverter_WhenConverterIsNull_ShouldThrowNullPointerException() {
+		ThrowingCallable actual = () -> ConverterChain.withBaseConverter(null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
 	}
 }

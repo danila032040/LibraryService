@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 public final class LazyLoad<T> {
+	private final Supplier<T> instanceSupplier;
 	private Optional<T> value;
-	private Supplier<T> instanceSupplier;
 
 	public LazyLoad(Supplier<T> instanceSupplier) {
 		this.instanceSupplier = Objects.requireNonNull(instanceSupplier);

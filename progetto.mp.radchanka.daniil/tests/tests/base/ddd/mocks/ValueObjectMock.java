@@ -8,9 +8,9 @@ import base.ddd.ValueObject;
 
 public class ValueObjectMock extends ValueObject {
 
-	private int integerToCompareWith;
-	private Object objectToCompareWith;
-	private String stringToCompareWith;
+	private final int integerToCompareWith;
+	private final Object objectToCompareWith;
+	private final String stringToCompareWith;
 
 	public ValueObjectMock(int integerToCompareWith, Object objectToCompareWith,
 			String stringToCompareWith) {

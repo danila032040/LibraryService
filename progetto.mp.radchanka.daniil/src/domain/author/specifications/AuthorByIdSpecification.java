@@ -5,8 +5,7 @@ import domain.author.Author;
 import domain.author.AuthorId;
 
 public class AuthorByIdSpecification implements Specification<Author> {
-
-	private AuthorId authorId;
+	private final AuthorId authorId;
 
 	public AuthorByIdSpecification(AuthorId authorId) {
 		this.authorId = authorId;

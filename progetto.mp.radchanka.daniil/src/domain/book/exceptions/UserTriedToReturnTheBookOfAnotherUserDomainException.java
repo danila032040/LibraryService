@@ -1,17 +1,19 @@
 package domain.book.exceptions;
 
 import domain.book.Book;
-import domain.book.BookId;
 import domain.user.UserId;
 
-public class UserTriedToReturnTheBookOfAnotherUserDomainException extends Exception {
+public class UserTriedToReturnTheBookOfAnotherUserDomainException
+		extends
+			Exception {
 
 	private static final long serialVersionUID = 1L;
-	private Book book;
-	private UserId userThatHadBorrowedTheBook;
-	private UserId userIdThatHadTriedToReturnTheBook;
+	private final Book book;
+	private final UserId userIdThatHadTriedToReturnTheBook;
+	private final UserId userThatHadBorrowedTheBook;
 
-	public UserTriedToReturnTheBookOfAnotherUserDomainException(Book book, UserId userThatHadReservedTheBook,
+	public UserTriedToReturnTheBookOfAnotherUserDomainException(Book book,
+			UserId userThatHadReservedTheBook,
 			UserId userIdThatHadTriedToReturnTheBook) {
 		this.book = book;
 		this.userThatHadBorrowedTheBook = userThatHadReservedTheBook;
@@ -22,11 +24,11 @@ public class UserTriedToReturnTheBookOfAnotherUserDomainException extends Except
 		return book;
 	}
 
-	public UserId getUserThatHadBorrowedTheBook() {
-		return userThatHadBorrowedTheBook;
-	}
-
 	public UserId getUserIdThatHadTriedToReturnTheBook() {
 		return userIdThatHadTriedToReturnTheBook;
+	}
+
+	public UserId getUserThatHadBorrowedTheBook() {
+		return userThatHadBorrowedTheBook;
 	}
 }

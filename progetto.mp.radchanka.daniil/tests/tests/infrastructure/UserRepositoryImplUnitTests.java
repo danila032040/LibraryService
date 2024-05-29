@@ -12,11 +12,11 @@ import infrastructure.user.repositories.UserRepositoryImpl;
 
 public class UserRepositoryImplUnitTests {
 	@Test
-	public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
+	public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> new UserRepositoryImpl(
-				null,
+				new ArrayList<User>(),
 				ArrayList::new,
-				User::createClone);
+				null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
@@ -34,11 +34,11 @@ public class UserRepositoryImplUnitTests {
 	}
 
 	@Test
-	public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
+	public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
 		ThrowingCallable actual = () -> new UserRepositoryImpl(
-				new ArrayList<User>(),
+				null,
 				ArrayList::new,
-				null);
+				User::createClone);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);

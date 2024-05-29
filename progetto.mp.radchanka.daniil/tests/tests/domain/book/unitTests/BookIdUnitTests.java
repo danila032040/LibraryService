@@ -7,6 +7,14 @@ import org.junit.Test;
 import domain.book.BookId;
 
 public class BookIdUnitTests {
+	@Test
+	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
+		BookId id = new BookId(0);
+
+		BookId actual = id.createClone();
+
+		assertThat(actual).isNotSameAs(id).isEqualTo(id);
+	}
 
 	@Test
 	public void equals_WhenComparedWithTheDifferentClassObject_ShouldBeFalse() {
@@ -18,7 +26,6 @@ public class BookIdUnitTests {
 
 		assertThat(actual).isFalse();
 	}
-
 	@Test
 	public void equals_WhenComparingWithTheSameInstance_ShouldBeTrue() {
 		BookId id = new BookId(1);
@@ -27,6 +34,7 @@ public class BookIdUnitTests {
 
 		assertThat(actual).isTrue();
 	}
+
 	@Test
 	public void equals_WhenIdsAreEqual_ShouldBeTrue() {
 		BookId id1 = new BookId(5);
@@ -67,14 +75,5 @@ public class BookIdUnitTests {
 		int actual2 = id2.hashCode();
 
 		assertThat(actual1).isNotEqualTo(actual2);
-	}
-
-	@Test
-	public void createClone_ShouldReturnEqualButNotTheSameInstance() {
-		BookId id = new BookId(0);
-
-		BookId actual = id.createClone();
-
-		assertThat(actual).isNotSameAs(id).isEqualTo(id);
 	}
 }

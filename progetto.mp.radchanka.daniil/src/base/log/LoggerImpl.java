@@ -3,10 +3,10 @@ package base.log;
 import base.utils.MessageFormatSupportingTimePackage;
 
 public class LoggerImpl implements Logger {
-	private GlobalLogConfiguration logConfiguration;
-	private LogEntryPublisher logEntryPublisher;
+	private final LogConfiguration logConfiguration;
+	private final LogEntryPublisher logEntryPublisher;
 
-	public LoggerImpl(GlobalLogConfiguration globalLogConfiguration,
+	public LoggerImpl(LogConfiguration globalLogConfiguration,
 			LogEntryPublisher logEntryPublisher) {
 		this.logConfiguration = globalLogConfiguration;
 		this.logEntryPublisher = logEntryPublisher;
