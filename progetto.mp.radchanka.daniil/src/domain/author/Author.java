@@ -46,11 +46,11 @@ public class Author extends Entity<AuthorId> implements Cloneable<Author> {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = Objects.requireNonNull(name);
 	}
 
 	public void setSurname(String surname) {
-		this.surname = surname;
+		this.surname = Objects.requireNonNull(surname);
 	}
 
 }

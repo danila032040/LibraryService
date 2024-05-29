@@ -95,4 +95,15 @@ public class LibraryUnitTests {
 
 		assertThat(actual).isNotSameAs(expected).isEqualTo(expected);
 	}
+
+	@Test
+	public void changeAddress_WhenAddressIsNull_ShouldThrowNullPointerException() {
+		Library library = Library
+				.createNewLibrary(new LibraryId(1), new Address());
+
+		ThrowingCallable actual = () -> library.changeAddress(null);
+
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
+	}
 }

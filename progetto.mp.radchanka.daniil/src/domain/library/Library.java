@@ -26,6 +26,7 @@ public class Library extends Entity<LibraryId> implements Cloneable<Library> {
 	}
 
 	public void changeAddress(Address address) {
+		Objects.requireNonNull(address);
 		Address previous = this.address;
 		Address current = address;
 		this.address = address;

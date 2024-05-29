@@ -8,18 +8,18 @@ public class BookReturnedByUserDomainEvent implements DomainEvent {
 	private Book returnedBook;
 	private UserId userIdThatHadReturnedTheBook;
 
-	public BookReturnedByUserDomainEvent(Book borrowedBook,
-			UserId userIdThatHadBorrowedTheBook) {
-		this.returnedBook = borrowedBook;
-		this.userIdThatHadReturnedTheBook = userIdThatHadBorrowedTheBook;
+	public BookReturnedByUserDomainEvent(Book returnedBook,
+			UserId userIdThatHadReturnedTheBook) {
+		this.returnedBook = returnedBook;
+		this.userIdThatHadReturnedTheBook = userIdThatHadReturnedTheBook;
 
 	}
 
-	public Book getBorrowedBook() {
+	public Book getReturnedBook() {
 		return returnedBook;
 	}
 
-	public UserId getUserIdThatHadBorrowedTheBook() {
+	public UserId getUserIdThatHadReturnedTheBook() {
 		return userIdThatHadReturnedTheBook;
 	}
 }

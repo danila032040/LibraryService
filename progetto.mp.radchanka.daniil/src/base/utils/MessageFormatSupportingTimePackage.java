@@ -30,11 +30,11 @@ public class MessageFormatSupportingTimePackage extends Format {
 	 */
 	private static final long serialVersionUID = 1L;
 	private MessageFormat messageFormat;
-	private Converter<Object, Object> objectToDateIfItIsFromTimePackageConverter;
+	private Converter<Object, Object> objectToDateIfItIsFromTimePackageOtherwiseToTheSameObjectConverter;
 
 	private MessageFormatSupportingTimePackage(MessageFormat messageFormat) {
 		this.messageFormat = messageFormat;
-		this.objectToDateIfItIsFromTimePackageConverter = ConverterChain
+		this.objectToDateIfItIsFromTimePackageOtherwiseToTheSameObjectConverter = ConverterChain
 				.withBaseConverter(obj -> obj)
 				.startWith(
 						LocalDate.class::isInstance,
@@ -123,7 +123,8 @@ public class MessageFormatSupportingTimePackage extends Format {
 	}
 
 	private Object convertToDateIfItIsFromTimePackage(Object obj) {
-		return objectToDateIfItIsFromTimePackageConverter.convert(obj);
+		return objectToDateIfItIsFromTimePackageOtherwiseToTheSameObjectConverter
+				.convert(obj);
 	}
 
 	@Override
