@@ -5,11 +5,11 @@ import java.util.Optional;
 public class ErrorOr<T> extends OneOf2<T, String> {
 
 	private ErrorOr(T result) {
-		super(Optional.of(result), Optional.empty(), 0);
+		super(Optional.of(result), Optional.empty());
 	}
 
 	private ErrorOr(String errorMessage) {
-		super(Optional.empty(), Optional.of(errorMessage), 1);
+		super(Optional.empty(), Optional.of(errorMessage));
 	}
 
 	public static <T> ErrorOr<T> fromErrorMessage(String errorMessage) {
