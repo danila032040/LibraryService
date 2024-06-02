@@ -2,6 +2,7 @@ package base.log;
 
 import java.time.LocalDateTime;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class LogConfiguration {
@@ -28,18 +29,18 @@ public class LogConfiguration {
 
 	public void setLocalDateTimeProvider(
 			Supplier<LocalDateTime> localDateTimeProvider) {
-		this.localDateTimeProvider = localDateTimeProvider;
+		this.localDateTimeProvider = Objects.requireNonNull( localDateTimeProvider);
 	}
 
 	public void setLocale(Locale locale) {
-		this.locale = locale;
+		this.locale = Objects.requireNonNull(locale);
 	}
 
 	public void setMinimalLogLevel(LogLevelType minimalLogLevel) {
-		this.minimalLogLevel = minimalLogLevel;
+		this.minimalLogLevel = Objects.requireNonNull(minimalLogLevel);
 	}
 
 	public void setTimeStampFormat(String timeStampFormat) {
-		this.timeStampFormat = timeStampFormat;
+		this.timeStampFormat = Objects.requireNonNull(timeStampFormat);
 	}
 }

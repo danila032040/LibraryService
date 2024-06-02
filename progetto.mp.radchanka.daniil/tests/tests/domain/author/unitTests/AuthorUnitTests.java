@@ -95,4 +95,5 @@ public class AuthorUnitTests {
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
 	}
+	
 }
