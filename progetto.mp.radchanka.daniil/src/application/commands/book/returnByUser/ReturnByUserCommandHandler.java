@@ -1,0 +1,60 @@
+package application.commands.book.returnByUser;
+
+import java.util.Optional;
+
+import application.commands.common.data.AddressCommandData;
+import base.ddd.DomainEventPublisher;
+import base.mediator.request.RequestHandler;
+import base.result.ErrorOr;
+import base.result.Success;
+import base.utils.Mapper;
+import domain.book.Book;
+import domain.book.BookId;
+import domain.book.BookRepository;
+import domain.book.specifications.BookByIdSpecification;
+import domain.common.Address;
+import domain.user.UserId;
+
+public class ReturnByUserCommandHandler
+		implements
+			RequestHandler<ReturnByUserCommand, ErrorOr<Success>> {
+
+	private final BookRepository bookRepository;
+	private final DomainEventPublisher domainEventPublisher;
+
+	public ReturnByUserCommandHandler(BookRepository bookRepository,
+			DomainEventPublisher domainEventPublisher,
+			Mapper<AddressCommandData, Address> addressMapper) {
+		this.bookRepository = bookRepository;
+		this.domainEventPublisher = domainEventPublisher;
+	}
+
+	@Override
+	public ErrorOr<Success> handle(ReturnByUserCommand request) {
+		try {
+			BookId bookId = new BookId(request.getBookId());
+			UserId userId = new UserId(request.getUserId());
+
+			Optional<Book> optionalExistingBook = bookRepository
+					.getFirst(new BookByIdSpecification(bookId));
+
+			if (optionalExistingBook.isEmpty())
+				return ErrorOr
+						.fromErrorMessage(
+								"Book with specified id was not found");
+
+			Book existingBook = optionalExistingBook.orElseThrow();
+
+			existingBook.returnByUser(userId);
+
+			bookRepository.update(existingBook);
+			domainEventPublisher
+					.publishDomainEvents(existingBook.extractAllDomainEvents());
+
+			return ErrorOr
+					.fromResult(Success.from("Successfully returned book"));
+		} catch (Exception exc) {
+			return ErrorOr.fromErrorMessage(exc.getMessage());
+		}
+	}
+}

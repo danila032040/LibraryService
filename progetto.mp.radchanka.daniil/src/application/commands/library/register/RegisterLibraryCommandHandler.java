@@ -1,10 +1,11 @@
 package application.commands.library.register;
 
+import application.commands.common.data.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
+import base.utils.Mapper;
 import domain.common.Address;
-import domain.common.AddressBuilder;
 import domain.library.Library;
 import domain.library.LibraryId;
 import domain.library.LibraryRepository;
@@ -15,17 +16,20 @@ public class RegisterLibraryCommandHandler
 
 	private final LibraryRepository libraryRepository;
 	private final DomainEventPublisher domainEventPublisher;
+	private final Mapper<AddressCommandData, Address> addressMapper;
 
 	public RegisterLibraryCommandHandler(LibraryRepository libraryRepository,
-			DomainEventPublisher domainEventPublisher) {
+			DomainEventPublisher domainEventPublisher,
+			Mapper<AddressCommandData, Address> addressMapper) {
 		this.libraryRepository = libraryRepository;
 		this.domainEventPublisher = domainEventPublisher;
+		this.addressMapper = addressMapper;
 	}
 
 	@Override
 	public ErrorOr<LibraryId> handle(RegisterLibraryCommand request) {
 		try {
-			Address address = BuildAddressFromRequest(request);
+			Address address = addressMapper.map(request.getAddress());
 			Library libraryToRegister = Library
 					.createNewLibrary(
 							libraryRepository.generateNewLibraryId(),
@@ -41,16 +45,5 @@ public class RegisterLibraryCommandHandler
 		} catch (Exception exc) {
 			return ErrorOr.fromErrorMessage(exc.getMessage());
 		}
-	}
-
-	private Address BuildAddressFromRequest(RegisterLibraryCommand request) {
-		AddressBuilder addressBuilder = AddressBuilder.createBuilder();
-		request.getBuilding().ifPresent(addressBuilder::withBuilding);
-		request.getCity().ifPresent(addressBuilder::withCity);
-		request.getCountryRegion().ifPresent(addressBuilder::withCountryRegion);
-		request.getPostalCode().ifPresent(addressBuilder::withPostalCode);
-		request.getStateProvince().ifPresent(addressBuilder::withStateProvince);
-		request.getStreet().ifPresent(addressBuilder::withStreet);
-		return addressBuilder.build();
 	}
 }

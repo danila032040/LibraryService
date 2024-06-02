@@ -2,12 +2,13 @@ package application.commands.library.changeAddress;
 
 import java.util.Optional;
 
+import application.commands.common.data.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
 import base.result.Success;
+import base.utils.Mapper;
 import domain.common.Address;
-import domain.common.AddressBuilder;
 import domain.library.Library;
 import domain.library.LibraryId;
 import domain.library.LibraryRepository;
@@ -19,17 +20,20 @@ public class ChangeAddressCommandHandler
 
 	private final LibraryRepository libraryRepository;
 	private final DomainEventPublisher domainEventPublisher;
+	private final Mapper<AddressCommandData, Address> addressMapper;
 
 	public ChangeAddressCommandHandler(LibraryRepository libraryRepository,
-			DomainEventPublisher domainEventPublisher) {
+			DomainEventPublisher domainEventPublisher,
+			Mapper<AddressCommandData, Address> addressMapper) {
 		this.libraryRepository = libraryRepository;
 		this.domainEventPublisher = domainEventPublisher;
+		this.addressMapper = addressMapper;
 	}
 
 	@Override
 	public ErrorOr<Success> handle(ChangeAddressCommand request) {
 		try {
-			Address newAddress = BuildAddressFromRequest(request);
+			Address newAddress = addressMapper.map(request.getAddress());
 			Optional<Library> optionalExistingLibrary = libraryRepository
 					.getFirst(
 							new LibraryByIdSpecification(
@@ -56,19 +60,6 @@ public class ChangeAddressCommandHandler
 		} catch (Exception exc) {
 			return ErrorOr.fromErrorMessage(exc.getMessage());
 		}
-	}
-
-	private Address BuildAddressFromRequest(ChangeAddressCommand request) {
-		AddressBuilder addressBuilder = AddressBuilder.createBuilder();
-
-		request.getBuilding().ifPresent(addressBuilder::withBuilding);
-		request.getCity().ifPresent(addressBuilder::withCity);
-		request.getCountryRegion().ifPresent(addressBuilder::withCountryRegion);
-		request.getPostalCode().ifPresent(addressBuilder::withPostalCode);
-		request.getStateProvince().ifPresent(addressBuilder::withStateProvince);
-		request.getStreet().ifPresent(addressBuilder::withStreet);
-
-		return addressBuilder.build();
 	}
 
 }
