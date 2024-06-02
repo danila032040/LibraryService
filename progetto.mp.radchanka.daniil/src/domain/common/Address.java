@@ -31,6 +31,7 @@ public class Address extends ValueObject implements Cloneable<Address> {
 		this.stateProvince = Objects.requireNonNull(stateProvince);
 		this.street = Objects.requireNonNull(street);
 	}
+
 	@Override
 	public Address createClone() {
 		return new Address(
