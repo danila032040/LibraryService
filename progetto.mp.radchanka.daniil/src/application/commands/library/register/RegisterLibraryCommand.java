@@ -18,7 +18,6 @@ public class RegisterLibraryCommand implements Request<ErrorOr<LibraryId>> {
 			Optional<String> city, Optional<String> countryRegion,
 			Optional<String> postalCode, Optional<String> stateProvince,
 			Optional<String> street) {
-		super();
 		this.building = building;
 		this.city = city;
 		this.countryRegion = countryRegion;
