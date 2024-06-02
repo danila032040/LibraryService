@@ -42,6 +42,13 @@ public class OneOf2<T0, T1> {
 		this.presentedResultIndex = selectedResultIndexes.get(0);
 	}
 
+	public boolean isT0() {
+		return this.presentedResultIndex == 0;
+	}
+
+	public boolean isT1() {
+		return this.presentedResultIndex == 1;
+	}
 	public void match(
 			Consumer<T0> resultConsumer0,
 			Consumer<T1> resultConsumer1) {
@@ -49,12 +56,5 @@ public class OneOf2<T0, T1> {
 			result0.ifPresent(resultConsumer0);
 		if (isT1())
 			result1.ifPresent(resultConsumer1);
-	}
-
-	private boolean isT0() {
-		return this.presentedResultIndex == 0;
-	}
-	private boolean isT1() {
-		return this.presentedResultIndex == 1;
 	}
 }

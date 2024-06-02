@@ -1,15 +1,17 @@
 package base.result;
 
-import java.util.Optional;
+import java.util.function.Consumer;
 
-public class ErrorOr<T> extends OneOf2<T, Error> {
+public class ErrorOr<T> {
+
+	private final OneOf2<T, Error> oneOf2Result;
 
 	private ErrorOr(T result) {
-		super(Optional.of(result), Optional.empty());
+		oneOf2Result = OneOf2.from0(result);
 	}
 
 	private ErrorOr(String errorMessage) {
-		super(Optional.empty(), Optional.of(Error.from(errorMessage)));
+		oneOf2Result = OneOf2.<T, Error>from1(Error.from(errorMessage));
 	}
 
 	public static <T> ErrorOr<T> fromErrorMessage(String errorMessage) {
@@ -18,5 +20,11 @@ public class ErrorOr<T> extends OneOf2<T, Error> {
 
 	public static <T> ErrorOr<T> fromResult(T result) {
 		return new ErrorOr<T>(result);
+	}
+
+	public void match(
+			Consumer<T> resultConsumer,
+			Consumer<Error> errorConsumer) {
+		oneOf2Result.match(resultConsumer, errorConsumer);
 	}
 }
