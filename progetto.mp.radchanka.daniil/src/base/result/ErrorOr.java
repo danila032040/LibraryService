@@ -24,7 +24,7 @@ public class ErrorOr<T> {
 
 	public void match(
 			Consumer<T> resultConsumer,
-			Consumer<Error> errorConsumer) {
-		oneOf2Result.match(resultConsumer, errorConsumer);
+			Consumer<Error> errorMessageConsumer) {
+		oneOf2Result.match(resultConsumer, errorMessageConsumer);
 	}
 }

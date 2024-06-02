@@ -1,6 +1,7 @@
 package base.result;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -52,6 +53,8 @@ public class OneOf2<T0, T1> {
 	public void match(
 			Consumer<T0> resultConsumer0,
 			Consumer<T1> resultConsumer1) {
+		Objects.requireNonNull(resultConsumer0);
+		Objects.requireNonNull(resultConsumer1);
 		if (isT0())
 			result0.ifPresent(resultConsumer0);
 		if (isT1())

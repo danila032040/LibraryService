@@ -10,6 +10,15 @@ public class AddressBuilderImpl implements AddressBuilder {
 	private Optional<String> stateProvince;
 	private Optional<String> street;
 
+	public AddressBuilderImpl() {
+		this.building = Optional.empty();
+		this.city = Optional.empty();
+		this.countryRegion = Optional.empty();
+		this.postalCode = Optional.empty();
+		this.stateProvince = Optional.empty();
+		this.street = Optional.empty();
+	}
+
 	@Override
 	public AddressBuilder withBuilding(String building) {
 		this.building = Optional.of(building);
@@ -18,43 +27,37 @@ public class AddressBuilderImpl implements AddressBuilder {
 
 	@Override
 	public AddressBuilder withCity(String city) {
-		// TODO Auto-generated method stub
-		return null;
+		this.city = Optional.of(city);
+		return this;
 	}
 
 	@Override
 	public AddressBuilder withCountryRegion(String countryRegion) {
-		// TODO Auto-generated method stub
-		return null;
+		this.countryRegion = Optional.of(countryRegion);
+		return this;
 	}
 
 	@Override
 	public AddressBuilder withPostalCode(String postalCode) {
-		// TODO Auto-generated method stub
-		return null;
+		this.postalCode = Optional.of(postalCode);
+		return this;
 	}
 
 	@Override
 	public AddressBuilder withStateProvince(String stateProvince) {
-		// TODO Auto-generated method stub
-		return null;
+		this.stateProvince = Optional.of(stateProvince);
+		return this;
 	}
 
 	@Override
 	public AddressBuilder withStreet(String street) {
-		// TODO Auto-generated method stub
-		return null;
+		this.street = Optional.of(street);
+		return this;
 	}
 
 	@Override
 	public Address build() {
-		return new Address(
-				building,
-				city,
-				countryRegion,
-				postalCode,
-				stateProvince,
-				street);
+		return new Address(building, city, countryRegion, postalCode, stateProvince, street);
 	}
 
 }
