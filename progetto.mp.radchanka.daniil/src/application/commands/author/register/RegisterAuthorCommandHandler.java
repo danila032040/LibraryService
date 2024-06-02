@@ -1,5 +1,6 @@
 package application.commands.author.register;
 
+import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
 import base.result.ValidationResult;
@@ -14,12 +15,15 @@ public class RegisterAuthorCommandHandler
 
 	private final Validator<RegisterAuthorCommand> validator;
 	private final AuthorRepository authorRepository;
+	private final DomainEventPublisher domainEventPublisher;
 
 	public RegisterAuthorCommandHandler(
 			Validator<RegisterAuthorCommand> validator,
-			AuthorRepository authorRepository) {
+			AuthorRepository authorRepository,
+			DomainEventPublisher domainEventPublisher) {
 		this.validator = validator;
 		this.authorRepository = authorRepository;
+		this.domainEventPublisher = domainEventPublisher;
 	}
 
 	@Override
@@ -44,6 +48,9 @@ public class RegisterAuthorCommandHandler
 
 			authorRepository.add(authorToRegister);
 
+			domainEventPublisher
+					.publishDomainEvents(
+							authorToRegister.extractAllDomainEvents());
 			return ErrorOr.fromResult(authorToRegister.getId());
 		} catch (Exception exc) {
 			return ErrorOr.fromErrorMessage(exc.getMessage());
