@@ -1,6 +1,6 @@
 package application.commands.library.register;
 
-import application.commands.common.data.AddressCommandData;
+import application.commands.common.address.AddressCommandData;
 import base.mediator.request.Request;
 import base.result.ErrorOr;
 import domain.library.LibraryId;

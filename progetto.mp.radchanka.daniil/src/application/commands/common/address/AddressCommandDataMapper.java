@@ -1,6 +1,5 @@
-package application.commands.common.mapper;
+package application.commands.common.address;
 
-import application.commands.common.data.AddressCommandData;
 import base.utils.Mapper;
 import domain.common.Address;
 import domain.common.AddressBuilder;

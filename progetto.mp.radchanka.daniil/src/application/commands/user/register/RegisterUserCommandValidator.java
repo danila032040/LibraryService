@@ -1,6 +1,6 @@
 package application.commands.user.register;
 
-import application.commands.common.data.AddressCommandData;
+import application.commands.common.address.AddressCommandData;
 import base.result.Error;
 import base.result.ValidationResult;
 import base.utils.Validator;

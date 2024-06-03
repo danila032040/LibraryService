@@ -1,4 +1,4 @@
-package application.commands.common.data;
+package application.commands.common.address;
 
 import java.util.Optional;
 import java.util.stream.Stream;

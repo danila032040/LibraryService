@@ -2,7 +2,7 @@ package application.commands.book.borrowByUser;
 
 import java.util.Optional;
 
-import application.commands.common.data.AddressCommandData;
+import application.commands.common.address.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;

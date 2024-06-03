@@ -2,7 +2,7 @@ package application.commands.user.update;
 
 import java.util.Optional;
 
-import application.commands.common.data.AddressCommandData;
+import application.commands.common.address.AddressCommandData;
 import base.mediator.request.Request;
 import base.result.ErrorOr;
 import base.result.Success;

@@ -2,7 +2,7 @@ package application.commands.user.register;
 
 import java.util.Optional;
 
-import application.commands.common.data.AddressCommandData;
+import application.commands.common.address.AddressCommandData;
 import base.mediator.request.Request;
 import base.result.ErrorOr;
 import domain.user.UserId;
