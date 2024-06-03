@@ -1,6 +1,6 @@
-package base.utils.converters.chain;
+package base.converters.chain;
 
-import base.utils.converters.Converter;
+import base.converters.Converter;
 
 public interface ConverterChainBuilder<TFrom, TTo> {
 	public Converter<TFrom, TTo> buildConverter();

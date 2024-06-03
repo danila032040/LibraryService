@@ -19,8 +19,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.stream.IntStream;
 
-import base.utils.converters.Converter;
-import base.utils.converters.chain.ConverterChain;
+import base.converters.Converter;
+import base.converters.chain.ConverterChain;
 
 public class MessageFormatSupportingTimePackage extends Format {
 	private static final long serialVersionUID = 1L;

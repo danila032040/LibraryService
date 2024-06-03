@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
-import base.utils.converters.chain.ConverterChainElement;
-import base.utils.converters.chain.ConverterChainElementImpl;
+import base.converters.chain.ConverterChainElement;
+import base.converters.chain.ConverterChainElementImpl;
 
 public class ConverterChainElementImplUnitTests {
 

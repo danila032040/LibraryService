@@ -11,10 +11,10 @@ import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.assertj.core.util.Lists;
 import org.junit.Test;
 
-import base.utils.converters.Converter;
-import base.utils.converters.chain.ConverterChain;
-import base.utils.converters.chain.ConverterChainElement;
-import base.utils.converters.chain.ConverterChainElementImpl;
+import base.converters.Converter;
+import base.converters.chain.ConverterChain;
+import base.converters.chain.ConverterChainElement;
+import base.converters.chain.ConverterChainElementImpl;
 
 public class ConverterChainUnitTests {
 	@Test
