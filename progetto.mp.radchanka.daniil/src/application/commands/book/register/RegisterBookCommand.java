@@ -13,9 +13,8 @@ public class RegisterBookCommand implements Request<ErrorOr<BookId>> {
 	private final Optional<Integer> authorId;
 	private final Optional<Integer> libraryId;
 
-	public RegisterBookCommand(String name, String genre, int publicationYear,
-			Optional<Integer> authorId, Optional<Integer> libraryId) {
-		super();
+	public RegisterBookCommand(String name, String genre, int publicationYear, Optional<Integer> authorId,
+			Optional<Integer> libraryId) {
 		this.name = name;
 		this.genre = genre;
 		this.publicationYear = publicationYear;
@@ -26,15 +25,19 @@ public class RegisterBookCommand implements Request<ErrorOr<BookId>> {
 	public String getName() {
 		return name;
 	}
+
 	public String getGenre() {
 		return genre;
 	}
+
 	public int getPublicationYear() {
 		return publicationYear;
 	}
+
 	public Optional<Integer> getAuthorId() {
 		return authorId;
 	}
+
 	public Optional<Integer> getLibraryId() {
 		return libraryId;
 	}

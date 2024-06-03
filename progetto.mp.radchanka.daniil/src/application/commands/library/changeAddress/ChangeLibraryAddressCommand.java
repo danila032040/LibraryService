@@ -5,11 +5,11 @@ import base.mediator.request.Request;
 import base.result.ErrorOr;
 import base.result.Success;
 
-public class ChangeAddressCommand implements Request<ErrorOr<Success>> {
+public class ChangeLibraryAddressCommand implements Request<ErrorOr<Success>> {
 	private final int libraryId;
 	private final AddressCommandData address;
 
-	public ChangeAddressCommand(int libraryId, AddressCommandData address) {
+	public ChangeLibraryAddressCommand(int libraryId, AddressCommandData address) {
 		this.libraryId = libraryId;
 		this.address = address;
 	}
