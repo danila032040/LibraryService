@@ -17,14 +17,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.stream.IntStream;
 
 import base.utils.converters.Converter;
 import base.utils.converters.chain.ConverterChain;
 
 public class MessageFormatSupportingTimePackage extends Format {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	public static MessageFormatSupportingTimePackage of(
 			MessageFormat messageFormat) {
@@ -68,12 +66,6 @@ public class MessageFormatSupportingTimePackage extends Format {
 												.atZone(ZoneId.systemDefault())
 												.toInstant()))
 				.continueWith(
-						ZonedDateTime.class::isInstance,
-						(obj) -> Date.from(((ZonedDateTime) obj).toInstant()))
-				.continueWith(
-						OffsetDateTime.class::isInstance,
-						(obj) -> Date.from(((OffsetDateTime) obj).toInstant()))
-				.continueWith(
 						TemporalAccessor.class::isInstance,
 						(obj) -> Date
 								.from(Instant.from((TemporalAccessor) obj)))
@@ -81,32 +73,7 @@ public class MessageFormatSupportingTimePackage extends Format {
 	}
 
 	public String format(Object... arguments) {
-		Format[] formats = messageFormat.getFormats();
-		for (int i = 0; i < formats.length; ++i) {
-			if (formats[i] instanceof SimpleDateFormat) {
-				SimpleDateFormat simpleDateFormat = (SimpleDateFormat) formats[i];
-				if (arguments[i] instanceof ZonedDateTime) {
-					ZonedDateTime zonedDateTime = (ZonedDateTime) arguments[i];
-					simpleDateFormat
-							.setTimeZone(
-									TimeZone
-											.getTimeZone(
-													zonedDateTime.getZone()));
-				}
-				if (arguments[i] instanceof OffsetDateTime) {
-					OffsetDateTime offsetDateTime = (OffsetDateTime) arguments[i];
-					simpleDateFormat
-							.setTimeZone(
-									TimeZone
-											.getTimeZone(
-													ZoneId
-															.of(
-																	offsetDateTime
-																			.getOffset()
-																			.getId())));
-				}
-			}
-		}
+		adjustTimeZoneOfFormatsUsingArguments(arguments);
 		return messageFormat
 				.format(
 						Arrays
@@ -114,7 +81,6 @@ public class MessageFormatSupportingTimePackage extends Format {
 								.map(this::convertToDateIfItIsFromTimePackage)
 								.toArray());
 	}
-
 	@Override
 	public StringBuffer format(
 			Object obj,
@@ -130,6 +96,45 @@ public class MessageFormatSupportingTimePackage extends Format {
 	@Override
 	public Object parseObject(String source, ParsePosition pos) {
 		return messageFormat.parseObject(source, pos);
+	}
+
+	private void adjustTimeZoneIfArgumentContainsTimeZone(
+			SimpleDateFormat simpleDateTimeFormat,
+			Object argument) {
+		if (argument instanceof ZonedDateTime) {
+			ZonedDateTime zonedDateTime = (ZonedDateTime) argument;
+			simpleDateTimeFormat
+					.setTimeZone(TimeZone.getTimeZone(zonedDateTime.getZone()));
+		}
+		if (argument instanceof OffsetDateTime) {
+			OffsetDateTime offsetDateTime = (OffsetDateTime) argument;
+			simpleDateTimeFormat
+					.setTimeZone(
+							TimeZone
+									.getTimeZone(
+											ZoneId
+													.of(
+															offsetDateTime
+																	.getOffset()
+																	.getId())));
+		}
+	}
+
+	private void adjustTimeZoneOfFormatsUsingArguments(Object... arguments) {
+		Format[] formats = messageFormat.getFormats();
+		IntStream
+				.range(0, formats.length)
+				.filter(index -> formats[index] instanceof SimpleDateFormat)
+				.boxed()
+				.map(
+						index -> Pair
+								.of(
+										(SimpleDateFormat) formats[index],
+										arguments[index]))
+				.forEach(
+						pair -> adjustTimeZoneIfArgumentContainsTimeZone(
+								pair.getT0(),
+								pair.getT1()));
 	}
 
 	private Object convertToDateIfItIsFromTimePackage(Object obj) {
