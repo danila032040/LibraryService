@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import base.specification.Specification;
 
-public final class AndSpecification<T> extends CompositeSpecification<T> {
+public final class AndSpecification<T> implements CompositeSpecification<T> {
 	private final Specification<T> _leftSpecification;
 	private final Specification<T> _rightSpecification;
 
