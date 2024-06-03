@@ -14,18 +14,23 @@ import domain.book.BookRepository;
 import domain.book.specifications.BookByIdSpecification;
 import domain.common.Address;
 import domain.user.UserId;
+import domain.user.UserRepository;
+import domain.user.specifications.UserByIdSpecification;
 
 public class BorrowByUserCommandHandler
 		implements
 			RequestHandler<BorrowByUserCommand, ErrorOr<Success>> {
 
 	private final BookRepository bookRepository;
+	private final UserRepository userRepository;
 	private final DomainEventPublisher domainEventPublisher;
 
 	public BorrowByUserCommandHandler(BookRepository bookRepository,
+			UserRepository userRepository,
 			DomainEventPublisher domainEventPublisher,
 			Mapper<AddressCommandData, Address> addressMapper) {
 		this.bookRepository = bookRepository;
+		this.userRepository = userRepository;
 		this.domainEventPublisher = domainEventPublisher;
 	}
 
@@ -42,6 +47,11 @@ public class BorrowByUserCommandHandler
 				return ErrorOr
 						.fromErrorMessage(
 								"Book with specified id was not found");
+
+			if (userRepository.exists(new UserByIdSpecification(userId)))
+				return ErrorOr
+						.fromErrorMessage(
+								"User with specified id was not found");
 
 			Book existingBook = optionalExistingBook.orElseThrow();
 

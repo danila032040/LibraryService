@@ -2,30 +2,31 @@ package application.commands.book.returnByUser;
 
 import java.util.Optional;
 
-import application.commands.common.address.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
 import base.result.Success;
-import base.utils.Mapper;
 import domain.book.Book;
 import domain.book.BookId;
 import domain.book.BookRepository;
 import domain.book.specifications.BookByIdSpecification;
-import domain.common.Address;
 import domain.user.UserId;
+import domain.user.UserRepository;
+import domain.user.specifications.UserByIdSpecification;
 
 public class ReturnByUserCommandHandler
 		implements
 			RequestHandler<ReturnByUserCommand, ErrorOr<Success>> {
 
 	private final BookRepository bookRepository;
+	private final UserRepository userRepository;
 	private final DomainEventPublisher domainEventPublisher;
 
 	public ReturnByUserCommandHandler(BookRepository bookRepository,
-			DomainEventPublisher domainEventPublisher,
-			Mapper<AddressCommandData, Address> addressMapper) {
+			UserRepository userRepository,
+			DomainEventPublisher domainEventPublisher) {
 		this.bookRepository = bookRepository;
+		this.userRepository = userRepository;
 		this.domainEventPublisher = domainEventPublisher;
 	}
 
@@ -42,6 +43,11 @@ public class ReturnByUserCommandHandler
 				return ErrorOr
 						.fromErrorMessage(
 								"Book with specified id was not found");
+
+			if (userRepository.exists(new UserByIdSpecification(userId)))
+				return ErrorOr
+						.fromErrorMessage(
+								"User with specified id was not found");
 
 			Book existingBook = optionalExistingBook.orElseThrow();
 

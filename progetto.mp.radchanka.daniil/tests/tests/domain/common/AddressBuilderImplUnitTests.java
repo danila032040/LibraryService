@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
-import domain.common.AddressBuilder;
 import domain.common.AddressBuilderImpl;
 
 public class AddressBuilderImplUnitTests {
@@ -17,7 +16,8 @@ public class AddressBuilderImplUnitTests {
 
 		ThrowingCallable actual = () -> addressBuilder.withBuilding(null);
 
-		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
 	}
 
 	@Test
@@ -26,7 +26,8 @@ public class AddressBuilderImplUnitTests {
 
 		ThrowingCallable actual = () -> addressBuilder.withCity(null);
 
-		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
 	}
 
 	@Test
@@ -35,7 +36,8 @@ public class AddressBuilderImplUnitTests {
 
 		ThrowingCallable actual = () -> addressBuilder.withCountryRegion(null);
 
-		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
 	}
 
 	@Test
@@ -44,7 +46,8 @@ public class AddressBuilderImplUnitTests {
 
 		ThrowingCallable actual = () -> addressBuilder.withPostalCode(null);
 
-		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
 	}
 
 	@Test
@@ -53,7 +56,8 @@ public class AddressBuilderImplUnitTests {
 
 		ThrowingCallable actual = () -> addressBuilder.withStateProvince(null);
 
-		assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+		assertThatExceptionOfType(NullPointerException.class)
+				.isThrownBy(actual);
 	}
 
 	@Test
