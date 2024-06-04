@@ -178,7 +178,7 @@ public class InMemoryRepositoryUnitTests {
 				.get(
 						x -> true,
 						SortCriteria
-								.<EntityMock, Integer>sortBy(
+								.<EntityMock, Integer>sortByAsc(
 										x -> x.getSomeFieldUsedForSortBy()),
 						Pagination.of(2, 2));
 

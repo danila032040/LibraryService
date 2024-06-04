@@ -30,7 +30,7 @@ public class SortCriteriaUnitTests {
 
 	@Test
 	public void sortBy_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> SortCriteria.sortBy(null);
+		ThrowingCallable actual = () -> SortCriteria.sortByAsc(null);
 
 		assertThatExceptionOfType(NullPointerException.class)
 				.isThrownBy(actual);
@@ -50,7 +50,7 @@ public class SortCriteriaUnitTests {
 				.<EntityMock, Integer>comparing(x -> x.getId());
 
 		Comparator<EntityMock> actual = SortCriteria
-				.<EntityMock, Integer>sortBy(x -> x.getId())
+				.<EntityMock, Integer>sortByAsc(x -> x.getId())
 				.getSortComparator();
 
 		assertThat(
@@ -92,8 +92,8 @@ public class SortCriteriaUnitTests {
 				.thenComparing(x -> x.getSomeFieldUsedForSortBy());
 
 		Comparator<EntityMock> actual = SortCriteria
-				.<EntityMock, Integer>sortBy(x -> x.getId())
-				.thenSortBy(x -> x.getSomeFieldUsedForSortBy())
+				.<EntityMock, Integer>sortByAsc(x -> x.getId())
+				.thenSortByAsc(x -> x.getSomeFieldUsedForSortBy())
 				.getSortComparator();
 
 		assertThat(
@@ -118,7 +118,7 @@ public class SortCriteriaUnitTests {
 								.reversed());
 
 		Comparator<EntityMock> actual = SortCriteria
-				.<EntityMock, Integer>sortBy(x -> x.getId())
+				.<EntityMock, Integer>sortByAsc(x -> x.getId())
 				.thenSortByDesc(x -> x.getSomeFieldUsedForSortBy())
 				.getSortComparator();
 

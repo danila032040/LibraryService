@@ -62,12 +62,12 @@ public class FindQueryHandler
 
 	private SortCriteria<Book> BuildSortCriteriaFromRequest(FindQuery request) {
 		return SortCriteria
-				.<Book, Integer>sortBy(
+				.<Book, Integer>sortByAsc(
 						book -> book
 								.getAuthorId()
 								.map(AuthorId::getId)
 								.orElse(Integer.MIN_VALUE))
-				.thenSortBy(
+				.thenSortByDesc(
 						book -> book
 								.getLibraryId()
 								.map(LibraryId::getId)
