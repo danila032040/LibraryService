@@ -3,7 +3,7 @@ package tests.base.specification.composable.mocks;
 import base.specification.composable.CompositeSpecification;
 
 public class CompositeSpecificationMock
-		extends
+		implements
 			CompositeSpecification<Integer> {
 
 	private boolean isSatisfied;
