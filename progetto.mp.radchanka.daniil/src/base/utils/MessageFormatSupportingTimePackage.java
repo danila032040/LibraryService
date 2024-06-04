@@ -133,8 +133,8 @@ public class MessageFormatSupportingTimePackage extends Format {
 										arguments[index]))
 				.forEach(
 						pair -> adjustTimeZoneIfArgumentContainsTimeZone(
-								pair.getT0(),
-								pair.getT1()));
+								pair.getLeft(),
+								pair.getRight()));
 	}
 
 	private Object convertToDateIfItIsFromTimePackage(Object obj) {

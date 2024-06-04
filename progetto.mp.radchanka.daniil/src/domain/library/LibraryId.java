@@ -6,7 +6,10 @@ import java.util.List;
 import base.cloneable.Cloneable;
 import base.ddd.ValueObject;
 
-public class LibraryId extends ValueObject implements Cloneable<LibraryId> {
+public class LibraryId extends ValueObject
+		implements
+			Cloneable<LibraryId>,
+			Comparable<LibraryId> {
 	private final int id;
 
 	public LibraryId(int id) {
@@ -24,5 +27,10 @@ public class LibraryId extends ValueObject implements Cloneable<LibraryId> {
 
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public int compareTo(LibraryId other) {
+		return Integer.compare(this.getId(), other.getId());
 	}
 }

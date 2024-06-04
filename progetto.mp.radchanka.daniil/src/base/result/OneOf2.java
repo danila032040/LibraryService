@@ -27,8 +27,8 @@ public class OneOf2<T0, T1> {
 				.of(
 						Pair.of(0, result0.isPresent()),
 						Pair.of(1, result1.isPresent()))
-				.filter(Pair::getT1)
-				.map(Pair::getT0)
+				.filter(Pair::getRight)
+				.map(Pair::getLeft)
 				.collect(Collectors.toList());
 
 		if (selectedResultIndexes.size() > 1)
