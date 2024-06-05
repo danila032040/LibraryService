@@ -7,7 +7,7 @@ import application.commands.common.address.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 import base.result.ValidationResult;
 import base.utils.Mapper;
 import base.utils.Validator;
@@ -17,7 +17,7 @@ import domain.user.UserId;
 import domain.user.UserRepository;
 import domain.user.specifications.UserByIdSpecification;
 
-public class UpdateUserCommandHandler implements RequestHandler<UpdateUserCommand, ErrorOr<Success>> {
+public class UpdateUserCommandHandler implements RequestHandler<UpdateUserCommand, ErrorOr<SuccessResult>> {
     private final Validator<UpdateUserCommand> validator;
     private final UserRepository userRepository;
     private final DomainEventPublisher domainEventPublisher;
@@ -35,7 +35,7 @@ public class UpdateUserCommandHandler implements RequestHandler<UpdateUserComman
     }
     
     @Override
-    public ErrorOr<Success> handle(UpdateUserCommand request) {
+    public ErrorOr<SuccessResult> handle(UpdateUserCommand request) {
         try {
             ValidationResult validationResult = validator.validate(request);
             if (!validationResult.isValid()) {
@@ -67,14 +67,14 @@ public class UpdateUserCommandHandler implements RequestHandler<UpdateUserComman
             
             if (!hasPersonalInformationToUpdate) {
                 return ErrorOr
-                        .fromResult(Success.from("User already contains provided information. Update is not needed"));
+                        .fromResult(SuccessResult.from("User already contains provided information. Update is not needed"));
             }
             
             userRepository.update(existingUser);
             
             domainEventPublisher.publishDomainEvents(existingUser.extractAllDomainEvents());
             
-            return ErrorOr.fromResult(Success.from("Successfully updated user"));
+            return ErrorOr.fromResult(SuccessResult.from("Successfully updated user"));
         } catch (Exception exc) {
             return ErrorOr.fromErrorMessage(exc.getMessage());
         }

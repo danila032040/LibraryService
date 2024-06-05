@@ -1,7 +1,7 @@
 package application.commands.user.register;
 
 import application.commands.common.address.AddressCommandData;
-import base.result.Error;
+import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;
 
@@ -22,13 +22,13 @@ public class RegisterUserCommandValidator implements Validator<RegisterUserComma
                 .unionWith(addressValidationResult)
                 .withErrorIf(
                         () -> request.getName() == null || request.getName().isBlank(),
-                        Error.from("Name must be not whitespace and not empty"))
+                        ErrorResult.from("Name must be not whitespace and not empty"))
                 .withErrorIf(
                         () -> request.getSurname() == null || request.getSurname().isBlank(),
-                        Error.from("Surname must be not whitespace and not empty"))
+                        ErrorResult.from("Surname must be not whitespace and not empty"))
                 .withErrorIf(
                         () -> request.getPhoneNumber().map(String::isBlank).orElse(false),
-                        Error.from("Phone number must be not whitespace if provided"));
+                        ErrorResult.from("Phone number must be not whitespace if provided"));
         
     }
 }

@@ -5,9 +5,9 @@ import java.util.Optional;
 import application.commands.common.address.AddressCommandData;
 import base.mediator.request.Request;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 
-public class UpdateUserCommand implements Request<ErrorOr<Success>> {
+public class UpdateUserCommand implements Request<ErrorOr<SuccessResult>> {
     private final int userId;
     private final Optional<AddressCommandData> newAddress;
     private final Optional<String> newPhoneNumber;

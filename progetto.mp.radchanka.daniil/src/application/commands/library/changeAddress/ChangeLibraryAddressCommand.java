@@ -3,9 +3,9 @@ package application.commands.library.changeAddress;
 import application.commands.common.address.AddressCommandData;
 import base.mediator.request.Request;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 
-public class ChangeLibraryAddressCommand implements Request<ErrorOr<Success>> {
+public class ChangeLibraryAddressCommand implements Request<ErrorOr<SuccessResult>> {
     private final int libraryId;
     private final AddressCommandData address;
     

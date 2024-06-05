@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import base.mediator.request.Request;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 
-public class UpdateBookCommand implements Request<ErrorOr<Success>> {
+public class UpdateBookCommand implements Request<ErrorOr<SuccessResult>> {
     private final int bookId;
     private final String name;
     private final String genre;

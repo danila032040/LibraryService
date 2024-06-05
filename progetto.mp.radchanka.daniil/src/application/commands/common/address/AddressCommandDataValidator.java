@@ -3,7 +3,7 @@ package application.commands.common.address;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import base.result.Error;
+import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;
 
@@ -26,7 +26,7 @@ public class AddressCommandDataValidator implements Validator<AddressCommandData
                 .create()
                 .withErrorIf(
                         () -> providedFieldsCount == 0,
-                        Error.from("At least one field of address must be present"));
+                        ErrorResult.from("At least one field of address must be present"));
     }
     
 }

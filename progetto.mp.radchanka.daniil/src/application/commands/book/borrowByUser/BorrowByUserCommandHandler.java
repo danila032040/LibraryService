@@ -6,7 +6,7 @@ import application.commands.common.address.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 import base.utils.Mapper;
 import domain.book.Book;
 import domain.book.BookId;
@@ -17,7 +17,7 @@ import domain.user.UserId;
 import domain.user.UserRepository;
 import domain.user.specifications.UserByIdSpecification;
 
-public class BorrowByUserCommandHandler implements RequestHandler<BorrowByUserCommand, ErrorOr<Success>> {
+public class BorrowByUserCommandHandler implements RequestHandler<BorrowByUserCommand, ErrorOr<SuccessResult>> {
     
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
@@ -34,7 +34,7 @@ public class BorrowByUserCommandHandler implements RequestHandler<BorrowByUserCo
     }
     
     @Override
-    public ErrorOr<Success> handle(BorrowByUserCommand request) {
+    public ErrorOr<SuccessResult> handle(BorrowByUserCommand request) {
         try {
             BookId bookId = new BookId(request.getBookId());
             UserId userId = new UserId(request.getUserId());
@@ -56,7 +56,7 @@ public class BorrowByUserCommandHandler implements RequestHandler<BorrowByUserCo
             bookRepository.update(existingBook);
             domainEventPublisher.publishDomainEvents(existingBook.extractAllDomainEvents());
             
-            return ErrorOr.fromResult(Success.from("Successfully borrowed book"));
+            return ErrorOr.fromResult(SuccessResult.from("Successfully borrowed book"));
         } catch (Exception exc) {
             return ErrorOr.fromErrorMessage(exc.getMessage());
         }

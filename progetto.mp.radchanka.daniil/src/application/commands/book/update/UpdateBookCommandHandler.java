@@ -7,7 +7,7 @@ import application.commands.common.address.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 import base.result.ValidationResult;
 import base.utils.Mapper;
 import base.utils.Validator;
@@ -19,7 +19,7 @@ import domain.book.specifications.BookByIdSpecification;
 import domain.common.Address;
 import domain.library.LibraryId;
 
-public class UpdateBookCommandHandler implements RequestHandler<UpdateBookCommand, ErrorOr<Success>> {
+public class UpdateBookCommandHandler implements RequestHandler<UpdateBookCommand, ErrorOr<SuccessResult>> {
     private final Validator<UpdateBookCommand> validator;
     private final BookRepository bookRepository;
     private final DomainEventPublisher domainEventPublisher;
@@ -35,7 +35,7 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
     }
     
     @Override
-    public ErrorOr<Success> handle(UpdateBookCommand request) {
+    public ErrorOr<SuccessResult> handle(UpdateBookCommand request) {
         try {
             ValidationResult validationResult = validator.validate(request);
             if (!validationResult.isValid()) {
@@ -81,14 +81,14 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
             
             if (!hasInformationToUpdate) {
                 return ErrorOr
-                        .fromResult(Success.from("Book already contains provided information. Update is not needed"));
+                        .fromResult(SuccessResult.from("Book already contains provided information. Update is not needed"));
             }
             
             bookRepository.update(existingBook);
             
             domainEventPublisher.publishDomainEvents(existingBook.extractAllDomainEvents());
             
-            return ErrorOr.fromResult(Success.from("Successfully updated book information"));
+            return ErrorOr.fromResult(SuccessResult.from("Successfully updated book information"));
         } catch (Exception exc) {
             return ErrorOr.fromErrorMessage(exc.getMessage());
         }

@@ -2,9 +2,9 @@ package application.commands.book.returnByUser;
 
 import base.mediator.request.Request;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 
-public class ReturnByUserCommand implements Request<ErrorOr<Success>> {
+public class ReturnByUserCommand implements Request<ErrorOr<SuccessResult>> {
     private final int bookId;
     private final int userId;
     

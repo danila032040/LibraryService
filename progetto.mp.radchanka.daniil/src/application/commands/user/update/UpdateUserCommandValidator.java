@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import application.commands.common.address.AddressCommandData;
-import base.result.Error;
+import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;
 
@@ -33,10 +33,10 @@ public class UpdateUserCommandValidator implements Validator<UpdateUserCommand> 
                 .orElse(validationResult)
                 .withErrorIf(
                         () -> providedFieldsCount == 0,
-                        Error.from("At least new phone number or new address must be present"))
+                        ErrorResult.from("At least new phone number or new address must be present"))
                 .withErrorIf(
                         () -> request.getNewPhoneNumber().map(String::isBlank).orElse(false),
-                        Error.from("Phone number must be not whitespace if provided"));
+                        ErrorResult.from("Phone number must be not whitespace if provided"));
         
     }
 }

@@ -6,7 +6,7 @@ import application.commands.common.address.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 import base.result.ValidationResult;
 import base.utils.Mapper;
 import base.utils.Validator;
@@ -18,7 +18,7 @@ import domain.library.specifications.LibraryByIdSpecification;
 
 public class ChangeLibraryAddressCommandHandler
         implements
-        RequestHandler<ChangeLibraryAddressCommand, ErrorOr<Success>> {
+        RequestHandler<ChangeLibraryAddressCommand, ErrorOr<SuccessResult>> {
     
     private final Validator<ChangeLibraryAddressCommand> validator;
     private final LibraryRepository libraryRepository;
@@ -37,7 +37,7 @@ public class ChangeLibraryAddressCommandHandler
     }
     
     @Override
-    public ErrorOr<Success> handle(ChangeLibraryAddressCommand request) {
+    public ErrorOr<SuccessResult> handle(ChangeLibraryAddressCommand request) {
         try {
             ValidationResult validationResult = validator.validate(request);
             if (!validationResult.isValid()) {
@@ -60,7 +60,7 @@ public class ChangeLibraryAddressCommandHandler
             
             domainEventPublisher.publishDomainEvents(existingLibrary.extractAllDomainEvents());
             
-            return ErrorOr.fromResult(Success.from("Address were changed successfully"));
+            return ErrorOr.fromResult(SuccessResult.from("Address were changed successfully"));
         } catch (Exception exc) {
             return ErrorOr.fromErrorMessage(exc.getMessage());
         }

@@ -2,9 +2,9 @@ package application.commands.book.borrowByUser;
 
 import base.mediator.request.Request;
 import base.result.ErrorOr;
-import base.result.Success;
+import base.result.SuccessResult;
 
-public class BorrowByUserCommand implements Request<ErrorOr<Success>> {
+public class BorrowByUserCommand implements Request<ErrorOr<SuccessResult>> {
     private final int bookId;
     private final int userId;
     
