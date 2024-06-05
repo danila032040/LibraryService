@@ -1,5 +1,6 @@
 package base.utils;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -15,6 +16,9 @@ public final class SpecificationUtils {
             U searchField,
             Function<T, Optional<U>> fieldExtractor,
             BiFunction<U, U, Boolean> comparisonFunctionStartingWithSearchField) {
+        Objects.requireNonNull(searchField);
+        Objects.requireNonNull(fieldExtractor);
+        Objects.requireNonNull(comparisonFunctionStartingWithSearchField);
         Specification<T> fieldSpecification = entity -> fieldExtractor
                 .apply(entity)
                 .map(fieldInEntity -> comparisonFunctionStartingWithSearchField.apply(fieldInEntity, searchField))
@@ -26,6 +30,9 @@ public final class SpecificationUtils {
             U searchField,
             Function<T, U> fieldExtractor,
             BiFunction<U, U, Boolean> comparisonFunctionStartingWithSearchField) {
+        Objects.requireNonNull(searchField);
+        Objects.requireNonNull(fieldExtractor);
+        Objects.requireNonNull(comparisonFunctionStartingWithSearchField);
         return entity -> comparisonFunctionStartingWithSearchField.apply(fieldExtractor.apply(entity), searchField);
     }
 }

@@ -1,4 +1,4 @@
-package tests.base.utils;
+package tests.base.utils.unitTests;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
