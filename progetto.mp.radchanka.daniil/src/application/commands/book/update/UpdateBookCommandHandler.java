@@ -12,25 +12,35 @@ import base.result.ValidationResult;
 import base.utils.Mapper;
 import base.utils.Validator;
 import domain.author.AuthorId;
+import domain.author.AuthorRepository;
+import domain.author.specifications.AuthorByIdSpecification;
 import domain.book.Book;
 import domain.book.BookId;
 import domain.book.BookRepository;
 import domain.book.specifications.BookByIdSpecification;
 import domain.common.Address;
 import domain.library.LibraryId;
+import domain.library.LibraryRepository;
+import domain.library.specifications.LibraryByIdSpecification;
 
 public class UpdateBookCommandHandler implements RequestHandler<UpdateBookCommand, ErrorOr<SuccessResult>> {
     private final Validator<UpdateBookCommand> validator;
     private final BookRepository bookRepository;
+    private final LibraryRepository libraryRepository;
+    private final AuthorRepository authorRepository;
     private final DomainEventPublisher domainEventPublisher;
     
     public UpdateBookCommandHandler(
             Validator<UpdateBookCommand> validator,
             BookRepository bookRepository,
+            LibraryRepository libraryRepository,
+            AuthorRepository authorRepository,
             DomainEventPublisher domainEventPublisher,
             Mapper<AddressCommandData, Address> addressMapper) {
         this.validator = validator;
         this.bookRepository = bookRepository;
+        this.libraryRepository = libraryRepository;
+        this.authorRepository = authorRepository;
         this.domainEventPublisher = domainEventPublisher;
     }
     
@@ -44,12 +54,25 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
             
             Optional<AuthorId> newAuthorId = request.getAuthorId().map(AuthorId::new);
             Optional<LibraryId> newLibraryId = request.getLibraryId().map(LibraryId::new);
+            Optional<Boolean> authorFound = newAuthorId.map(AuthorByIdSpecification::new).map(authorRepository::exists);
+            
+            Optional<Boolean> libraryFound = newLibraryId
+                    .map(LibraryByIdSpecification::new)
+                    .map(libraryRepository::exists);
             
             Optional<Book> optionalExistingBook = bookRepository
                     .getFirst(new BookByIdSpecification(new BookId(request.getBookId())));
             
             if (optionalExistingBook.isEmpty()) {
                 return ErrorOr.fromErrorMessage("Book with specified id was not found");
+            }
+            
+            if (!libraryFound.orElse(true)) {
+                return ErrorOr.fromErrorMessage("Library with specified id was not found");
+            }
+            
+            if (!authorFound.orElse(true)) {
+                return ErrorOr.fromErrorMessage("Author with specified id was not found");
             }
             
             Book existingBook = optionalExistingBook.orElseThrow();
@@ -81,7 +104,8 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
             
             if (!hasInformationToUpdate) {
                 return ErrorOr
-                        .fromResult(SuccessResult.from("Book already contains provided information. Update is not needed"));
+                        .fromResult(
+                                SuccessResult.from("Book already contains provided information. Update is not needed"));
             }
             
             bookRepository.update(existingBook);
