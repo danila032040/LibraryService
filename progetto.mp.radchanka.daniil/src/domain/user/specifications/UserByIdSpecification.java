@@ -5,15 +5,15 @@ import domain.user.User;
 import domain.user.UserId;
 
 public class UserByIdSpecification implements Specification<User> {
-
-	private final UserId userId;
-
-	public UserByIdSpecification(UserId userId) {
-		this.userId = userId;
-	}
-
-	@Override
-	public boolean isSatisfiedBy(User user) {
-		return user.getId().equals(userId);
-	}
+    
+    private final UserId userId;
+    
+    public UserByIdSpecification(UserId userId) {
+        this.userId = userId;
+    }
+    
+    @Override
+    public boolean isSatisfiedBy(User user) {
+        return user.getId().equals(userId);
+    }
 }

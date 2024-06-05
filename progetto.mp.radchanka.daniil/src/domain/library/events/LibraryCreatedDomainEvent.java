@@ -4,14 +4,14 @@ import base.ddd.DomainEvent;
 import domain.library.Library;
 
 public class LibraryCreatedDomainEvent implements DomainEvent {
-	private final Library library;
-
-	public LibraryCreatedDomainEvent(Library library) {
-		this.library = library;
-
-	}
-
-	public Library getLibrary() {
-		return library;
-	}
+    private final Library library;
+    
+    public LibraryCreatedDomainEvent(Library library) {
+        this.library = library;
+        
+    }
+    
+    public Library getLibrary() {
+        return library;
+    }
 }

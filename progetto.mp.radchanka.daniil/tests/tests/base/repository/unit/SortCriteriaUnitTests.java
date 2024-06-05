@@ -15,121 +15,99 @@ import base.repository.SortCriteria;
 import tests.base.repository.mocks.EntityMock;
 
 public class SortCriteriaUnitTests {
-	private ArrayList<EntityMock> entitiesUsedForCheckingCorrectnessOfComparator;
-
-	@Before
-	public void setup() {
-		entitiesUsedForCheckingCorrectnessOfComparator = Lists
-				.newArrayList(
-						new EntityMock(3, -1),
-						new EntityMock(1, 1),
-						new EntityMock(2, 3),
-						new EntityMock(5, -1),
-						new EntityMock(-4, -5));
-	}
-
-	@Test
-	public void sortBy_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> SortCriteria.sortByAsc(null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void sortByDesc_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> SortCriteria.sortByDesc(null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void sortBy_getSortComparator_ShouldReturnCorrectComparator() {
-		Comparator<EntityMock> expected = Comparator
-				.<EntityMock, Integer>comparing(x -> x.getId());
-
-		Comparator<EntityMock> actual = SortCriteria
-				.<EntityMock, Integer>sortByAsc(x -> x.getId())
-				.getSortComparator();
-
-		assertThat(
-				entitiesUsedForCheckingCorrectnessOfComparator
-						.stream()
-						.sorted(actual))
-				.containsExactly(
-						entitiesUsedForCheckingCorrectnessOfComparator
-								.stream()
-								.sorted(expected)
-								.toArray(size -> new EntityMock[size]));
-	}
-
-	@Test
-	public void sortByDesc_getSortComparator_ShouldReturnCorrectComparator() {
-		Comparator<EntityMock> expected = Comparator
-				.<EntityMock, Integer>comparing(x -> x.getId())
-				.reversed();
-
-		Comparator<EntityMock> actual = SortCriteria
-				.<EntityMock, Integer>sortByDesc(x -> x.getId())
-				.getSortComparator();
-
-		assertThat(
-				entitiesUsedForCheckingCorrectnessOfComparator
-						.stream()
-						.sorted(actual))
-				.containsExactly(
-						entitiesUsedForCheckingCorrectnessOfComparator
-								.stream()
-								.sorted(expected)
-								.toArray(size -> new EntityMock[size]));
-	}
-
-	@Test
-	public void thenSortBy_getSortComparator_ShouldReturnCorrectComparator() {
-		Comparator<EntityMock> expected = Comparator
-				.<EntityMock, Integer>comparing(x -> x.getId())
-				.thenComparing(x -> x.getSomeFieldUsedForSortBy());
-
-		Comparator<EntityMock> actual = SortCriteria
-				.<EntityMock, Integer>sortByAsc(x -> x.getId())
-				.thenSortByAsc(x -> x.getSomeFieldUsedForSortBy())
-				.getSortComparator();
-
-		assertThat(
-				entitiesUsedForCheckingCorrectnessOfComparator
-						.stream()
-						.sorted(actual))
-				.containsExactly(
-						entitiesUsedForCheckingCorrectnessOfComparator
-								.stream()
-								.sorted(expected)
-								.toArray(size -> new EntityMock[size]));
-	}
-
-	@Test
-	public void thenSortByDesc_getSortComparator_ShouldReturnCorrectComparator() {
-		Comparator<EntityMock> expected = Comparator
-				.<EntityMock, Integer>comparing(x -> x.getId())
-				.thenComparing(
-						Comparator
-								.<EntityMock, Integer>comparing(
-										x -> x.getSomeFieldUsedForSortBy())
-								.reversed());
-
-		Comparator<EntityMock> actual = SortCriteria
-				.<EntityMock, Integer>sortByAsc(x -> x.getId())
-				.thenSortByDesc(x -> x.getSomeFieldUsedForSortBy())
-				.getSortComparator();
-
-		assertThat(
-				entitiesUsedForCheckingCorrectnessOfComparator
-						.stream()
-						.sorted(actual))
-				.containsExactly(
-						entitiesUsedForCheckingCorrectnessOfComparator
-								.stream()
-								.sorted(expected)
-								.toArray(size -> new EntityMock[size]));
-	}
+    private ArrayList<EntityMock> entitiesUsedForCheckingCorrectnessOfComparator;
+    
+    @Before
+    public void setup() {
+        entitiesUsedForCheckingCorrectnessOfComparator = Lists
+                .newArrayList(
+                        new EntityMock(3, -1),
+                        new EntityMock(1, 1),
+                        new EntityMock(2, 3),
+                        new EntityMock(5, -1),
+                        new EntityMock(-4, -5));
+    }
+    
+    @Test
+    public void sortBy_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> SortCriteria.sortByAsc(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void sortByDesc_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> SortCriteria.sortByDesc(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void sortBy_getSortComparator_ShouldReturnCorrectComparator() {
+        Comparator<EntityMock> expected = Comparator.<EntityMock, Integer>comparing(x -> x.getId());
+        
+        Comparator<EntityMock> actual = SortCriteria.<EntityMock, Integer>sortByAsc(x -> x.getId()).getSortComparator();
+        
+        assertThat(entitiesUsedForCheckingCorrectnessOfComparator.stream().sorted(actual))
+                .containsExactly(
+                        entitiesUsedForCheckingCorrectnessOfComparator
+                                .stream()
+                                .sorted(expected)
+                                .toArray(size -> new EntityMock[size]));
+    }
+    
+    @Test
+    public void sortByDesc_getSortComparator_ShouldReturnCorrectComparator() {
+        Comparator<EntityMock> expected = Comparator.<EntityMock, Integer>comparing(x -> x.getId()).reversed();
+        
+        Comparator<EntityMock> actual = SortCriteria
+                .<EntityMock, Integer>sortByDesc(x -> x.getId())
+                .getSortComparator();
+        
+        assertThat(entitiesUsedForCheckingCorrectnessOfComparator.stream().sorted(actual))
+                .containsExactly(
+                        entitiesUsedForCheckingCorrectnessOfComparator
+                                .stream()
+                                .sorted(expected)
+                                .toArray(size -> new EntityMock[size]));
+    }
+    
+    @Test
+    public void thenSortBy_getSortComparator_ShouldReturnCorrectComparator() {
+        Comparator<EntityMock> expected = Comparator
+                .<EntityMock, Integer>comparing(x -> x.getId())
+                .thenComparing(x -> x.getSomeFieldUsedForSortBy());
+        
+        Comparator<EntityMock> actual = SortCriteria
+                .<EntityMock, Integer>sortByAsc(x -> x.getId())
+                .thenSortByAsc(x -> x.getSomeFieldUsedForSortBy())
+                .getSortComparator();
+        
+        assertThat(entitiesUsedForCheckingCorrectnessOfComparator.stream().sorted(actual))
+                .containsExactly(
+                        entitiesUsedForCheckingCorrectnessOfComparator
+                                .stream()
+                                .sorted(expected)
+                                .toArray(size -> new EntityMock[size]));
+    }
+    
+    @Test
+    public void thenSortByDesc_getSortComparator_ShouldReturnCorrectComparator() {
+        Comparator<EntityMock> expected = Comparator
+                .<EntityMock, Integer>comparing(x -> x.getId())
+                .thenComparing(
+                        Comparator.<EntityMock, Integer>comparing(x -> x.getSomeFieldUsedForSortBy()).reversed());
+        
+        Comparator<EntityMock> actual = SortCriteria
+                .<EntityMock, Integer>sortByAsc(x -> x.getId())
+                .thenSortByDesc(x -> x.getSomeFieldUsedForSortBy())
+                .getSortComparator();
+        
+        assertThat(entitiesUsedForCheckingCorrectnessOfComparator.stream().sorted(actual))
+                .containsExactly(
+                        entitiesUsedForCheckingCorrectnessOfComparator
+                                .stream()
+                                .sorted(expected)
+                                .toArray(size -> new EntityMock[size]));
+    }
 }

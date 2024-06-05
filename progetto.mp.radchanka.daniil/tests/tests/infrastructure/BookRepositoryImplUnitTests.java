@@ -11,37 +11,25 @@ import domain.book.Book;
 import infrastructure.book.repositories.BookRepositoryImpl;
 
 public class BookRepositoryImplUnitTests {
-	@Test
-	public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> new BookRepositoryImpl(
-				new ArrayList<Book>(),
-				ArrayList::new,
-				null);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createInstance_WhenResultCollectionFactoryIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> new BookRepositoryImpl(
-				new ArrayList<Book>(),
-				null,
-				Book::createClone);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
-	@Test
-	public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
-		ThrowingCallable actual = () -> new BookRepositoryImpl(
-				null,
-				ArrayList::new,
-				Book::createClone);
-
-		assertThatExceptionOfType(NullPointerException.class)
-				.isThrownBy(actual);
-	}
-
+    @Test
+    public void createInstance_WhenEntityCloneFactoryFactoryIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new BookRepositoryImpl(new ArrayList<>(), ArrayList::new, null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void createInstance_WhenResultCollectionFactoryIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new BookRepositoryImpl(new ArrayList<>(), null, Book::createClone);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void createInstance_WhenStorageIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new BookRepositoryImpl(null, ArrayList::new, Book::createClone);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
 }

@@ -7,13 +7,13 @@ import base.result.ErrorOr;
 import domain.book.Book;
 
 public class GetByIdQuery implements Request<ErrorOr<Optional<Book>>> {
-	private final int bookId;
-
-	public GetByIdQuery(int bookId) {
-		this.bookId = bookId;
-	}
-
-	public int getBookId() {
-		return bookId;
-	}
+    private final int bookId;
+    
+    public GetByIdQuery(int bookId) {
+        this.bookId = bookId;
+    }
+    
+    public int getBookId() {
+        return bookId;
+    }
 }

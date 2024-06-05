@@ -9,30 +9,24 @@ import domain.author.AuthorId;
 import domain.author.AuthorRepository;
 import domain.author.specifications.AuthorByIdSpecification;
 
-public class GetByIdQueryHandler
-		implements
-			RequestHandler<GetByIdQuery, ErrorOr<Optional<Author>>> {
-	private final AuthorRepository authorRepository;
-
-	public GetByIdQueryHandler(AuthorRepository authorRepository) {
-		this.authorRepository = authorRepository;
-	}
-
-	@Override
-	public ErrorOr<Optional<Author>> handle(GetByIdQuery request) {
-		try {
-			return ErrorOr
-					.fromResult(
-							authorRepository
-									.getFirst(
-											new AuthorByIdSpecification(
-													new AuthorId(
-															request
-																	.getAuthorId()))));
-
-		} catch (Exception exc) {
-			return ErrorOr.fromErrorMessage(exc.getMessage());
-		}
-	}
-
+public class GetByIdQueryHandler implements RequestHandler<GetByIdQuery, ErrorOr<Optional<Author>>> {
+    private final AuthorRepository authorRepository;
+    
+    public GetByIdQueryHandler(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+    
+    @Override
+    public ErrorOr<Optional<Author>> handle(GetByIdQuery request) {
+        try {
+            return ErrorOr
+                    .fromResult(
+                            authorRepository
+                                    .getFirst(new AuthorByIdSpecification(new AuthorId(request.getAuthorId()))));
+            
+        } catch (Exception exc) {
+            return ErrorOr.fromErrorMessage(exc.getMessage());
+        }
+    }
+    
 }

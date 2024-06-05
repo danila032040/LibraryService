@@ -14,31 +14,34 @@ import base.specification.composable.OrSpecification;
 
 @RunWith(Parameterized.class)
 public class OrSpecificationUnitTests {
-	@Parameters
-	public static Collection<Object> data() {
-		return Arrays
-				.asList(
-						new Object[][]{{true, true, true}, {true, false, true},
-								{false, true, true}, {false, false, false}});
-	}
-	private boolean expectedResult;
-
-	private OrSpecification<Integer> specification;
-
-	public OrSpecificationUnitTests(boolean isFirstSpecificationSatisfied,
-			boolean isSecondSpecificationSafisfied, boolean expectedResult) {
-		this.expectedResult = expectedResult;
-
-		this.specification = new OrSpecification<Integer>(
-				x1 -> isFirstSpecificationSatisfied,
-				x2 -> isSecondSpecificationSafisfied);
-
-	}
-
-	@Test
-	public void isSatisfiedBy_ShouldReturnCorrectResult() {
-		boolean actual = specification.isSatisfiedBy(5);
-
-		assertThat(actual).isEqualTo(expectedResult);
-	}
+    @Parameters
+    public static Collection<Object> data() {
+        return Arrays
+                .asList(
+                        new Object[][] { { true, true, true }, { true, false, true }, { false, true, true },
+                                        { false, false, false } });
+    }
+    
+    private boolean expectedResult;
+    
+    private OrSpecification<Integer> specification;
+    
+    public OrSpecificationUnitTests(
+            boolean isFirstSpecificationSatisfied,
+            boolean isSecondSpecificationSafisfied,
+            boolean expectedResult) {
+        this.expectedResult = expectedResult;
+        
+        this.specification = new OrSpecification<>(
+                x1 -> isFirstSpecificationSatisfied,
+                x2 -> isSecondSpecificationSafisfied);
+        
+    }
+    
+    @Test
+    public void isSatisfiedBy_ShouldReturnCorrectResult() {
+        boolean actual = specification.isSatisfiedBy(5);
+        
+        assertThat(actual).isEqualTo(expectedResult);
+    }
 }

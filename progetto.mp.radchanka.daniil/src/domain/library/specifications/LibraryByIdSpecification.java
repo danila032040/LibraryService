@@ -5,14 +5,14 @@ import domain.library.Library;
 import domain.library.LibraryId;
 
 public class LibraryByIdSpecification implements Specification<Library> {
-	private final LibraryId libraryId;
-
-	public LibraryByIdSpecification(LibraryId libraryId) {
-		this.libraryId = libraryId;
-	}
-
-	@Override
-	public boolean isSatisfiedBy(Library library) {
-		return library.getId().equals(libraryId);
-	}
+    private final LibraryId libraryId;
+    
+    public LibraryByIdSpecification(LibraryId libraryId) {
+        this.libraryId = libraryId;
+    }
+    
+    @Override
+    public boolean isSatisfiedBy(Library library) {
+        return library.getId().equals(libraryId);
+    }
 }

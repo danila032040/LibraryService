@@ -7,13 +7,13 @@ import base.result.ErrorOr;
 import domain.author.Author;
 
 public class GetByIdQuery implements Request<ErrorOr<Optional<Author>>> {
-	private final int authorId;
-
-	public GetByIdQuery(int authorId) {
-		this.authorId = authorId;
-	}
-
-	public int getAuthorId() {
-		return authorId;
-	}
+    private final int authorId;
+    
+    public GetByIdQuery(int authorId) {
+        this.authorId = authorId;
+    }
+    
+    public int getAuthorId() {
+        return authorId;
+    }
 }

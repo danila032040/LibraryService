@@ -1,5 +1,5 @@
 package base.cloneable;
 
 public interface Cloneable<T> {
-	public T createClone();
+    public T createClone();
 }
