@@ -1,5 +1,6 @@
-package application.commands.book.update;
+package application.validators.book;
 
+import application.commands.book.update.UpdateBookCommand;
 import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;

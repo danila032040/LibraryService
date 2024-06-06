@@ -1,13 +1,14 @@
-package application.queries.book.find;
+package application.validators.book;
 
+import application.queries.book.find.FindBooksQuery;
 import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;
 
-public class FindQueryValidator implements Validator<FindQuery> {
+public class FindBooksQueryValidator implements Validator<FindBooksQuery> {
     
     @Override
-    public ValidationResult validate(FindQuery request) {
+    public ValidationResult validate(FindBooksQuery request) {
         return ValidationResult
                 .create()
                 .withErrorIf(

@@ -1,9 +1,10 @@
-package application.commands.user.update;
+package application.validators.user;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import application.commands.common.address.AddressCommandData;
+import application.commands.user.update.UpdateUserCommand;
 import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;

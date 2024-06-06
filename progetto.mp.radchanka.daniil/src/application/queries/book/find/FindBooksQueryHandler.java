@@ -22,17 +22,17 @@ import domain.book.Book;
 import domain.book.BookRepository;
 import domain.library.LibraryId;
 
-public class FindQueryHandler implements RequestHandler<FindQuery, ErrorOr<Collection<Book>>> {
-    private final Validator<FindQuery> validator;
+public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, ErrorOr<Collection<Book>>> {
+    private final Validator<FindBooksQuery> validator;
     private final BookRepository bookRepository;
     
-    public FindQueryHandler(Validator<FindQuery> validator, BookRepository bookRepository) {
+    public FindBooksQueryHandler(Validator<FindBooksQuery> validator, BookRepository bookRepository) {
         this.validator = validator;
         this.bookRepository = bookRepository;
     }
     
     @Override
-    public ErrorOr<Collection<Book>> handle(FindQuery request) {
+    public ErrorOr<Collection<Book>> handle(FindBooksQuery request) {
         try {
             ValidationResult validationResult = validator.validate(request);
             if (!validationResult.isValid()) {
@@ -49,7 +49,7 @@ public class FindQueryHandler implements RequestHandler<FindQuery, ErrorOr<Colle
         }
     }
     
-    private Specification<Book> buildBookSpecificationFromRequest(FindQuery request) {
+    private Specification<Book> buildBookSpecificationFromRequest(FindBooksQuery request) {
         CompositeSpecification<Book> specification = book -> true;
         specification = request
                 .getPublicationYearPeriodStart()
@@ -108,7 +108,7 @@ public class FindQueryHandler implements RequestHandler<FindQuery, ErrorOr<Colle
         return specification;
     }
     
-    private SortCriteria<Book> buildBookSortCriteriaFromRequest(FindQuery request) {
+    private SortCriteria<Book> buildBookSortCriteriaFromRequest(FindBooksQuery request) {
         BookSortCriteriaBuilder builder = BookSortCriteriaBuilder
                 .sortBy(request.getSortByField(), request.getSortType());
         

@@ -14,13 +14,13 @@ import domain.user.UserId;
 import domain.user.UserRepository;
 import domain.user.specifications.UserByIdSpecification;
 
-public class ReturnByUserCommandHandler implements RequestHandler<ReturnByUserCommand, ErrorOr<SuccessResult>> {
+public class ReturnBookByUserCommandHandler implements RequestHandler<ReturnBookByUserCommand, ErrorOr<SuccessResult>> {
     
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final DomainEventPublisher domainEventPublisher;
     
-    public ReturnByUserCommandHandler(
+    public ReturnBookByUserCommandHandler(
             BookRepository bookRepository,
             UserRepository userRepository,
             DomainEventPublisher domainEventPublisher) {
@@ -30,7 +30,7 @@ public class ReturnByUserCommandHandler implements RequestHandler<ReturnByUserCo
     }
     
     @Override
-    public ErrorOr<SuccessResult> handle(ReturnByUserCommand request) {
+    public ErrorOr<SuccessResult> handle(ReturnBookByUserCommand request) {
         try {
             BookId bookId = new BookId(request.getBookId());
             UserId userId = new UserId(request.getUserId());

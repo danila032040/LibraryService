@@ -11,7 +11,7 @@ import domain.author.AuthorId;
 import domain.book.Book;
 import domain.library.LibraryId;
 
-public class FindQuery implements Request<ErrorOr<Collection<Book>>> {
+public class FindBooksQuery implements Request<ErrorOr<Collection<Book>>> {
     private final Optional<String> genre;
     private final Optional<Integer> publicationYearPeriodStart;
     private final Optional<Integer> publicationYearPeriodEnd;
@@ -26,7 +26,7 @@ public class FindQuery implements Request<ErrorOr<Collection<Book>>> {
     private final Optional<BookSortByFieldQueryData> thenSortByField;
     private final Optional<SortTypeQueryData> thenSortType;
     
-    public FindQuery(
+    public FindBooksQuery(
             Optional<String> name,
             Optional<String> genre,
             Optional<Integer> publicationYearPeriodStart,

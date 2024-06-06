@@ -1,5 +1,6 @@
-package application.commands.book.register;
+package application.validators.book;
 
+import application.commands.book.register.RegisterBookCommand;
 import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;

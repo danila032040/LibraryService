@@ -17,13 +17,13 @@ import domain.user.UserId;
 import domain.user.UserRepository;
 import domain.user.specifications.UserByIdSpecification;
 
-public class BorrowByUserCommandHandler implements RequestHandler<BorrowByUserCommand, ErrorOr<SuccessResult>> {
+public class BorrowBookByUserCommandHandler implements RequestHandler<BorrowBookByUserCommand, ErrorOr<SuccessResult>> {
     
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
     private final DomainEventPublisher domainEventPublisher;
     
-    public BorrowByUserCommandHandler(
+    public BorrowBookByUserCommandHandler(
             BookRepository bookRepository,
             UserRepository userRepository,
             DomainEventPublisher domainEventPublisher,
@@ -34,7 +34,7 @@ public class BorrowByUserCommandHandler implements RequestHandler<BorrowByUserCo
     }
     
     @Override
-    public ErrorOr<SuccessResult> handle(BorrowByUserCommand request) {
+    public ErrorOr<SuccessResult> handle(BorrowBookByUserCommand request) {
         try {
             BookId bookId = new BookId(request.getBookId());
             UserId userId = new UserId(request.getUserId());

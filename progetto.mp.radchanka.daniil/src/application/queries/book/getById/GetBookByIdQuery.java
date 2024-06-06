@@ -6,10 +6,10 @@ import base.mediator.request.Request;
 import base.result.ErrorOr;
 import domain.book.Book;
 
-public class GetByIdQuery implements Request<ErrorOr<Optional<Book>>> {
+public class GetBookByIdQuery implements Request<ErrorOr<Optional<Book>>> {
     private final int bookId;
     
-    public GetByIdQuery(int bookId) {
+    public GetBookByIdQuery(int bookId) {
         this.bookId = bookId;
     }
     

@@ -1,8 +1,9 @@
-package application.commands.common.address;
+package application.validators.common;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import application.commands.common.address.AddressCommandData;
 import base.result.ErrorResult;
 import base.result.ValidationResult;
 import base.utils.Validator;
