@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 
 import base.cloneable.CloneFactory;
 import base.repository.InMemoryRepository;
+import base.specification.Specification;
 import domain.author.Author;
 import domain.author.AuthorId;
 import domain.author.AuthorRepository;
@@ -24,5 +25,10 @@ public class AuthorRepositoryImpl extends InMemoryRepository<Author, AuthorId> i
     @Override
     public AuthorId generateNewAuthorId() {
         return new AuthorId(lastGeneratedId.map(x -> x + 1).or(() -> Optional.of(0)).get());
+    }
+    
+    @Override
+    public boolean exists(Specification<Author> specification) {
+        return this.getFirst(specification).isPresent();
     }
 }
