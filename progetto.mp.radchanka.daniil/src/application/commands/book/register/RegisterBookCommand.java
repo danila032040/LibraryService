@@ -1,5 +1,6 @@
 package application.commands.book.register;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import base.mediator.request.Request;
@@ -19,11 +20,11 @@ public class RegisterBookCommand implements Request<ErrorOr<BookId>> {
             int publicationYear,
             Optional<Integer> authorId,
             Optional<Integer> libraryId) {
-        this.name = name;
-        this.genre = genre;
+        this.name = Objects.requireNonNull(name);
+        this.genre = Objects.requireNonNull(genre);
         this.publicationYear = publicationYear;
-        this.authorId = authorId;
-        this.libraryId = libraryId;
+        this.authorId = Objects.requireNonNull(authorId);
+        this.libraryId = Objects.requireNonNull(libraryId);
     }
     
     public String getName() {

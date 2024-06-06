@@ -1,5 +1,6 @@
 package application.commands.book.update;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import base.mediator.request.Request;
@@ -22,11 +23,11 @@ public class UpdateBookCommand implements Request<ErrorOr<SuccessResult>> {
             Optional<Integer> authorId,
             Optional<Integer> libraryId) {
         this.bookId = bookId;
-        this.name = name;
-        this.genre = genre;
+        this.name = Objects.requireNonNull(name);
+        this.genre = Objects.requireNonNull(genre);
         this.publicationYear = publicationYear;
-        this.authorId = authorId;
-        this.libraryId = libraryId;
+        this.authorId = Objects.requireNonNull(authorId);
+        this.libraryId = Objects.requireNonNull(libraryId);
     }
     
     public int getBookId() {
