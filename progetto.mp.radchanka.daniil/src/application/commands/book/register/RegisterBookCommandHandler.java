@@ -13,15 +13,12 @@ import domain.library.LibraryId;
 
 public class RegisterBookCommandHandler implements RequestHandler<RegisterBookCommand, ErrorOr<BookId>> {
     
-    private final Validator<RegisterBookCommand> validator;
     private final BookRepository bookRepository;
     private final DomainEventPublisher domainEventPublisher;
     
     public RegisterBookCommandHandler(
-            Validator<RegisterBookCommand> validator,
             BookRepository bookRepository,
             DomainEventPublisher domainEventPublisher) {
-        this.validator = validator;
         this.bookRepository = bookRepository;
         this.domainEventPublisher = domainEventPublisher;
     }
@@ -29,10 +26,6 @@ public class RegisterBookCommandHandler implements RequestHandler<RegisterBookCo
     @Override
     public ErrorOr<BookId> handle(RegisterBookCommand request) {
         try {
-            ValidationResult validationResult = validator.validate(request);
-            if (!validationResult.isValid()) {
-                return ErrorOr.fromErrorMessage(validationResult.getErrors().get(0).getErrorMessage());
-            }
             
             Book bookToRegister = Book
                     .createNewBook(

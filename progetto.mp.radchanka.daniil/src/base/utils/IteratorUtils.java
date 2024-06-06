@@ -3,6 +3,7 @@ package base.utils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
+import java.util.function.BiFunction;
 
 public final class IteratorUtils {
     public static <T> boolean elementsEqual(Iterator<T> a, Iterator<T> b) {
@@ -18,6 +19,18 @@ public final class IteratorUtils {
         ArrayList<T> list = new ArrayList<>();
         iterator.forEachRemaining(list::add);
         return list;
+    }
+    
+    public static <T, U> U reduceRemaining(
+            Iterator<T> iterator,
+            U identity,
+            BiFunction<U, ? super T, U> accumulator) {
+        U result = identity;
+        while (iterator.hasNext()) {
+            T element = iterator.next();
+            result = accumulator.apply(result, element);
+        }
+        return result;
     }
     
     private IteratorUtils() {

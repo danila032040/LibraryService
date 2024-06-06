@@ -11,33 +11,25 @@ import base.mediator.request.RequestHandler;
 import base.repository.Pagination;
 import base.repository.SortCriteria;
 import base.result.ErrorOr;
-import base.result.ValidationResult;
 import base.specification.Specification;
 import base.specification.composable.CompositeSpecification;
 import base.utils.Pair;
 import base.utils.SpecificationUtils;
-import base.utils.Validator;
 import domain.author.AuthorId;
 import domain.book.Book;
 import domain.book.BookRepository;
 import domain.library.LibraryId;
 
 public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, ErrorOr<Collection<Book>>> {
-    private final Validator<FindBooksQuery> validator;
     private final BookRepository bookRepository;
     
-    public FindBooksQueryHandler(Validator<FindBooksQuery> validator, BookRepository bookRepository) {
-        this.validator = validator;
+    public FindBooksQueryHandler(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
     
     @Override
     public ErrorOr<Collection<Book>> handle(FindBooksQuery request) {
         try {
-            ValidationResult validationResult = validator.validate(request);
-            if (!validationResult.isValid()) {
-                return ErrorOr.fromErrorMessage(validationResult.getErrors().get(0).getErrorMessage());
-            }
             
             Specification<Book> specification = buildBookSpecificationFromRequest(request);
             SortCriteria<Book> sortCriteria = buildBookSortCriteriaFromRequest(request);

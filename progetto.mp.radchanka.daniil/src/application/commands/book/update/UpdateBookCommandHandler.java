@@ -8,9 +8,7 @@ import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
 import base.result.SuccessResult;
-import base.result.ValidationResult;
 import base.utils.Mapper;
-import base.utils.Validator;
 import domain.author.AuthorId;
 import domain.author.AuthorRepository;
 import domain.author.specifications.AuthorByIdSpecification;
@@ -24,20 +22,17 @@ import domain.library.LibraryRepository;
 import domain.library.specifications.LibraryByIdSpecification;
 
 public class UpdateBookCommandHandler implements RequestHandler<UpdateBookCommand, ErrorOr<SuccessResult>> {
-    private final Validator<UpdateBookCommand> validator;
     private final BookRepository bookRepository;
     private final LibraryRepository libraryRepository;
     private final AuthorRepository authorRepository;
     private final DomainEventPublisher domainEventPublisher;
     
     public UpdateBookCommandHandler(
-            Validator<UpdateBookCommand> validator,
             BookRepository bookRepository,
             LibraryRepository libraryRepository,
             AuthorRepository authorRepository,
             DomainEventPublisher domainEventPublisher,
             Mapper<AddressCommandData, Address> addressMapper) {
-        this.validator = validator;
         this.bookRepository = bookRepository;
         this.libraryRepository = libraryRepository;
         this.authorRepository = authorRepository;
@@ -47,11 +42,6 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
     @Override
     public ErrorOr<SuccessResult> handle(UpdateBookCommand request) {
         try {
-            ValidationResult validationResult = validator.validate(request);
-            if (!validationResult.isValid()) {
-                return ErrorOr.fromErrorMessage(validationResult.getErrors().get(0).getErrorMessage());
-            }
-            
             Optional<AuthorId> newAuthorId = request.getAuthorId().map(AuthorId::new);
             Optional<LibraryId> newLibraryId = request.getLibraryId().map(LibraryId::new);
             Optional<Boolean> authorFound = newAuthorId.map(AuthorByIdSpecification::new).map(authorRepository::exists);

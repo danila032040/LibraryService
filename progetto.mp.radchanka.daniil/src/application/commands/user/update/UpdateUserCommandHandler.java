@@ -8,9 +8,7 @@ import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
 import base.result.SuccessResult;
-import base.result.ValidationResult;
 import base.utils.Mapper;
-import base.utils.Validator;
 import domain.common.Address;
 import domain.user.User;
 import domain.user.UserId;
@@ -18,17 +16,14 @@ import domain.user.UserRepository;
 import domain.user.specifications.UserByIdSpecification;
 
 public class UpdateUserCommandHandler implements RequestHandler<UpdateUserCommand, ErrorOr<SuccessResult>> {
-    private final Validator<UpdateUserCommand> validator;
     private final UserRepository userRepository;
     private final DomainEventPublisher domainEventPublisher;
     private final Mapper<AddressCommandData, Address> addressMapper;
     
     public UpdateUserCommandHandler(
-            Validator<UpdateUserCommand> validator,
             UserRepository userRepository,
             DomainEventPublisher domainEventPublisher,
             Mapper<AddressCommandData, Address> addressMapper) {
-        this.validator = validator;
         this.userRepository = userRepository;
         this.domainEventPublisher = domainEventPublisher;
         this.addressMapper = addressMapper;
@@ -37,11 +32,6 @@ public class UpdateUserCommandHandler implements RequestHandler<UpdateUserComman
     @Override
     public ErrorOr<SuccessResult> handle(UpdateUserCommand request) {
         try {
-            ValidationResult validationResult = validator.validate(request);
-            if (!validationResult.isValid()) {
-                return ErrorOr.fromErrorMessage(validationResult.getErrors().get(0).getErrorMessage());
-            }
-            
             Optional<Address> newAddress = request.getNewAddress().map(addressMapper::map);
             Optional<String> newPhoneNumber = request.getNewPhoneNumber();
             
@@ -67,7 +57,8 @@ public class UpdateUserCommandHandler implements RequestHandler<UpdateUserComman
             
             if (!hasPersonalInformationToUpdate) {
                 return ErrorOr
-                        .fromResult(SuccessResult.from("User already contains provided information. Update is not needed"));
+                        .fromResult(
+                                SuccessResult.from("User already contains provided information. Update is not needed"));
             }
             
             userRepository.update(existingUser);
