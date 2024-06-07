@@ -12,7 +12,7 @@ import tests.base.mediator.mocks.NotificationHandlerMock;
 import tests.base.mediator.mocks.NotificationMock;
 import tests.base.mediator.mocks.RequestDispatcherMock;
 import tests.base.mediator.mocks.RequestHandlerMock;
-import tests.base.mediator.mocks.RequestMock;
+import tests.base.mediator.mocks.RequestMock0;
 
 public class MediatorImplUnitTests {
     
@@ -48,7 +48,7 @@ public class MediatorImplUnitTests {
     @Test
     public void registerHandler_WithRequestHandler_ShouldUseRegisterHandlerOfRequestDispatcherExactlyOnce()
             throws RequestHandlerAlreadyRegisteredException {
-        mediator.registerHandler(RequestMock.class, new RequestHandlerMock());
+        mediator.registerHandler(RequestMock0.class, new RequestHandlerMock());
         
         int actualExecutions = requestDispatcher.getRegisterHandlerExecutionsCount();
         
@@ -57,7 +57,7 @@ public class MediatorImplUnitTests {
     
     @Test
     public void sendRequest_ShouldUseSendRequestOfRequestDispatcherExactlyOnce() {
-        mediator.sendRequest(new RequestMock());
+        mediator.sendRequest(new RequestMock0());
         
         int actualExecutions = requestDispatcher.getSendRequestExecutionsCount();
         

@@ -17,12 +17,12 @@ public class Pipeline<TRequest extends Request<TResult>, TResult> {
         this.baseHandler = baseHandler;
     }
     
-    public static <TRequest extends Request<TResult>, TResult> Pipeline<TRequest, TResult> withBaseHandler(
+    public static <TRequest extends Request<TResult>, TResult> Pipeline<TRequest, TResult> withHandler(
             RequestHandler<TRequest, TResult> baseHandler) {
         return new Pipeline<>(baseHandler);
     }
     
-    public Pipeline<TRequest, TResult> continueWith(PipelineBehaviour<TRequest, TResult> pipelineBehaviour) {
+    public Pipeline<TRequest, TResult> addPipelineBehaviour(PipelineBehaviour<TRequest, TResult> pipelineBehaviour) {
         behaviours.add(pipelineBehaviour);
         return this;
     }
