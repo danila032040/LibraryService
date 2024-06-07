@@ -4,9 +4,9 @@ import java.time.Duration;
 import java.time.Instant;
 
 import base.log.Logger;
+import base.mediator.pipeline.PipelineBehaviour;
 import base.mediator.request.Request;
 import base.mediator.request.RequestHandler;
-import base.mediator.request.pipeline.PipelineBehaviour;
 
 public class LoggingPipelineBehaviour<TRequest extends Request<TResult>, TResult>
         implements

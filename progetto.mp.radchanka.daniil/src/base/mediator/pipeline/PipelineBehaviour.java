@@ -1,4 +1,4 @@
-package base.mediator.request.pipeline;
+package base.mediator.pipeline;
 
 import base.mediator.request.Request;
 import base.mediator.request.RequestHandler;

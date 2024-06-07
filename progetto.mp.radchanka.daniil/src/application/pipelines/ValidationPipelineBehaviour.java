@@ -2,9 +2,9 @@ package application.pipelines;
 
 import java.util.stream.Collectors;
 
+import base.mediator.pipeline.PipelineBehaviour;
 import base.mediator.request.Request;
 import base.mediator.request.RequestHandler;
-import base.mediator.request.pipeline.PipelineBehaviour;
 import base.result.ErrorOr;
 import base.result.ErrorResult;
 import base.result.ValidationResult;
