@@ -26,15 +26,27 @@ public class StopWatch {
     }
     
     public void stop() {
-        startInstant.ifPresent(start -> {
-            Instant stop = clock.instant();
-            duration.plus(Duration.between(start, stop));
-        });
+        if (!isStarted())
+            return;
+        recalculateDuration();
         startInstant = Optional.empty();
     }
     
+    private void recalculateDuration() {
+        Instant start = startInstant.orElseThrow();
+        Instant stop = clock.instant();
+        duration = duration.plus(Duration.between(start, stop));
+        startInstant = Optional.of(stop);
+    }
+    
     public Duration getDuration() {
+        if (isStarted())
+            recalculateDuration();
         return duration;
+    }
+    
+    private boolean isStarted() {
+        return startInstant.isPresent();
     }
     
 }
