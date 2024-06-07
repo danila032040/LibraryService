@@ -1,5 +1,6 @@
 package base.result;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ErrorOr<T> {
@@ -24,5 +25,17 @@ public class ErrorOr<T> {
     
     public void match(Consumer<T> resultConsumer, Consumer<ErrorResult> errorMessageConsumer) {
         oneOf2Result.match(resultConsumer, errorMessageConsumer);
+    }
+    
+    public boolean isError() {
+        return oneOf2Result.isT1();
+    }
+    
+    public Optional<T> getResult() {
+        return oneOf2Result.getT0();
+    }
+    
+    public Optional<ErrorResult> getError() {
+        return oneOf2Result.getT1();
     }
 }

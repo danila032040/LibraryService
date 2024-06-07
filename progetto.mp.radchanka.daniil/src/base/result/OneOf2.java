@@ -48,8 +48,16 @@ public class OneOf2<T0, T1> {
         return this.presentedResultIndex == 0;
     }
     
+    public Optional<T0> getT0() {
+        return result0;
+    }
+    
     public boolean isT1() {
         return this.presentedResultIndex == 1;
+    }
+    
+    public Optional<T1> getT1() {
+        return result1;
     }
     
     public void match(Consumer<T0> resultConsumer0, Consumer<T1> resultConsumer1) {

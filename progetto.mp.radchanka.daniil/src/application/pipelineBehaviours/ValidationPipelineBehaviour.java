@@ -1,4 +1,4 @@
-package application.pipelines;
+package application.pipelineBehaviours;
 
 import java.util.stream.Collectors;
 
