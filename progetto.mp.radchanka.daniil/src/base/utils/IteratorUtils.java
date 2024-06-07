@@ -21,10 +21,9 @@ public final class IteratorUtils {
         return list;
     }
     
-    public static <T, U> U reduceRemaining(
-            Iterator<T> iterator,
-            U identity,
-            BiFunction<U, ? super T, U> accumulator) {
+    public static <T, U> U reduceRemaining(Iterator<T> iterator, U identity, BiFunction<U, ? super T, U> accumulator) {
+        Objects.requireNonNull(iterator);
+        Objects.requireNonNull(accumulator);
         U result = identity;
         while (iterator.hasNext()) {
             T element = iterator.next();
