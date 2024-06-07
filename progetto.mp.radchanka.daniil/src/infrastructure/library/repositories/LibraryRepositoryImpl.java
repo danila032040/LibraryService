@@ -1,7 +1,6 @@
 package infrastructure.library.repositories;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import base.cloneable.CloneFactory;
@@ -12,19 +11,25 @@ import domain.library.LibraryId;
 import domain.library.LibraryRepository;
 
 public class LibraryRepositoryImpl extends InMemoryRepository<Library, LibraryId> implements LibraryRepository {
-    private Optional<Integer> lastGeneratedId;
+    private int idSeed;
     
     public LibraryRepositoryImpl(
             Collection<Library> storage,
             Supplier<Collection<Library>> resultCollectionFactory,
             CloneFactory<Library> entityCloneFactory) {
         super(storage, resultCollectionFactory, entityCloneFactory);
-        lastGeneratedId = storage.stream().map(Library::getId).map(LibraryId::getId).max(Integer::compare);
+        idSeed = storage
+                .stream()
+                .map(Library::getId)
+                .map(LibraryId::getId)
+                .max(Integer::compare)
+                .map(x -> x + 1)
+                .orElse(0);
     }
     
     @Override
     public LibraryId generateNewLibraryId() {
-        return new LibraryId(lastGeneratedId.map(x -> x + 1).or(() -> Optional.of(0)).get());
+        return new LibraryId(idSeed++);
     }
     
     @Override
