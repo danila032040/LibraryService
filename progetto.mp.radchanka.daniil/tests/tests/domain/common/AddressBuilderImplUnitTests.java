@@ -6,13 +6,13 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
-import domain.common.AddressBuilderImpl;
+import domain.common.AddressBuilder;
 
 public class AddressBuilderImplUnitTests {
     
     @Test
     public void withBuilding_WhenBuildingIsNull_ShouldThrowNullPointerException() {
-        AddressBuilderImpl addressBuilder = new AddressBuilderImpl();
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
         
         ThrowingCallable actual = () -> addressBuilder.withBuilding(null);
         
@@ -21,7 +21,7 @@ public class AddressBuilderImplUnitTests {
     
     @Test
     public void withCity_WhenCityIsNull_ShouldThrowNullPointerException() {
-        AddressBuilderImpl addressBuilder = new AddressBuilderImpl();
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
         
         ThrowingCallable actual = () -> addressBuilder.withCity(null);
         
@@ -30,7 +30,7 @@ public class AddressBuilderImplUnitTests {
     
     @Test
     public void withCountryRegion_WhenCountryRegionIsNull_ShouldThrowNullPointerException() {
-        AddressBuilderImpl addressBuilder = new AddressBuilderImpl();
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
         
         ThrowingCallable actual = () -> addressBuilder.withCountryRegion(null);
         
@@ -39,7 +39,7 @@ public class AddressBuilderImplUnitTests {
     
     @Test
     public void withPostalCode_WhenPostalCodeIsNull_ShouldThrowNullPointerException() {
-        AddressBuilderImpl addressBuilder = new AddressBuilderImpl();
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
         
         ThrowingCallable actual = () -> addressBuilder.withPostalCode(null);
         
@@ -48,7 +48,7 @@ public class AddressBuilderImplUnitTests {
     
     @Test
     public void withStateProvince_WhenStateProvinceIsNull_ShouldThrowNullPointerException() {
-        AddressBuilderImpl addressBuilder = new AddressBuilderImpl();
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
         
         ThrowingCallable actual = () -> addressBuilder.withStateProvince(null);
         
@@ -56,8 +56,8 @@ public class AddressBuilderImplUnitTests {
     }
     
     @Test
-    public void build_ShouldNotThrowAnyException() {
-        AddressBuilderImpl addressBuilder = new AddressBuilderImpl();
+    public void build_WhenNoFieldsProvided_ShouldNotThrowAnyException() {
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
         
         ThrowingCallable actual = () -> addressBuilder.build();
         
