@@ -1,4 +1,4 @@
-package update;
+package tests.application.commands.book.update;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 

@@ -1,4 +1,4 @@
-package register;
+package tests.application.commands.book.register;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -30,7 +30,7 @@ public class RegisterBookCommandUnitTests {
 	}
 	
 	@Test
-	public void registerBookCommand_WhenauthorIdIsNull_ShouldThrowNullPointerException() {
+	public void registerBookCommand_WhenAuthorIdIsNull_ShouldThrowNullPointerException() {
 
 		ThrowingCallable actual = () -> new RegisterBookCommand("", "", 8, null, Optional.empty());
 
@@ -39,7 +39,7 @@ public class RegisterBookCommandUnitTests {
 	}
 	
 	@Test
-	public void registerBookCommand_WhenlibraryIdIsNull_ShouldThrowNullPointerException() {
+	public void registerBookCommand_WhenLibraryIdIsNull_ShouldThrowNullPointerException() {
 
 		ThrowingCallable actual = () -> new RegisterBookCommand("", "", 8, Optional.empty(), null);
 
