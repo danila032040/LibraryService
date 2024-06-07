@@ -3,8 +3,6 @@ package application.commands.book.register;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
 import base.result.ErrorOr;
-import base.result.ValidationResult;
-import base.utils.Validator;
 import domain.author.AuthorId;
 import domain.book.Book;
 import domain.book.BookId;
@@ -16,9 +14,7 @@ public class RegisterBookCommandHandler implements RequestHandler<RegisterBookCo
     private final BookRepository bookRepository;
     private final DomainEventPublisher domainEventPublisher;
     
-    public RegisterBookCommandHandler(
-            BookRepository bookRepository,
-            DomainEventPublisher domainEventPublisher) {
+    public RegisterBookCommandHandler(BookRepository bookRepository, DomainEventPublisher domainEventPublisher) {
         this.bookRepository = bookRepository;
         this.domainEventPublisher = domainEventPublisher;
     }

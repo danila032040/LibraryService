@@ -2,6 +2,7 @@ package domain.library;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import base.cloneable.Cloneable;
 import base.ddd.ValueObject;
@@ -29,6 +30,7 @@ public class LibraryId extends ValueObject implements Cloneable<LibraryId>, Comp
     
     @Override
     public int compareTo(LibraryId other) {
+        Objects.requireNonNull(other);
         return Integer.compare(this.getId(), other.getId());
     }
 }

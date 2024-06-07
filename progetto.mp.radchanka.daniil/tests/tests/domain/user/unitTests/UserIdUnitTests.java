@@ -1,7 +1,9 @@
 package tests.domain.user.unitTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import domain.user.UserId;
@@ -76,5 +78,45 @@ public class UserIdUnitTests {
         int actual2 = id2.hashCode();
         
         assertThat(actual1).isNotEqualTo(actual2);
+    }
+    
+    @Test
+    public void compareTo_WhenIdsAreEqual_ShouldReturnZero() {
+        UserId id1 = new UserId(1);
+        UserId id2 = new UserId(1);
+        
+        int result = id1.compareTo(id2);
+        
+        assertThat(result).isZero();
+    }
+    
+    @Test
+    public void compareTo_WhenComparingWithGreaterId_ShouldReturnNegative() {
+        UserId id1 = new UserId(1);
+        UserId id2 = new UserId(2);
+        
+        int result = id1.compareTo(id2);
+        
+        assertThat(result).isNegative();
+    }
+    
+    @Test
+    public void compareTo_WhenComparingWithLesserId_ShouldReturnPositive() {
+        UserId id1 = new UserId(2);
+        UserId id2 = new UserId(1);
+        
+        int result = id1.compareTo(id2);
+        
+        assertThat(result).isPositive();
+    }
+    
+    @Test
+    public void compareTo_WhenComparingWithNull_ShouldThrowNullPointerException() {
+        UserId id1 = new UserId(2);
+        UserId id2 = null;
+        
+        ThrowingCallable actual = () -> id1.compareTo(id2);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

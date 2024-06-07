@@ -2,6 +2,7 @@ package domain.author;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import base.cloneable.Cloneable;
 import base.ddd.ValueObject;
@@ -29,6 +30,7 @@ public class AuthorId extends ValueObject implements Cloneable<AuthorId>, Compar
     
     @Override
     public int compareTo(AuthorId other) {
+        Objects.requireNonNull(other);
         return Integer.compare(this.getId(), other.getId());
     }
 }
