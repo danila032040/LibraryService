@@ -9,7 +9,7 @@ import domain.book.Book;
 import domain.book.BookId;
 
 public enum BookSortByFieldQueryData {
-    id {
+    Id {
         @Override
         public SortCriteria<Book> createSortCriteria(SortType sortType) {
             return SortCriteria.<Book, BookId>sortBy(book -> book.getId(), sortType);
@@ -20,7 +20,7 @@ public enum BookSortByFieldQueryData {
             return sortCriteria.thenSortBy(book -> book.getId(), sortType);
         }
     },
-    name {
+    Name {
         @Override
         public SortCriteria<Book> createSortCriteria(SortType sortType) {
             return SortCriteria.<Book, String>sortBy(book -> book.getName(), sortType);
@@ -31,7 +31,7 @@ public enum BookSortByFieldQueryData {
             return sortCriteria.thenSortBy(book -> book.getName(), sortType);
         }
     },
-    genre {
+    Genre {
         @Override
         public SortCriteria<Book> createSortCriteria(SortType sortType) {
             return SortCriteria.<Book, String>sortBy(book -> book.getGenre(), sortType);
@@ -42,7 +42,7 @@ public enum BookSortByFieldQueryData {
             return sortCriteria.thenSortBy(book -> book.getGenre(), sortType);
         }
     },
-    publicationYear {
+    PublicationYear {
         @Override
         public SortCriteria<Book> createSortCriteria(SortType sortType) {
             return SortCriteria.<Book, Integer>sortBy(book -> book.getPublicationYear(), sortType);
@@ -53,7 +53,7 @@ public enum BookSortByFieldQueryData {
             return sortCriteria.thenSortBy(book -> book.getPublicationYear(), sortType);
         }
     },
-    authorId {
+    AuthorId {
         @Override
         public SortCriteria<Book> createSortCriteria(SortType sortType) {
             Comparator<Book> comparator = ComparatorUtils.comparingOptionalField(book -> book.getAuthorId());
@@ -70,7 +70,7 @@ public enum BookSortByFieldQueryData {
                             sortType == SortType.Descending ? comparator.reversed() : comparator.reversed());
         }
     },
-    libraryId {
+    LibraryId {
         @Override
         public SortCriteria<Book> createSortCriteria(SortType sortType) {
             Comparator<Book> comparator = ComparatorUtils.comparingOptionalField(book -> book.getLibraryId());

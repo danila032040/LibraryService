@@ -11,7 +11,6 @@ public class RegisterUserCommandValidator implements Validator<RegisterUserComma
     private final Validator<AddressCommandData> addressValidator;
     
     public RegisterUserCommandValidator(Validator<AddressCommandData> addressValidator) {
-        
         this.addressValidator = addressValidator;
     }
     
@@ -21,12 +20,8 @@ public class RegisterUserCommandValidator implements Validator<RegisterUserComma
         return ValidationResult
                 .create()
                 .unionWith(addressValidationResult)
-                .withErrorIf(
-                        () -> request.getName() == null || request.getName().isBlank(),
-                        ErrorResult.from("Name must be not whitespace and not empty"))
-                .withErrorIf(
-                        () -> request.getSurname() == null || request.getSurname().isBlank(),
-                        ErrorResult.from("Surname must be not whitespace and not empty"))
+                .withErrorIf(() -> request.getName().isBlank(), ErrorResult.from("Name must be not blank"))
+                .withErrorIf(() -> request.getSurname().isBlank(), ErrorResult.from("Surname must be not blank"))
                 .withErrorIf(
                         () -> request.getPhoneNumber().map(String::isBlank).orElse(false),
                         ErrorResult.from("Phone number must be not whitespace if provided"));
