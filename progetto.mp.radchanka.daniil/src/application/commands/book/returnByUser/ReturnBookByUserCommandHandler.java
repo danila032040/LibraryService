@@ -9,6 +9,8 @@ import base.result.SuccessResult;
 import domain.book.Book;
 import domain.book.BookId;
 import domain.book.BookRepository;
+import domain.book.exceptions.UserTriedToReturnTheBookOfAnotherUserDomainException;
+import domain.book.exceptions.UserTriedToReturnTheBookThatWereNotBorrowedDomainException;
 import domain.book.specifications.BookByIdSpecification;
 import domain.user.UserId;
 import domain.user.UserRepository;
@@ -41,7 +43,7 @@ public class ReturnBookByUserCommandHandler implements RequestHandler<ReturnBook
                 return ErrorOr.fromErrorMessage("Book with specified id was not found");
             }
             
-            if (userRepository.exists(new UserByIdSpecification(userId))) {
+            if (!userRepository.exists(new UserByIdSpecification(userId))) {
                 return ErrorOr.fromErrorMessage("User with specified id was not found");
             }
             
@@ -53,8 +55,10 @@ public class ReturnBookByUserCommandHandler implements RequestHandler<ReturnBook
             domainEventPublisher.publishDomainEvents(existingBook.extractAllDomainEvents());
             
             return ErrorOr.fromResult(SuccessResult.from("Successfully returned book"));
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
+        } catch (UserTriedToReturnTheBookOfAnotherUserDomainException e) {
+            return ErrorOr.fromErrorMessage("User tried to return the book of another user");
+        } catch (UserTriedToReturnTheBookThatWereNotBorrowedDomainException e) {
+            return ErrorOr.fromErrorMessage("User tried to return the book that were not borrowed previously");
         }
     }
 }

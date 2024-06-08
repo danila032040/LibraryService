@@ -89,8 +89,8 @@ public class BorrowBookByUserCommandHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenSuccessful_ShouldReturnSuccessMessageAndPublishDomainEvents() {
-        BorrowBookByUserCommand command = new BorrowBookByUserCommand(0, 0);
+    public void handle_WhenSuccessful_ShouldReturnSuccessMessagePublishDomainEventsUpdateBook() {
+        BorrowBookByUserCommand command = new BorrowBookByUserCommand(0, 5);
         Book book = createBookWithoutDomainEvents(0);
         bookRepository.setBook(Optional.of(book));
         userRepository.setExists(true);
@@ -98,15 +98,16 @@ public class BorrowBookByUserCommandHandlerUnitTests {
         ErrorOr<SuccessResult> result = handler.handle(command);
         
         assertThat(result.isError()).isFalse();
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
         assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully borrowed book");
-        assertThat(book.getBorrowedByUserId()).isEqualTo(Optional.of(new UserId(0)));
+        assertThat(book.getBorrowedByUserId()).map(UserId::getId).hasValue(5);
         assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).hasValueSatisfying(domainEvents -> {
             assertThat(domainEvents).satisfiesExactly(domainEvent1 -> {
                 assertThat(domainEvent1)
                         .isInstanceOfSatisfying(BookBorrowedByUserDomainEvent.class, bookBorrowedByUserDomainEvent -> {
                             assertThat(bookBorrowedByUserDomainEvent.getBorrowedBook()).isSameAs(book);
                             assertThat(bookBorrowedByUserDomainEvent.getUserIdThatHadBorrowedTheBook().getId())
-                                    .isEqualTo(0);
+                                    .isEqualTo(5);
                         });
             });
         });

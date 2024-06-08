@@ -1,4 +1,4 @@
-package tests.application.commands.book.borrowByUser.mocks;
+package tests.application.commands.book.returnByUser.mocks;
 
 import java.util.Collection;
 import java.util.Optional;
