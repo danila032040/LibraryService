@@ -10,9 +10,11 @@ import application.queries.common.sortData.SortTypeQueryData;
 import base.mediator.request.RequestHandler;
 import base.repository.Pagination;
 import base.repository.SortCriteria;
+import base.repository.SortType;
 import base.result.ErrorOr;
 import base.specification.Specification;
 import base.specification.composable.CompositeSpecification;
+import base.utils.Mapper;
 import base.utils.Pair;
 import base.utils.SpecificationUtils;
 import domain.author.AuthorId;
@@ -21,9 +23,13 @@ import domain.book.BookRepository;
 import domain.library.LibraryId;
 
 public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, ErrorOr<Collection<Book>>> {
+    private final Mapper<SortTypeQueryData, SortType> sortTypeQueryDataToSortTypeMapper;
     private final BookRepository bookRepository;
     
-    public FindBooksQueryHandler(BookRepository bookRepository) {
+    public FindBooksQueryHandler(
+            Mapper<SortTypeQueryData, SortType> sortTypeQueryDataToSortTypeMapper,
+            BookRepository bookRepository) {
+        this.sortTypeQueryDataToSortTypeMapper = sortTypeQueryDataToSortTypeMapper;
         this.bookRepository = bookRepository;
     }
     
@@ -101,14 +107,16 @@ public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, Err
     }
     
     private SortCriteria<Book> buildBookSortCriteriaFromRequest(FindBooksQuery request) {
-        BookSortCriteriaBuilder builder = BookSortCriteriaBuilder
-                .sortBy(request.getSortByField(), request.getSortType());
+        BookSortByFieldQueryData sortByField = request.getSortByField();
+        SortType sortType = this.sortTypeQueryDataToSortTypeMapper.map(request.getSortType());
+        BookSortCriteriaBuilder builder = BookSortCriteriaBuilder.sortBy(sortByField, sortType);
         
-        Optional<Pair<BookSortByFieldQueryData, SortTypeQueryData>> thenSortPair = request
+        Optional<Pair<BookSortByFieldQueryData, SortType>> thenSortPair = request
                 .getThenSortByField()
                 .flatMap(
                         thenSortByField -> request
                                 .getThenSortType()
+                                .map(sortTypeQueryDataToSortTypeMapper::map)
                                 .map(thenSortType -> Pair.of(thenSortByField, thenSortType)));
         thenSortPair.ifPresent(x -> builder.thenSortBy(x.getLeft(), x.getRight()));
         return builder.build();
