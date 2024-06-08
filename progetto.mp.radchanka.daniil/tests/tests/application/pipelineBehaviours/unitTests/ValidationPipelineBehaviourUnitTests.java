@@ -17,7 +17,7 @@ public class ValidationPipelineBehaviourUnitTests {
     @Test
     public void handle_WhenValidationPasses_ShouldCallNextHandler() {
         ValidatorMock validator = new ValidatorMock();
-        RequestHandlerMock nextHandler = new RequestHandlerMock();
+        RequestHandlerMock nextHandler = new RequestHandlerMock("");
         ValidationPipelineBehaviour<RequestMock, String> validationPipelineBehaviour = new ValidationPipelineBehaviour<>(
                 validator);
         validator.setValidationResult(ValidationResult.create());
@@ -30,7 +30,7 @@ public class ValidationPipelineBehaviourUnitTests {
     @Test
     public void handle_WhenValidationFails_ShouldReturnErrorResult() {
         ValidatorMock validator = new ValidatorMock();
-        RequestHandlerMock nextHandler = new RequestHandlerMock();
+        RequestHandlerMock nextHandler = new RequestHandlerMock("");
         ValidationPipelineBehaviour<RequestMock, String> validationPipelineBehaviour = new ValidationPipelineBehaviour<>(
                 validator);
         validator

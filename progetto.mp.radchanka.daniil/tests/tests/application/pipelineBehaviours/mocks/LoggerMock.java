@@ -17,5 +17,18 @@ public class LoggerMock implements Logger {
         this.specifiedMessages.add(message);
         this.specifiedArgumentsList.add(args);
     }
+
+    public List<LogLevelType> getSpesifiedLogLevels() {
+        return spesifiedLogLevels;
+    }
+
+    public List<String> getSpecifiedMessages() {
+        return specifiedMessages;
+    }
+
+    public List<Object[]> getSpecifiedArgumentsList() {
+        return specifiedArgumentsList;
+    }
+ 
     
 }
