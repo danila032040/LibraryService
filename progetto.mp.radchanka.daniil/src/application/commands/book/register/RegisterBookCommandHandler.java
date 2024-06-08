@@ -2,6 +2,7 @@ package application.commands.book.register;
 
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
+import base.repository.AlreadyExistsException;
 import base.result.ErrorOr;
 import domain.author.AuthorId;
 import domain.book.Book;
@@ -37,8 +38,8 @@ public class RegisterBookCommandHandler implements RequestHandler<RegisterBookCo
             domainEventPublisher.publishDomainEvents(bookToRegister.extractAllDomainEvents());
             
             return ErrorOr.fromResult(bookToRegister.getId());
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
+        } catch (AlreadyExistsException exc) {
+            return ErrorOr.fromErrorMessage("Book already exists");
         }
     }
     

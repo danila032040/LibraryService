@@ -82,12 +82,12 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
                 hasInformationToUpdate = true;
             }
             
-            if (!isAuthorIdNewerForTheBook(newAuthorId, existingBook)) {
+            if (isAuthorIdNewerForTheBook(newAuthorId, existingBook)) {
                 newAuthorId.ifPresent(existingBook::setAuthor);
                 hasInformationToUpdate = true;
             }
             
-            if (!isLibraryIdNewerForTheBook(newLibraryId, existingBook)) {
+            if (isLibraryIdNewerForTheBook(newLibraryId, existingBook)) {
                 newLibraryId.ifPresent(existingBook::setLibrary);
                 hasInformationToUpdate = true;
             }
@@ -110,17 +110,13 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
     
     private Boolean isAuthorIdNewerForTheBook(Optional<AuthorId> newAuthorId, Book existingBook) {
         return newAuthorId
-                .map(
-                        authorId -> existingBook.getAuthorId().isEmpty()
-                                || !Objects.equals(existingBook.getAuthorId().get(), authorId))
+                .map(authorId -> !Objects.equals(existingBook.getAuthorId().orElse(authorId), authorId))
                 .orElse(false);
     }
     
     private Boolean isLibraryIdNewerForTheBook(Optional<LibraryId> newLibraryId, Book existingBook) {
         return newLibraryId
-                .map(
-                        authorId -> existingBook.getLibraryId().isEmpty()
-                                || !Objects.equals(existingBook.getLibraryId().get(), authorId))
+                .map(libraryId -> !Objects.equals(existingBook.getLibraryId().orElse(libraryId), libraryId))
                 .orElse(false);
     }
     

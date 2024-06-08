@@ -1,4 +1,4 @@
-package tests.application.commands.book.borrowByUser;
+package tests.application.commands.book.borrowByUser.unitTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -89,7 +89,7 @@ public class BorrowBookByUserCommandHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenSuccessful_ShouldReturnSuccessMessage() {
+    public void handle_WhenSuccessful_ShouldReturnSuccessMessageAndPublishDomainEvents() {
         BorrowBookByUserCommand command = new BorrowBookByUserCommand(0, 0);
         Book book = createBookWithoutDomainEvents(0);
         bookRepository.setBook(Optional.of(book));

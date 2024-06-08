@@ -60,9 +60,6 @@ public class BorrowBookByUserCommandHandler implements RequestHandler<BorrowBook
             return ErrorOr.fromResult(SuccessResult.from("Successfully borrowed book"));
         } catch (BookIsAlreadyBorrowedByAnotherUserDomainException exc) {
             return ErrorOr.fromErrorMessage("Book were already borrowed");
-            
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
         }
     }
 }
