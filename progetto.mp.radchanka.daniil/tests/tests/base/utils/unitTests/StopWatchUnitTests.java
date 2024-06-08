@@ -29,8 +29,25 @@ public class StopWatchUnitTests {
         StopWatch stopWatch = StopWatch.from(clockMock);
         
         stopWatch.start();
-        clockMock.setInstant(instant.plusSeconds(5));
+        clockMock.addSeconds(5);
         stopWatch.stop();
+        Duration duration = stopWatch.getDuration();
+        
+        assertThat(duration.toSeconds()).isEqualTo(5);
+    }
+    
+    @Test
+    public void getDuration_WhenStopWatchStartedAndStoppedTwice_ShouldReturnElapsedTimeBetweenStartAndFirstStop() {
+        Instant instant = Instant.now();
+        ClockMock clockMock = new ClockMock(instant);
+        StopWatch stopWatch = StopWatch.from(clockMock);
+        
+        stopWatch.start();
+        clockMock.addSeconds(5);
+        stopWatch.stop();
+        clockMock.addSeconds(1);
+        stopWatch.stop();
+        clockMock.addSeconds(1);
         Duration duration = stopWatch.getDuration();
         
         assertThat(duration.toSeconds()).isEqualTo(5);
@@ -43,10 +60,46 @@ public class StopWatchUnitTests {
         StopWatch stopWatch = StopWatch.from(clockMock);
         
         stopWatch.start();
-        clockMock.setInstant(instant.plusSeconds(5));
+        clockMock.addSeconds(5);
         
         Duration duration = stopWatch.getDuration();
         
         assertThat(duration.toSeconds()).isEqualTo(5);
+    }
+    
+    @Test
+    public void getDuration_WhenStopWatchStartedResetedStarted_ShouldReturnElapsedTimeBetweenNowAndLastStart() {
+        Instant instant = Instant.now();
+        ClockMock clockMock = new ClockMock(instant);
+        StopWatch stopWatch = StopWatch.from(clockMock);
+        
+        stopWatch.start();
+        clockMock.addSeconds(5);
+        stopWatch.reset();
+        stopWatch.start();
+        clockMock.addSeconds(1);
+        
+        Duration duration = stopWatch.getDuration();
+        
+        assertThat(duration.toSeconds()).isEqualTo(1);
+    }
+    
+    @Test
+    public void getDuration_WhenStopWatchStartedResetedStarted_ShouldReturnElapsedTimeBetweenStopAndLastStart() {
+        Instant instant = Instant.now();
+        ClockMock clockMock = new ClockMock(instant);
+        StopWatch stopWatch = StopWatch.from(clockMock);
+        
+        stopWatch.start();
+        clockMock.addSeconds(5);
+        stopWatch.reset();
+        stopWatch.start();
+        clockMock.addSeconds(2);
+        stopWatch.stop();
+        clockMock.addSeconds(5);
+        
+        Duration duration = stopWatch.getDuration();
+        
+        assertThat(duration.toSeconds()).isEqualTo(2);
     }
 }

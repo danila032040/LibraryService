@@ -32,6 +32,11 @@ public class StopWatch {
         startInstant = Optional.empty();
     }
     
+    public void reset() {
+        startInstant = Optional.empty();
+        duration = Duration.ZERO;
+    }
+    
     private void recalculateDuration() {
         Instant start = startInstant.orElseThrow();
         Instant stop = clock.instant();
