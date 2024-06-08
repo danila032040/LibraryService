@@ -1,5 +1,6 @@
 package application.commands.user.update;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import application.commands.common.address.AddressCommandData;
@@ -14,8 +15,8 @@ public class UpdateUserCommand implements Request<ErrorOr<SuccessResult>> {
     
     public UpdateUserCommand(int userId, Optional<AddressCommandData> newAddress, Optional<String> newPhoneNumber) {
         this.userId = userId;
-        this.newAddress = newAddress;
-        this.newPhoneNumber = newPhoneNumber;
+        this.newAddress = Objects.requireNonNull(newAddress);
+        this.newPhoneNumber = Objects.requireNonNull(newPhoneNumber);
     }
     
     public int getUserId() {

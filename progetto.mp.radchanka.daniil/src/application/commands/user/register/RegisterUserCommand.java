@@ -1,5 +1,6 @@
 package application.commands.user.register;
 
+import java.util.Objects;
 import java.util.Optional;
 
 import application.commands.common.address.AddressCommandData;
@@ -14,10 +15,10 @@ public class RegisterUserCommand implements Request<ErrorOr<UserId>> {
     private final AddressCommandData address;
     
     public RegisterUserCommand(String name, String surname, Optional<String> phoneNumber, AddressCommandData address) {
-        this.name = name;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
+        this.name = Objects.requireNonNull(name);
+        this.surname = Objects.requireNonNull(surname);
+        this.phoneNumber = Objects.requireNonNull(phoneNumber);
+        this.address = Objects.requireNonNull(address);
     }
     
     public AddressCommandData getAddress() {

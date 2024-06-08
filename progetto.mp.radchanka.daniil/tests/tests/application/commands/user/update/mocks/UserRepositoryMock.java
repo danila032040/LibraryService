@@ -1,4 +1,4 @@
-package tests.application.commands.book.register.mocks;
+package tests.application.commands.user.update.mocks;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -7,22 +7,22 @@ import base.repository.AlreadyExistsException;
 import base.repository.Pagination;
 import base.repository.SortCriteria;
 import base.specification.Specification;
-import domain.book.Book;
-import domain.book.BookId;
-import domain.book.BookRepository;
+import domain.user.User;
+import domain.user.UserId;
+import domain.user.UserRepository;
 
-public class BookRepositoryMock implements BookRepository {
-    private Optional<Book> book = Optional.empty();
-    private BookId generatedBookId;
+public class UserRepositoryMock implements UserRepository {
+    private Optional<User> user = Optional.empty();
+    private UserId generatedUserId;
     private boolean throwAlreadyExistsException;
     private boolean isAddCalled;
     
-    public void setBook(Optional<Book> book) {
-        this.book = book;
+    public void setUser(Optional<User> user) {
+        this.user = user;
     }
     
-    public void setGeneratedBookId(BookId generatedBookId) {
-        this.generatedBookId = generatedBookId;
+    public void setGeneratedUserId(UserId generatedUserId) {
+        this.generatedUserId = generatedUserId;
     }
     
     public void setThrowAlreadyExistsException(boolean throwAlreadyExistsException) {
@@ -30,72 +30,77 @@ public class BookRepositoryMock implements BookRepository {
     }
     
     @Override
-    public Optional<Book> getFirst(Specification<Book> specification) {
-        return book;
+    public Optional<User> getFirst(Specification<User> specification) {
+        return user;
     }
     
     @Override
-    public void update(Book book) {
+    public void update(User user) {
         // No-op
     }
     
     @Override
-    public void add(Book entity) throws AlreadyExistsException {
+    public void add(User entity) throws AlreadyExistsException {
         if (throwAlreadyExistsException) {
-            throw new AlreadyExistsException("Book already exists");
+            throw new AlreadyExistsException("User already exists");
         }
         this.isAddCalled = true;
     }
     
     @Override
-    public void addRange(Collection<Book> entity) throws AlreadyExistsException {
+    public void addRange(Collection<User> entity) throws AlreadyExistsException {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> get(Specification<Book> specification) {
+    public Collection<User> get(Specification<User> specification) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> get(Specification<Book> specification, Pagination pagination) {
+    public Collection<User> get(Specification<User> specification, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> get(
-            Specification<Book> specification,
-            SortCriteria<Book> sortCriteria,
+    public Collection<User> get(
+            Specification<User> specification,
+            SortCriteria<User> sortCriteria,
             Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> getAll() {
+    public Collection<User> getAll() {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public void remove(BookId entityId) {
+    public void remove(UserId entityId) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public void removeRange(Collection<BookId> entityIds) {
+    public void removeRange(Collection<UserId> entityIds) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public void updateRange(Collection<Book> entity) {
+    public void updateRange(Collection<User> entity) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public BookId generateNewBookId() {
-        return generatedBookId;
+    public UserId generateNewUserId() {
+        return generatedUserId;
     }
     
     public boolean isAddCalled() {
         return isAddCalled;
+    }
+    
+    @Override
+    public boolean exists(Specification<User> specification) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

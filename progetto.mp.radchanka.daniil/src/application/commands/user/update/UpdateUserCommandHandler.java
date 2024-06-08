@@ -31,51 +31,44 @@ public class UpdateUserCommandHandler implements RequestHandler<UpdateUserComman
     
     @Override
     public ErrorOr<SuccessResult> handle(UpdateUserCommand request) {
-        try {
-            Optional<Address> newAddress = request.getNewAddress().map(addressMapper::map);
-            Optional<String> newPhoneNumber = request.getNewPhoneNumber();
-            
-            Optional<User> optionalExistingUser = userRepository
-                    .getFirst(new UserByIdSpecification(new UserId(request.getUserId())));
-            
-            if (optionalExistingUser.isEmpty()) {
-                return ErrorOr.fromErrorMessage("User with specified id was not found");
-            }
-            
-            User existingUser = optionalExistingUser.orElseThrow();
-            
-            boolean hasPersonalInformationToUpdate = false;
-            
-            if (isPhoneNumberNewerForTheUser(newPhoneNumber, existingUser)) {
-                newPhoneNumber.ifPresent(existingUser::changePhoneNumber);
-                hasPersonalInformationToUpdate = true;
-            }
-            if (isAddressNewerForTheUser(newAddress, existingUser)) {
-                newAddress.ifPresent(existingUser::changeAddress);
-                hasPersonalInformationToUpdate = true;
-            }
-            
-            if (!hasPersonalInformationToUpdate) {
-                return ErrorOr
-                        .fromResult(
-                                SuccessResult.from("User already contains provided information. Update is not needed"));
-            }
-            
-            userRepository.update(existingUser);
-            
-            domainEventPublisher.publishDomainEvents(existingUser.extractAllDomainEvents());
-            
-            return ErrorOr.fromResult(SuccessResult.from("Successfully updated user"));
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
+        Optional<Address> newAddress = request.getNewAddress().map(addressMapper::map);
+        Optional<String> newPhoneNumber = request.getNewPhoneNumber();
+        
+        Optional<User> optionalExistingUser = userRepository
+                .getFirst(new UserByIdSpecification(new UserId(request.getUserId())));
+        
+        if (optionalExistingUser.isEmpty()) {
+            return ErrorOr.fromErrorMessage("User with specified id was not found");
         }
+        
+        User existingUser = optionalExistingUser.orElseThrow();
+        
+        boolean hasPersonalInformationToUpdate = false;
+        
+        if (isPhoneNumberNewerForTheUser(newPhoneNumber, existingUser)) {
+            newPhoneNumber.ifPresent(existingUser::changePhoneNumber);
+            hasPersonalInformationToUpdate = true;
+        }
+        if (isAddressNewerForTheUser(newAddress, existingUser)) {
+            newAddress.ifPresent(existingUser::changeAddress);
+            hasPersonalInformationToUpdate = true;
+        }
+        
+        if (!hasPersonalInformationToUpdate) {
+            return ErrorOr
+                    .fromResult(SuccessResult.from("User already contains provided information. Update is not needed"));
+        }
+        
+        userRepository.update(existingUser);
+        
+        domainEventPublisher.publishDomainEvents(existingUser.extractAllDomainEvents());
+        
+        return ErrorOr.fromResult(SuccessResult.from("Successfully updated user"));
     }
     
     private Boolean isPhoneNumberNewerForTheUser(Optional<String> newPhoneNumber, User existingUser) {
         return newPhoneNumber
-                .map(
-                        phoneNumber -> existingUser.getPhoneNumber().isEmpty()
-                                || !Objects.equals(existingUser.getPhoneNumber().get(), phoneNumber))
+                .map(phoneNumber -> !Objects.equals(existingUser.getPhoneNumber().orElse(phoneNumber), phoneNumber))
                 .orElse(false);
     }
     

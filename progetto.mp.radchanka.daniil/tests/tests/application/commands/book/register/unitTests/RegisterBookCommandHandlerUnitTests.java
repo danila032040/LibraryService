@@ -37,6 +37,7 @@ public class RegisterBookCommandHandlerUnitTests {
         ErrorOr<BookId> result = handler.handle(command);
         
         assertThat(result.isError()).isFalse();
+        assertThat(bookRepository.isAddCalled()).isTrue();
         assertThat(result.getResult()).hasValue(generatedBookId);
         assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).hasValueSatisfying(domainEvents -> {
             assertThat(domainEvents).satisfiesExactly(domainEvent1 -> {
@@ -56,6 +57,7 @@ public class RegisterBookCommandHandlerUnitTests {
         ErrorOr<BookId> result = handler.handle(command);
         
         assertThat(result.isError()).isTrue();
+        assertThat(bookRepository.isAddCalled()).isFalse();
         assertThat(result.getError())
                 .hasValueSatisfying(error -> assertThat(error.getMessage()).isEqualTo("Book already exists"));
         assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();

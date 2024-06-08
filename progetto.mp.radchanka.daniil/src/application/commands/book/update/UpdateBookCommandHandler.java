@@ -41,71 +41,64 @@ public class UpdateBookCommandHandler implements RequestHandler<UpdateBookComman
     
     @Override
     public ErrorOr<SuccessResult> handle(UpdateBookCommand request) {
-        try {
-            Optional<AuthorId> newAuthorId = request.getAuthorId().map(AuthorId::new);
-            Optional<LibraryId> newLibraryId = request.getLibraryId().map(LibraryId::new);
-            Optional<Boolean> authorFound = newAuthorId.map(AuthorByIdSpecification::new).map(authorRepository::exists);
-            
-            Optional<Boolean> libraryFound = newLibraryId
-                    .map(LibraryByIdSpecification::new)
-                    .map(libraryRepository::exists);
-            
-            Optional<Book> optionalExistingBook = bookRepository
-                    .getFirst(new BookByIdSpecification(new BookId(request.getBookId())));
-            
-            if (optionalExistingBook.isEmpty()) {
-                return ErrorOr.fromErrorMessage("Book with specified id was not found");
-            }
-            
-            if (!libraryFound.orElse(true)) {
-                return ErrorOr.fromErrorMessage("Library with specified id was not found");
-            }
-            
-            if (!authorFound.orElse(true)) {
-                return ErrorOr.fromErrorMessage("Author with specified id was not found");
-            }
-            
-            Book existingBook = optionalExistingBook.orElseThrow();
-            
-            boolean hasInformationToUpdate = false;
-            
-            if (!Objects.equals(existingBook.getGenre(), request.getGenre())) {
-                existingBook.setGenre(request.getGenre());
-                hasInformationToUpdate = true;
-            }
-            if (!Objects.equals(existingBook.getName(), request.getName())) {
-                existingBook.setName(request.getName());
-                hasInformationToUpdate = true;
-            }
-            if (!Objects.equals(existingBook.getPublicationYear(), request.getPublicationYear())) {
-                existingBook.setPublicationYear(request.getPublicationYear());
-                hasInformationToUpdate = true;
-            }
-            
-            if (isAuthorIdNewerForTheBook(newAuthorId, existingBook)) {
-                newAuthorId.ifPresent(existingBook::setAuthor);
-                hasInformationToUpdate = true;
-            }
-            
-            if (isLibraryIdNewerForTheBook(newLibraryId, existingBook)) {
-                newLibraryId.ifPresent(existingBook::setLibrary);
-                hasInformationToUpdate = true;
-            }
-            
-            if (!hasInformationToUpdate) {
-                return ErrorOr
-                        .fromResult(
-                                SuccessResult.from("Book already contains provided information. Update is not needed"));
-            }
-            
-            bookRepository.update(existingBook);
-            
-            domainEventPublisher.publishDomainEvents(existingBook.extractAllDomainEvents());
-            
-            return ErrorOr.fromResult(SuccessResult.from("Successfully updated book information"));
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
+        Optional<AuthorId> newAuthorId = request.getAuthorId().map(AuthorId::new);
+        Optional<LibraryId> newLibraryId = request.getLibraryId().map(LibraryId::new);
+        Optional<Boolean> authorFound = newAuthorId.map(AuthorByIdSpecification::new).map(authorRepository::exists);
+        
+        Optional<Boolean> libraryFound = newLibraryId.map(LibraryByIdSpecification::new).map(libraryRepository::exists);
+        
+        Optional<Book> optionalExistingBook = bookRepository
+                .getFirst(new BookByIdSpecification(new BookId(request.getBookId())));
+        
+        if (optionalExistingBook.isEmpty()) {
+            return ErrorOr.fromErrorMessage("Book with specified id was not found");
         }
+        
+        if (!libraryFound.orElse(true)) {
+            return ErrorOr.fromErrorMessage("Library with specified id was not found");
+        }
+        
+        if (!authorFound.orElse(true)) {
+            return ErrorOr.fromErrorMessage("Author with specified id was not found");
+        }
+        
+        Book existingBook = optionalExistingBook.orElseThrow();
+        
+        boolean hasInformationToUpdate = false;
+        
+        if (!Objects.equals(existingBook.getGenre(), request.getGenre())) {
+            existingBook.setGenre(request.getGenre());
+            hasInformationToUpdate = true;
+        }
+        if (!Objects.equals(existingBook.getName(), request.getName())) {
+            existingBook.setName(request.getName());
+            hasInformationToUpdate = true;
+        }
+        if (!Objects.equals(existingBook.getPublicationYear(), request.getPublicationYear())) {
+            existingBook.setPublicationYear(request.getPublicationYear());
+            hasInformationToUpdate = true;
+        }
+        
+        if (isAuthorIdNewerForTheBook(newAuthorId, existingBook)) {
+            newAuthorId.ifPresent(existingBook::setAuthor);
+            hasInformationToUpdate = true;
+        }
+        
+        if (isLibraryIdNewerForTheBook(newLibraryId, existingBook)) {
+            newLibraryId.ifPresent(existingBook::setLibrary);
+            hasInformationToUpdate = true;
+        }
+        
+        if (!hasInformationToUpdate) {
+            return ErrorOr
+                    .fromResult(SuccessResult.from("Book already contains provided information. Update is not needed"));
+        }
+        
+        bookRepository.update(existingBook);
+        
+        domainEventPublisher.publishDomainEvents(existingBook.extractAllDomainEvents());
+        
+        return ErrorOr.fromResult(SuccessResult.from("Successfully updated book information"));
     }
     
     private Boolean isAuthorIdNewerForTheBook(Optional<AuthorId> newAuthorId, Book existingBook) {

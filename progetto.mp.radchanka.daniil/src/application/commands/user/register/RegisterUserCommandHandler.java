@@ -3,6 +3,7 @@ package application.commands.user.register;
 import application.commands.common.address.AddressCommandData;
 import base.ddd.DomainEventPublisher;
 import base.mediator.request.RequestHandler;
+import base.repository.AlreadyExistsException;
 import base.result.ErrorOr;
 import base.utils.Mapper;
 import domain.common.Address;
@@ -41,8 +42,8 @@ public class RegisterUserCommandHandler implements RequestHandler<RegisterUserCo
             domainEventPublisher.publishDomainEvents(userToRegister.extractAllDomainEvents());
             
             return ErrorOr.fromResult(userToRegister.getId());
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
+        } catch (AlreadyExistsException exc) {
+            return ErrorOr.fromErrorMessage("User already exists");
         }
     }
     
