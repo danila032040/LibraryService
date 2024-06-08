@@ -18,17 +18,17 @@ public class BookSortCriteriaBuilder {
     private static Comparator<Book> createComparatorFrom(BookSortByFieldQueryData sortByField) {
         switch (sortByField) {
         case AuthorId:
-            return ComparatorUtils.comparingOptionalField(book -> book.getAuthorId());
+            return ComparatorUtils.comparingOptionalField(Book::getAuthorId);
         case Genre:
-            return Comparator.comparing(book -> book.getGenre());
+            return Comparator.comparing(Book::getGenre);
         case Id:
-            return Comparator.comparing(book -> book.getId());
+            return Comparator.comparing(Book::getId);
         case LibraryId:
-            return ComparatorUtils.comparingOptionalField(book -> book.getLibraryId());
+            return ComparatorUtils.comparingOptionalField(Book::getLibraryId);
         case Name:
-            return Comparator.comparing(book -> book.getName());
+            return Comparator.comparing(Book::getName);
         case PublicationYear:
-            return Comparator.comparing(book -> book.getPublicationYear());
+            return Comparator.comparing(Book::getPublicationYear);
         default:
             throw new IllegalArgumentException("Unknown enum: " + sortByField);
         }
@@ -50,11 +50,7 @@ public class BookSortCriteriaBuilder {
     }
     
     public BookSortCriteriaBuilder thenSortBy(BookSortByFieldQueryData sortByField, SortType sortType) {
-        
         Comparator<Book> thenComparator = createComparatorFrom(sortByField, sortType);
-        
-        if (sortType == SortType.Descending)
-            thenComparator = thenComparator.reversed();
         
         sortCriteria.thenSortUsingComparator(thenComparator);
         return this;

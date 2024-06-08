@@ -11,7 +11,7 @@ import base.repository.SortType;
 public class SortTypeQueryDataToSortTypeMapperUnitTests {
     
     @Test
-    public void map_WhenAscending_ShouldReturnAscending() {
+    public void map_WhenSortTypeQueryDataIsAscending_ShouldReturnSortTypeAscending() {
         SortTypeQueryDataToSortTypeMapper mapper = new SortTypeQueryDataToSortTypeMapper();
         
         SortType result = mapper.map(SortTypeQueryData.Ascending);
@@ -20,7 +20,7 @@ public class SortTypeQueryDataToSortTypeMapperUnitTests {
     }
     
     @Test
-    public void map_WhenDescending_ShouldReturnDescending() {
+    public void map_WhenSortTypeQueryDataIsDescending_ShouldReturnSortTypeDescending() {
         SortTypeQueryDataToSortTypeMapper mapper = new SortTypeQueryDataToSortTypeMapper();
         
         SortType result = mapper.map(SortTypeQueryData.Descending);
