@@ -1,5 +1,7 @@
 package application.pipelineBehaviours;
 
+import java.util.Objects;
+
 import base.log.Logger;
 import base.mediator.pipeline.PipelineBehaviour;
 import base.mediator.request.Request;
@@ -15,6 +17,11 @@ public class LoggingPipelineBehaviour<TRequest extends Request<TResult>, TResult
     private final String requestName;
     
     public LoggingPipelineBehaviour(Logger logger, StopWatch stopWatch, String requestName) {
+        Objects.requireNonNull(logger);
+        Objects.requireNonNull(stopWatch);
+        Objects.requireNonNull(requestName);
+        if (requestName.isBlank())
+            throw new IllegalArgumentException("requestName must be not blank");
         this.logger = logger;
         this.stopWatch = stopWatch;
         this.requestName = requestName;

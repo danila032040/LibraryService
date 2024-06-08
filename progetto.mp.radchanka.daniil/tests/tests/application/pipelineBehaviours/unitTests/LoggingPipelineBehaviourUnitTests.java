@@ -1,10 +1,12 @@
 package tests.application.pipelineBehaviours.unitTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.time.Clock;
 import java.time.Instant;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import application.pipelineBehaviours.LoggingPipelineBehaviour;
@@ -58,5 +60,45 @@ public class LoggingPipelineBehaviourUnitTests {
         
         assertThat(result.getResult()).hasValue("Test");
         assertThat(nextHandler.isCalled()).isTrue();
+    }
+    
+    @Test
+    public void constructor_WhenLoggerIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new LoggingPipelineBehaviour<RequestMock, ErrorOr<String>>(
+                null,
+                StopWatch.from(Clock.systemUTC()),
+                "Test");
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void constructor_WhenStopWatchIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new LoggingPipelineBehaviour<RequestMock, ErrorOr<String>>(
+                new LoggerMock(),
+                null,
+                "Test");
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void constructor_WhenRequestNameIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new LoggingPipelineBehaviour<RequestMock, ErrorOr<String>>(
+                new LoggerMock(),
+                StopWatch.from(Clock.systemUTC()),
+                null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void constructor_WhenRequestNameIsBlank_ShouldIllegalArgumentException() {
+        ThrowingCallable actual = () -> new LoggingPipelineBehaviour<RequestMock, ErrorOr<String>>(
+                new LoggerMock(),
+                StopWatch.from(Clock.systemUTC()),
+                "");
+        
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(actual);
     }
 }

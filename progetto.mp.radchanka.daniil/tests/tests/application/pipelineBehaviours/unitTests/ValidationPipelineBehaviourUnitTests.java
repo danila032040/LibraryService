@@ -1,7 +1,9 @@
 package tests.application.pipelineBehaviours.unitTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import application.pipelineBehaviours.ValidationPipelineBehaviour;
@@ -45,5 +47,12 @@ public class ValidationPipelineBehaviourUnitTests {
         // Assert
         assertThat(result.isError()).isTrue();
         assertThat(result.getError().map(ErrorResult::getErrorMessage)).hasValue("Test1; Test2");
+    }
+    
+    @Test
+    public void constructor_WhenValidatorIsNull_ShoultThrowNullPointerException() {
+        ThrowingCallable actual = () -> new ValidationPipelineBehaviour<>(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

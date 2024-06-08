@@ -1,10 +1,12 @@
 package tests.base.utils.unitTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import java.time.Duration;
 import java.time.Instant;
 
+import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.Test;
 
 import base.utils.StopWatch;
@@ -101,5 +103,12 @@ public class StopWatchUnitTests {
         Duration duration = stopWatch.getDuration();
         
         assertThat(duration.toSeconds()).isEqualTo(2);
+    }
+    
+    @Test
+    public void from_WhenClockIsNull_ShoultThrowNullPointerException() {
+        ThrowingCallable actual = () -> StopWatch.from(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

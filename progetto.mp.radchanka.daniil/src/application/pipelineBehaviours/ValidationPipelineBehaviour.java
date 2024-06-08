@@ -1,5 +1,6 @@
 package application.pipelineBehaviours;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import base.mediator.pipeline.PipelineBehaviour;
@@ -17,7 +18,7 @@ public class ValidationPipelineBehaviour<TRequest extends Request<ErrorOr<TResul
     private final Validator<TRequest> requestValidator;
     
     public ValidationPipelineBehaviour(Validator<TRequest> requestValidator) {
-        this.requestValidator = requestValidator;
+        this.requestValidator = Objects.requireNonNull(requestValidator);
     }
     
     @Override

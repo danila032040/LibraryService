@@ -3,6 +3,7 @@ package base.utils;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Optional;
 
 public class StopWatch {
@@ -12,7 +13,7 @@ public class StopWatch {
     private Optional<Instant> startInstant;
     
     private StopWatch(Clock clock) {
-        this.clock = clock;
+        this.clock = Objects.requireNonNull(clock);
         this.startInstant = Optional.empty();
         this.duration = Duration.ZERO;
     }
