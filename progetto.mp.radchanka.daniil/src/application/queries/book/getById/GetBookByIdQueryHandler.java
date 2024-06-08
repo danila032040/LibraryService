@@ -18,13 +18,7 @@ public class GetBookByIdQueryHandler implements RequestHandler<GetBookByIdQuery,
     
     @Override
     public ErrorOr<Optional<Book>> handle(GetBookByIdQuery request) {
-        try {
-            return ErrorOr
-                    .fromResult(bookRepository.getFirst(new BookByIdSpecification(new BookId(request.getBookId()))));
-            
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
-        }
+        return ErrorOr.fromResult(bookRepository.getFirst(new BookByIdSpecification(new BookId(request.getBookId()))));
     }
     
 }

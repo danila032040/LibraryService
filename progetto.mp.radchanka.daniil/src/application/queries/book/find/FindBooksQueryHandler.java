@@ -35,16 +35,11 @@ public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, Err
     
     @Override
     public ErrorOr<Collection<Book>> handle(FindBooksQuery request) {
-        try {
-            
-            Specification<Book> specification = buildBookSpecificationFromRequest(request);
-            SortCriteria<Book> sortCriteria = buildBookSortCriteriaFromRequest(request);
-            Pagination pagination = Pagination.of(request.getPageIndex(), request.getPageSize());
-            
-            return ErrorOr.fromResult(bookRepository.get(specification, sortCriteria, pagination));
-        } catch (Exception exc) {
-            return ErrorOr.fromErrorMessage(exc.getMessage());
-        }
+        Specification<Book> specification = buildBookSpecificationFromRequest(request);
+        SortCriteria<Book> sortCriteria = buildBookSortCriteriaFromRequest(request);
+        Pagination pagination = Pagination.of(request.getPageIndex(), request.getPageSize());
+        
+        return ErrorOr.fromResult(bookRepository.get(specification, sortCriteria, pagination));
     }
     
     private Specification<Book> buildBookSpecificationFromRequest(FindBooksQuery request) {
@@ -71,6 +66,16 @@ public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, Err
                                         (
                                                 searchPublicationYearEnd,
                                                 bookPublicationYear) -> bookPublicationYear <= searchPublicationYearEnd))
+                .map(specification::and)
+                .orElse(specification);
+        specification = request
+                .getName()
+                .map(
+                        name -> SpecificationUtils
+                                .<Book, String>generateFieldSpecification(
+                                        name,
+                                        Book::getName,
+                                        (searchName, bookName) -> bookName.contains(searchName)))
                 .map(specification::and)
                 .orElse(specification);
         specification = request

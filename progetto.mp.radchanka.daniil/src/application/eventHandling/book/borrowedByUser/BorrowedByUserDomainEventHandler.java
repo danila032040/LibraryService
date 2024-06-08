@@ -8,6 +8,7 @@ import domain.book.events.BookBorrowedByUserDomainEvent;
 import domain.user.User;
 import domain.user.UserId;
 import domain.user.UserRepository;
+import domain.user.exceptions.BookWasAlreadyBorrowedByTheUserDomainEvent;
 import domain.user.exceptions.UserNotFoundException;
 import domain.user.specifications.UserByIdSpecification;
 
@@ -29,13 +30,24 @@ public class BorrowedByUserDomainEventHandler
             UserId userId = notification.getDomainEvent().getUserIdThatHadBorrowedTheBook();
             User user = userRepository
                     .getFirst(new UserByIdSpecification(userId))
-                    .orElseThrow(() -> new UserNotFoundException("User was not found with id: " + userId.getId()));
+                    .orElseThrow(() -> new UserNotFoundException(userId));
             
             if (!user.getBorrowedBookIds().contains(borrowedBookId)) {
                 user.addBorrowedBook(borrowedBookId);
             }
-        } catch (Exception exc) {
-            logger.logError("Could not handle {0}: {1}", "BorrowedByUserDomainEvent", exc.getMessage());
+        } catch (UserNotFoundException exc) {
+            logger
+                    .logError(
+                            "Could not handle {0}: User({1}) were not found",
+                            "ReturnedByUserDomainEvent",
+                            exc.getUserId().getId());
+        } catch (BookWasAlreadyBorrowedByTheUserDomainEvent exc) {
+            logger
+                    .logError(
+                            "Could not handle {0}: The book({1}) was already borrowed by the User({2})",
+                            "ReturnedByUserDomainEvent",
+                            exc.getBookIdThatWasAlreadyBorrowed().getId(),
+                            exc.getUser().getId().getId());
         }
     }
     
