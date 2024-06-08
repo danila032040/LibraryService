@@ -58,7 +58,7 @@ public class ErrorOrUnitTests {
         Optional<ErrorResult> actualError = errorMessageConsumer.getLastProvidedArgument();
         
         assertThat(actualExecutedTimes).isEqualTo(1);
-        assertThat(actualError).hasValueSatisfying(error -> assertThat(error.getErrorMessage()).isEqualTo(""));
+        assertThat(actualError).hasValueSatisfying(error -> assertThat(error.getMessage()).isEqualTo(""));
     }
     
     @Test

@@ -34,7 +34,7 @@ public class RegisterUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage()).isEqualTo("Address is not valid");
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Address is not valid");
     }
     
     @Test
@@ -56,7 +56,7 @@ public class RegisterUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage()).isEqualTo("Name must be not blank");
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Name must be not blank");
     }
     
     @Test
@@ -78,7 +78,7 @@ public class RegisterUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage()).isEqualTo("Surname must be not blank");
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Surname must be not blank");
     }
     
     @Test
@@ -100,7 +100,7 @@ public class RegisterUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage())
+        assertThat(validationResult.getErrors().get(0).getMessage())
                 .isEqualTo("Phone number must be not whitespace if provided");
     }
     

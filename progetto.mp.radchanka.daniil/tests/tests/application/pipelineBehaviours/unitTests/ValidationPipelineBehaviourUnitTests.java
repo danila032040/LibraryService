@@ -46,7 +46,7 @@ public class ValidationPipelineBehaviourUnitTests {
         
         // Assert
         assertThat(result.isError()).isTrue();
-        assertThat(result.getError().map(ErrorResult::getErrorMessage)).hasValue("Test1; Test2");
+        assertThat(result.getError().map(ErrorResult::getMessage)).hasValue("Test1; Test2");
     }
     
     @Test

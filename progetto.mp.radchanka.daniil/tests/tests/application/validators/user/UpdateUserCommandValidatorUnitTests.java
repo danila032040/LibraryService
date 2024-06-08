@@ -23,7 +23,7 @@ public class UpdateUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage())
+        assertThat(validationResult.getErrors().get(0).getMessage())
                 .isEqualTo("At least new phone number or new address must be present");
     }
     
@@ -36,7 +36,7 @@ public class UpdateUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage())
+        assertThat(validationResult.getErrors().get(0).getMessage())
                 .isEqualTo("Phone number must be not whitespace if provided");
     }
     
@@ -84,6 +84,6 @@ public class UpdateUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage()).isEqualTo("Address is invalid");
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Address is invalid");
     }
 }

@@ -11,6 +11,7 @@ import base.utils.Mapper;
 import domain.book.Book;
 import domain.book.BookId;
 import domain.book.BookRepository;
+import domain.book.exceptions.BookIsAlreadyBorrowedByAnotherUserDomainException;
 import domain.book.specifications.BookByIdSpecification;
 import domain.common.Address;
 import domain.user.UserId;
@@ -45,7 +46,7 @@ public class BorrowBookByUserCommandHandler implements RequestHandler<BorrowBook
                 return ErrorOr.fromErrorMessage("Book with specified id was not found");
             }
             
-            if (userRepository.exists(new UserByIdSpecification(userId))) {
+            if (!userRepository.exists(new UserByIdSpecification(userId))) {
                 return ErrorOr.fromErrorMessage("User with specified id was not found");
             }
             
@@ -57,6 +58,9 @@ public class BorrowBookByUserCommandHandler implements RequestHandler<BorrowBook
             domainEventPublisher.publishDomainEvents(existingBook.extractAllDomainEvents());
             
             return ErrorOr.fromResult(SuccessResult.from("Successfully borrowed book"));
+        } catch (BookIsAlreadyBorrowedByAnotherUserDomainException exc) {
+            return ErrorOr.fromErrorMessage("Book were already borrowed");
+            
         } catch (Exception exc) {
             return ErrorOr.fromErrorMessage(exc.getMessage());
         }

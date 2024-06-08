@@ -27,7 +27,7 @@ public class AddressCommandDataValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage())
+        assertThat(validationResult.getErrors().get(0).getMessage())
                 .isEqualTo("At least one field of address must be present");
     }
     

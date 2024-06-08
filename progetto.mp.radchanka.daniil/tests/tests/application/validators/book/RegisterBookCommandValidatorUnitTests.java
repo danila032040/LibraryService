@@ -21,7 +21,7 @@ public class RegisterBookCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage()).isEqualTo("Name must be not blank");
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Name must be not blank");
     }
     
     @Test
@@ -33,7 +33,7 @@ public class RegisterBookCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage()).isEqualTo("Genre must be not blank");
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Genre must be not blank");
     }
     
     @Test
@@ -45,7 +45,7 @@ public class RegisterBookCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage())
+        assertThat(validationResult.getErrors().get(0).getMessage())
                 .isEqualTo("Publication year must be not negative");
     }
     

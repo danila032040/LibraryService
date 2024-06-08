@@ -31,7 +31,7 @@ public class ValidationPipelineBehaviour<TRequest extends Request<ErrorOr<TResul
                             validationResult
                                     .getErrors()
                                     .stream()
-                                    .map(ErrorResult::getErrorMessage)
+                                    .map(ErrorResult::getMessage)
                                     .collect(Collectors.joining("; ")));
         
         return next.handle(request);

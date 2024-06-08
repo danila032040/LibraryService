@@ -81,7 +81,7 @@ public class FindBooksQueryValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage())
+        assertThat(validationResult.getErrors().get(0).getMessage())
                 .isEqualTo("ThenSortByField and ThenSortType must be both present or both not present");
     }
     
@@ -106,7 +106,7 @@ public class FindBooksQueryValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getErrorMessage())
+        assertThat(validationResult.getErrors().get(0).getMessage())
                 .isEqualTo("ThenSortByField and ThenSortType must be both present or both not present");
     }
 }

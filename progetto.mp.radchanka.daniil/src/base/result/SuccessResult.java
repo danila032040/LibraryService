@@ -13,7 +13,7 @@ public class SuccessResult {
         this.successMessage = Objects.requireNonNull(successMessage);
     }
     
-    public String getSuccessMessage() {
+    public String getMessage() {
         return successMessage;
     }
 }

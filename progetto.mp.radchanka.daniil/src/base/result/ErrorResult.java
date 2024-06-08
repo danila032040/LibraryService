@@ -13,7 +13,7 @@ public class ErrorResult {
         this.errorMessage = Objects.requireNonNull(errorMessage);
     }
     
-    public String getErrorMessage() {
+    public String getMessage() {
         return errorMessage;
     }
 }
