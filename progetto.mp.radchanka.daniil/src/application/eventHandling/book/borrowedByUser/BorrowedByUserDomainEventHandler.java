@@ -34,6 +34,7 @@ public class BorrowedByUserDomainEventHandler
             
             if (!user.getBorrowedBookIds().contains(borrowedBookId)) {
                 user.addBorrowedBook(borrowedBookId);
+                userRepository.update(user);
             }
         } catch (UserNotFoundException exc) {
             logger

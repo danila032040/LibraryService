@@ -54,7 +54,7 @@ public class Address extends ValueObject implements Cloneable<Address> {
         return city;
     }
     
-    public Optional<String> getCountyRegion() {
+    public Optional<String> getCountryRegion() {
         return countryRegion;
     }
     

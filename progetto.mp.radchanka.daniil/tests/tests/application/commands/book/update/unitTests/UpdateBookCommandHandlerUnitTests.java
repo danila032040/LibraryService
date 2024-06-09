@@ -130,15 +130,99 @@ public class UpdateBookCommandHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenUpdateIsNeeded_ShouldUpdateBookAndPublishDomainEvents() {
+    public void handle_WhenUpdateIsNeededOnlyForName_ShouldUpdateBook() {
         Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
         UpdateBookCommand command = new UpdateBookCommand(
                 1,
                 "New Name",
+                "Old Genre",
+                0,
+                Optional.of(1),
+                Optional.of(1));
+        bookRepository.setBook(Optional.of(existingBook));
+        libraryRepository.setExists(true);
+        authorRepository.setExists(true);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    }
+    
+    @Test
+    public void handle_WhenUpdateIsNeededOnlyForGenre_ShouldUpdateBook() {
+        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
+        UpdateBookCommand command = new UpdateBookCommand(
+                1,
+                "Old Name",
                 "New Genre",
                 0,
                 Optional.of(1),
                 Optional.of(1));
+        bookRepository.setBook(Optional.of(existingBook));
+        libraryRepository.setExists(true);
+        authorRepository.setExists(true);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    }
+    
+    @Test
+    public void handle_WhenUpdateIsNeededOnlyForPublicationYear_ShouldUpdateBook() {
+        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
+        UpdateBookCommand command = new UpdateBookCommand(
+                1,
+                "Old Name",
+                "Old Genre",
+                1,
+                Optional.of(1),
+                Optional.of(1));
+        bookRepository.setBook(Optional.of(existingBook));
+        libraryRepository.setExists(true);
+        authorRepository.setExists(true);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    }
+    
+    @Test
+    public void handle_WhenUpdateIsNeededOnlyForAuthorId_ShouldUpdateBook() {
+        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
+        UpdateBookCommand command = new UpdateBookCommand(
+                1,
+                "Old Name",
+                "Old Genre",
+                0,
+                Optional.of(2),
+                Optional.of(1));
+        bookRepository.setBook(Optional.of(existingBook));
+        libraryRepository.setExists(true);
+        authorRepository.setExists(true);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    }
+    
+    @Test
+    public void handle_WhenUpdateIsNeededOnlyForLibraryId_ShouldUpdateBook() {
+        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
+        UpdateBookCommand command = new UpdateBookCommand(
+                1,
+                "Old Name",
+                "Old Genre",
+                0,
+                Optional.of(1),
+                Optional.of(2));
         bookRepository.setBook(Optional.of(existingBook));
         libraryRepository.setExists(true);
         authorRepository.setExists(true);

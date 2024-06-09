@@ -1,4 +1,4 @@
-package tests.application.eventHandling.book.borrowedByUser.mocks;
+package tests.application.eventHandling.book.returnByUser.mocks;
 
 import java.util.Collection;
 import java.util.Optional;

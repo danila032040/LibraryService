@@ -33,6 +33,7 @@ public class ReturnedByUserDomainEventHandler
                     .orElseThrow(() -> new UserNotFoundException(userId));
             if (user.getBorrowedBookIds().contains(borrowedBookId)) {
                 user.returnBorrowedBook(borrowedBookId);
+                userRepository.update(user);
             }
         } catch (UserNotFoundException exc) {
             logger
