@@ -26,6 +26,18 @@ public final class SpecificationUtils {
         return fieldSpecification;
     }
     
+    public static <T, U> Specification<T> generateOptionalFieldSpecification(
+            Function<T, Optional<U>> fieldExtractor,
+            Specification<U> specificationForField) {
+        Objects.requireNonNull(fieldExtractor);
+        Objects.requireNonNull(specificationForField);
+        Specification<T> fieldSpecification = entity -> fieldExtractor
+                .apply(entity)
+                .map(specificationForField::isSatisfiedBy)
+                .orElse(false);
+        return fieldSpecification;
+    }
+    
     public static <T, U> Specification<T> generateFieldSpecification(
             U searchField,
             Function<T, U> fieldExtractor,
@@ -34,5 +46,13 @@ public final class SpecificationUtils {
         Objects.requireNonNull(fieldExtractor);
         Objects.requireNonNull(comparisonFunctionStartingWithSearchField);
         return entity -> comparisonFunctionStartingWithSearchField.apply(searchField, fieldExtractor.apply(entity));
+    }
+    
+    public static <T, U> Specification<T> generateFieldSpecification(
+            Function<T, U> fieldExtractor,
+            Specification<U> specificationForField) {
+        Objects.requireNonNull(fieldExtractor);
+        Objects.requireNonNull(specificationForField);
+        return entity -> specificationForField.isSatisfiedBy(fieldExtractor.apply(entity));
     }
 }

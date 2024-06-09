@@ -1,11 +1,11 @@
 package application.queries.book.find;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Optional;
 
 import application.queries.book.common.BookSortByFieldQueryData;
 import application.queries.book.common.BookSortCriteriaBuilder;
+import application.queries.book.common.BookSpecificationBuilder;
 import application.queries.common.sortData.SortTypeQueryData;
 import base.mediator.request.RequestHandler;
 import base.repository.Pagination;
@@ -13,14 +13,10 @@ import base.repository.SortCriteria;
 import base.repository.SortType;
 import base.result.ErrorOr;
 import base.specification.Specification;
-import base.specification.composable.CompositeSpecification;
 import base.utils.Mapper;
 import base.utils.Pair;
-import base.utils.SpecificationUtils;
-import domain.author.AuthorId;
 import domain.book.Book;
 import domain.book.BookRepository;
-import domain.library.LibraryId;
 
 public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, ErrorOr<Collection<Book>>> {
     private final Mapper<SortTypeQueryData, SortType> sortTypeQueryDataToSortTypeMapper;
@@ -43,72 +39,16 @@ public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, Err
     }
     
     private Specification<Book> buildBookSpecificationFromRequest(FindBooksQuery request) {
-        CompositeSpecification<Book> specification = book -> true;
-        specification = request
-                .getPublicationYearPeriodStart()
-                .map(
-                        publicationYearStart -> SpecificationUtils
-                                .<Book, Integer>generateFieldSpecification(
-                                        publicationYearStart,
-                                        Book::getPublicationYear,
-                                        (
-                                                searchPublicationYearStart,
-                                                bookPublicationYear) -> bookPublicationYear >= searchPublicationYearStart))
-                .map(specification::and)
-                .orElse(specification);
-        specification = request
-                .getPublicationYearPeriodEnd()
-                .map(
-                        publicationYearEnd -> SpecificationUtils
-                                .<Book, Integer>generateFieldSpecification(
-                                        publicationYearEnd,
-                                        Book::getPublicationYear,
-                                        (
-                                                searchPublicationYearEnd,
-                                                bookPublicationYear) -> bookPublicationYear <= searchPublicationYearEnd))
-                .map(specification::and)
-                .orElse(specification);
-        specification = request
-                .getName()
-                .map(
-                        name -> SpecificationUtils
-                                .<Book, String>generateFieldSpecification(
-                                        name,
-                                        Book::getName,
-                                        (searchName, bookName) -> bookName.contains(searchName)))
-                .map(specification::and)
-                .orElse(specification);
-        specification = request
-                .getGenre()
-                .map(
-                        genre -> SpecificationUtils
-                                .<Book, String>generateFieldSpecification(
-                                        genre,
-                                        Book::getGenre,
-                                        (searchGenre, bookGenre) -> bookGenre.contains(searchGenre)))
-                .map(specification::and)
-                .orElse(specification);
-        specification = request
-                .getAuthorId()
-                .map(
-                        authorId -> SpecificationUtils
-                                .<Book, AuthorId>generateOptionalFieldSpecification(
-                                        authorId,
-                                        Book::getAuthorId,
-                                        Objects::equals))
-                .map(specification::and)
-                .orElse(specification);
-        specification = request
-                .getLibraryId()
-                .map(
-                        libraryId -> SpecificationUtils
-                                .<Book, LibraryId>generateOptionalFieldSpecification(
-                                        libraryId,
-                                        Book::getLibraryId,
-                                        Objects::equals))
-                .map(specification::and)
-                .orElse(specification);
-        return specification;
+        BookSpecificationBuilder builder = BookSpecificationBuilder.createBuilder();
+        
+        request.getName().ifPresent(builder::andWhereNameIsLike);
+        request.getGenre().ifPresent(builder::andWhereGenreIsLike);
+        request.getAuthorId().ifPresent(builder::andWhereAuthorIdIs);
+        request.getLibraryId().ifPresent(builder::andWhereLibraryIdIs);
+        request.getPublicationYearPeriodStart().ifPresent(builder::andWherePublicationYearIsGreaterThanOrEqualTo);
+        request.getPublicationYearPeriodEnd().ifPresent(builder::andWherePublicationYearIsLessThanOrEqualTo);
+        
+        return builder.build();
     }
     
     private SortCriteria<Book> buildBookSortCriteriaFromRequest(FindBooksQuery request) {
