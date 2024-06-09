@@ -33,6 +33,6 @@ public final class SpecificationUtils {
         Objects.requireNonNull(searchField);
         Objects.requireNonNull(fieldExtractor);
         Objects.requireNonNull(comparisonFunctionStartingWithSearchField);
-        return entity -> comparisonFunctionStartingWithSearchField.apply(fieldExtractor.apply(entity), searchField);
+        return entity -> comparisonFunctionStartingWithSearchField.apply(searchField, fieldExtractor.apply(entity));
     }
 }
