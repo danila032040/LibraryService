@@ -1,6 +1,6 @@
 package application.queries.book.find;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -12,7 +12,7 @@ import domain.author.AuthorId;
 import domain.book.Book;
 import domain.library.LibraryId;
 
-public class FindBooksQuery implements Request<ErrorOr<Collection<Book>>> {
+public class FindBooksQuery implements Request<ErrorOr<List<Book>>> {
     private final Optional<String> name;
     private final Optional<String> genre;
     

@@ -16,15 +16,15 @@ import base.utils.StreamUtils;
 public class InMemoryRepository<TEntity extends Entity<TId>, TId> implements Repository<TEntity, TId> {
     
     private final CloneFactory<TEntity> entityCloneFactory;
-    private final Supplier<Collection<TEntity>> resultCollectionFactory;
+    private final Supplier<List<TEntity>> resultListFactory;
     private final Collection<TEntity> storage;
     
     public InMemoryRepository(
             Collection<TEntity> storage,
-            Supplier<Collection<TEntity>> resultCollectionFactory,
+            Supplier<List<TEntity>> resultListFactory,
             CloneFactory<TEntity> entityCloneFactory) {
         this.storage = Objects.requireNonNull(storage);
-        this.resultCollectionFactory = Objects.requireNonNull(resultCollectionFactory);
+        this.resultListFactory = Objects.requireNonNull(resultListFactory);
         this.entityCloneFactory = Objects.requireNonNull(entityCloneFactory);
     }
     
@@ -51,28 +51,28 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId> implements Rep
     }
     
     @Override
-    public Collection<TEntity> get(Specification<TEntity> specification) {
+    public List<TEntity> get(Specification<TEntity> specification) {
         Stream<TEntity> stream = this.storage.stream();
         
         stream = applySpecification(stream, specification);
         stream = cloneContent(stream);
         
-        return stream.collect(Collectors.toCollection(resultCollectionFactory));
+        return stream.collect(Collectors.toCollection(resultListFactory));
     }
     
     @Override
-    public Collection<TEntity> get(Specification<TEntity> specification, Pagination pagination) {
+    public List<TEntity> get(Specification<TEntity> specification, Pagination pagination) {
         Stream<TEntity> stream = this.storage.stream();
         
         stream = applySpecification(stream, specification);
         stream = applyPagination(stream, pagination);
         stream = cloneContent(stream);
         
-        return stream.collect(Collectors.toCollection(resultCollectionFactory));
+        return stream.collect(Collectors.toCollection(resultListFactory));
     }
     
     @Override
-    public Collection<TEntity> get(
+    public List<TEntity> get(
             Specification<TEntity> specification,
             SortCriteria<TEntity> sortCriteria,
             Pagination pagination) {
@@ -83,17 +83,17 @@ public class InMemoryRepository<TEntity extends Entity<TId>, TId> implements Rep
         stream = applyPagination(stream, pagination);
         stream = cloneContent(stream);
         
-        return stream.collect(Collectors.toCollection(resultCollectionFactory));
+        return stream.collect(Collectors.toCollection(resultListFactory));
         
     }
     
     @Override
-    public Collection<TEntity> getAll() {
+    public List<TEntity> getAll() {
         Stream<TEntity> stream = this.storage.stream();
         
         stream = cloneContent(stream);
         
-        return stream.collect(Collectors.toCollection(resultCollectionFactory));
+        return stream.collect(Collectors.toCollection(resultListFactory));
     }
     
     @Override

@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import base.mediator.notification.exceptions.NotificationHandlerNotFoundException;
 
 public class NotificationDispatcherImpl implements NotificationDispatcher {
-    private final Map<Class<? extends Notification>, Collection<NotificationHandler<? extends Notification>>> handlersByNotificationType;
+    private final Map<Class<? extends Notification>, List<NotificationHandler<? extends Notification>>> handlersByNotificationType;
     
     public NotificationDispatcherImpl() {
         handlersByNotificationType = new HashMap<>();
@@ -22,7 +23,7 @@ public class NotificationDispatcherImpl implements NotificationDispatcher {
             NotificationHandler<TNotification> handler) {
         Objects.requireNonNull(notificationType);
         Objects.requireNonNull(handler);
-        Collection<NotificationHandler<? extends Notification>> handlers = handlersByNotificationType
+        List<NotificationHandler<? extends Notification>> handlers = handlersByNotificationType
                 .getOrDefault(notificationType, new ArrayList<>());
         handlers.add(handler);
         handlersByNotificationType.put(notificationType, handlers);

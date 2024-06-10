@@ -1,6 +1,7 @@
 package tests.application.commands.book.update.mocks;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import base.repository.Pagination;
@@ -38,17 +39,17 @@ public class LibraryRepositoryMock implements LibraryRepository {
     }
     
     @Override
-    public Collection<Library> get(Specification<Library> specification) {
+    public List<Library> get(Specification<Library> specification) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Library> get(Specification<Library> specification, Pagination pagination) {
+    public List<Library> get(Specification<Library> specification, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Library> get(
+    public List<Library> get(
             Specification<Library> specification,
             SortCriteria<Library> sortCriteria,
             Pagination pagination) {
@@ -56,7 +57,7 @@ public class LibraryRepositoryMock implements LibraryRepository {
     }
     
     @Override
-    public Collection<Library> getAll() {
+    public List<Library> getAll() {
         throw new UnsupportedOperationException("Not implemented");
     }
     

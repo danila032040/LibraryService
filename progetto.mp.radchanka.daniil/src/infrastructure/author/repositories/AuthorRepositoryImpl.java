@@ -1,6 +1,7 @@
 package infrastructure.author.repositories;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 
 import base.cloneable.CloneFactory;
@@ -15,7 +16,7 @@ public class AuthorRepositoryImpl extends InMemoryRepository<Author, AuthorId> i
     
     public AuthorRepositoryImpl(
             Collection<Author> storage,
-            Supplier<Collection<Author>> resultCollectionFactory,
+            Supplier<List<Author>> resultCollectionFactory,
             CloneFactory<Author> entityCloneFactory) {
         super(storage, resultCollectionFactory, entityCloneFactory);
         idSeed = storage

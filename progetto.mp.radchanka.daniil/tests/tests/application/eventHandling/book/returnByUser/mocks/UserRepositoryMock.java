@@ -1,6 +1,7 @@
 package tests.application.eventHandling.book.returnByUser.mocks;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import base.repository.AlreadyExistsException;
@@ -31,25 +32,22 @@ public class UserRepositoryMock implements UserRepository {
     }
     
     @Override
-    public Collection<User> get(Specification<User> specification) {
+    public List<User> get(Specification<User> specification) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<User> get(Specification<User> specification, Pagination pagination) {
+    public List<User> get(Specification<User> specification, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<User> get(
-            Specification<User> specification,
-            SortCriteria<User> sortCriteria,
-            Pagination pagination) {
+    public List<User> get(Specification<User> specification, SortCriteria<User> sortCriteria, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<User> getAll() {
+    public List<User> getAll() {
         throw new UnsupportedOperationException("Not implemented");
     }
     

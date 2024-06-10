@@ -3,7 +3,7 @@ package tests.application.queries.book.find.unitTests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.util.Lists;
@@ -56,7 +56,7 @@ public class FindBooksQueryHandlerUnitTests {
         Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.empty(), Optional.empty());
         bookRepository.addBook(book);
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
@@ -83,7 +83,7 @@ public class FindBooksQueryHandlerUnitTests {
         Book book = Book.createNewBook(new BookId(1), "Test", "Test", 2002, Optional.empty(), Optional.empty());
         bookRepository.addBook(book);
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
@@ -110,7 +110,7 @@ public class FindBooksQueryHandlerUnitTests {
         Book book = Book.createNewBook(new BookId(1), "Test", "Fiction", 0, Optional.empty(), Optional.empty());
         bookRepository.addBook(book);
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
@@ -138,7 +138,7 @@ public class FindBooksQueryHandlerUnitTests {
         Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.of(authorId), Optional.empty());
         bookRepository.addBook(book);
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
@@ -166,7 +166,7 @@ public class FindBooksQueryHandlerUnitTests {
         Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.empty(), Optional.of(libraryId));
         bookRepository.addBook(book);
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
@@ -195,7 +195,7 @@ public class FindBooksQueryHandlerUnitTests {
         
         bookRepository.addBooks(Arrays.asList(book1, book2));
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
@@ -225,7 +225,7 @@ public class FindBooksQueryHandlerUnitTests {
         Book book4 = Book.createNewBook(new BookId(4), "Test", "Test", 0, Optional.empty(), Optional.empty());
         bookRepository.addBooks(Lists.list(book1, book2, book3, book4));
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
@@ -249,7 +249,7 @@ public class FindBooksQueryHandlerUnitTests {
                 Optional.empty(),
                 Optional.empty());
         
-        ErrorOr<Collection<Book>> result = handler.handle(query);
+        ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {

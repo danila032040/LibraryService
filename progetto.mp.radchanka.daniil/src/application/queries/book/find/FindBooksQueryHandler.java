@@ -1,6 +1,6 @@
 package application.queries.book.find;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import application.queries.book.common.BookSortByFieldQueryData;
@@ -18,7 +18,7 @@ import base.utils.Pair;
 import domain.book.Book;
 import domain.book.BookRepository;
 
-public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, ErrorOr<Collection<Book>>> {
+public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, ErrorOr<List<Book>>> {
     private final Mapper<SortTypeQueryData, SortType> sortTypeQueryDataToSortTypeMapper;
     private final BookRepository bookRepository;
     
@@ -30,7 +30,7 @@ public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, Err
     }
     
     @Override
-    public ErrorOr<Collection<Book>> handle(FindBooksQuery request) {
+    public ErrorOr<List<Book>> handle(FindBooksQuery request) {
         Specification<Book> specification = buildBookSpecificationFromRequest(request);
         SortCriteria<Book> sortCriteria = buildBookSortCriteriaFromRequest(request);
         Pagination pagination = Pagination.of(request.getPageIndex(), request.getPageSize());

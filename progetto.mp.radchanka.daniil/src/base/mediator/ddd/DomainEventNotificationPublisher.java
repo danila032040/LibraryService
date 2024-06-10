@@ -1,6 +1,6 @@
 package base.mediator.ddd;
 
-import java.util.Collection;
+import java.util.List;
 
 import base.ddd.DomainEvent;
 import base.ddd.DomainEventPublisher;
@@ -15,7 +15,7 @@ public class DomainEventNotificationPublisher implements DomainEventPublisher {
     }
     
     @Override
-    public void publishDomainEvents(Collection<DomainEvent> domainEvents) {
+    public void publishDomainEvents(List<DomainEvent> domainEvents) {
         domainEvents
                 .stream()
                 .map(domainEvent -> domainEvent.getClass().cast(domainEvent))

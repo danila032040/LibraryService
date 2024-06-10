@@ -1,6 +1,7 @@
 package infrastructure.library.repositories;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 
 import base.cloneable.CloneFactory;
@@ -15,7 +16,7 @@ public class LibraryRepositoryImpl extends InMemoryRepository<Library, LibraryId
     
     public LibraryRepositoryImpl(
             Collection<Library> storage,
-            Supplier<Collection<Library>> resultCollectionFactory,
+            Supplier<List<Library>> resultCollectionFactory,
             CloneFactory<Library> entityCloneFactory) {
         super(storage, resultCollectionFactory, entityCloneFactory);
         idSeed = storage

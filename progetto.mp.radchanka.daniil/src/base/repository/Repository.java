@@ -1,6 +1,7 @@
 package base.repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import base.ddd.Entity;
@@ -11,16 +12,16 @@ public interface Repository<TEntity extends Entity<TId>, TId> {
     
     public void addRange(Collection<TEntity> entity) throws AlreadyExistsException;
     
-    public Collection<TEntity> get(Specification<TEntity> specification);
+    public List<TEntity> get(Specification<TEntity> specification);
     
-    public Collection<TEntity> get(Specification<TEntity> specification, Pagination pagination);
+    public List<TEntity> get(Specification<TEntity> specification, Pagination pagination);
     
-    public Collection<TEntity> get(
+    public List<TEntity> get(
             Specification<TEntity> specification,
             SortCriteria<TEntity> sortCriteria,
             Pagination pagination);
     
-    public Collection<TEntity> getAll();
+    public List<TEntity> getAll();
     
     public Optional<TEntity> getFirst(Specification<TEntity> specification);
     

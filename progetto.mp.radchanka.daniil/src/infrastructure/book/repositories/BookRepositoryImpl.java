@@ -1,6 +1,7 @@
 package infrastructure.book.repositories;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Supplier;
 
 import base.cloneable.CloneFactory;
@@ -14,7 +15,7 @@ public class BookRepositoryImpl extends InMemoryRepository<Book, BookId> impleme
     
     public BookRepositoryImpl(
             Collection<Book> storage,
-            Supplier<Collection<Book>> resultCollectionFactory,
+            Supplier<List<Book>> resultCollectionFactory,
             CloneFactory<Book> entityCloneFactory) {
         super(storage, resultCollectionFactory, entityCloneFactory);
         idSeed = storage.stream().map(Book::getId).map(BookId::getId).max(Integer::compare).map(x -> x + 1).orElse(0);

@@ -19,10 +19,7 @@ public class BookRepositoryMock implements BookRepository {
     private final List<Book> books = new ArrayList<>();
     
     @Override
-    public Collection<Book> get(
-            Specification<Book> specification,
-            SortCriteria<Book> sortCriteria,
-            Pagination pagination) {
+    public List<Book> get(Specification<Book> specification, SortCriteria<Book> sortCriteria, Pagination pagination) {
         return books
                 .stream()
                 .filter(specification::isSatisfiedBy)
@@ -51,17 +48,17 @@ public class BookRepositoryMock implements BookRepository {
     }
     
     @Override
-    public Collection<Book> get(Specification<Book> specification) {
+    public List<Book> get(Specification<Book> specification) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> get(Specification<Book> specification, Pagination pagination) {
+    public List<Book> get(Specification<Book> specification, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> getAll() {
+    public List<Book> getAll() {
         throw new UnsupportedOperationException("Not implemented");
     }
     

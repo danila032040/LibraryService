@@ -1,8 +1,8 @@
 package base.ddd;
 
-import java.util.Collection;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 import base.utils.IteratorUtils;
@@ -28,8 +28,8 @@ public abstract class Entity<TId> {
         return Objects.equals(id, other.id);
     }
     
-    public Collection<DomainEvent> extractAllDomainEvents() {
-        Collection<DomainEvent> result = IteratorUtils.toArrayList(domainEvents.descendingIterator());
+    public List<DomainEvent> extractAllDomainEvents() {
+        List<DomainEvent> result = IteratorUtils.toArrayList(domainEvents.descendingIterator());
         domainEvents.clear();
         return result;
     }

@@ -1,6 +1,7 @@
 package tests.application.queries.book.getById.mocks;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import base.repository.AlreadyExistsException;
@@ -35,25 +36,22 @@ public class BookRepositoryMock implements BookRepository {
     }
     
     @Override
-    public Collection<Book> get(Specification<Book> specification) {
+    public List<Book> get(Specification<Book> specification) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> get(Specification<Book> specification, Pagination pagination) {
+    public List<Book> get(Specification<Book> specification, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> get(
-            Specification<Book> specification,
-            SortCriteria<Book> sortCriteria,
-            Pagination pagination) {
+    public List<Book> get(Specification<Book> specification, SortCriteria<Book> sortCriteria, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public Collection<Book> getAll() {
+    public List<Book> getAll() {
         throw new UnsupportedOperationException("Not implemented");
     }
     

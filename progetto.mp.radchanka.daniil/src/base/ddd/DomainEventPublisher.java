@@ -1,7 +1,7 @@
 package base.ddd;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface DomainEventPublisher {
-    public void publishDomainEvents(Collection<DomainEvent> domainEvents);
+    public void publishDomainEvents(List<DomainEvent> domainEvents);
 }
