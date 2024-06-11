@@ -18,9 +18,9 @@ public class PipelineUnitTests {
     @Test
     public void buildRequestHandler_WithNoBehaviours_ShouldReturnBaseHandler() {
         RequestHandlerMock handler = new RequestHandlerMock();
-        Pipeline<RequestMock0, Integer> pipeline = Pipeline.withHandler(handler);
+        Pipeline<RequestMock0, Integer> pipeline = Pipeline.forRequestHandler(handler);
         
-        RequestHandler<RequestMock0, Integer> resultHandler = pipeline.buildRequestHandler();
+        RequestHandler<RequestMock0, Integer> resultHandler = pipeline.buildAsRequestHandler();
         
         assertThat(resultHandler).isSameAs(handler);
     }
@@ -35,10 +35,10 @@ public class PipelineUnitTests {
         PipelineBehaviourMock behaviour2 = new PipelineBehaviourMock(req -> request3);
         
         RequestHandler<RequestMock0, Integer> actualHandler = Pipeline
-                .withHandler(handler)
+                .forRequestHandler(handler)
                 .addPipelineBehaviour(behaviour1)
                 .addPipelineBehaviour(behaviour2)
-                .buildRequestHandler();
+                .buildAsRequestHandler();
         int actualResult = actualHandler.handle(request1);
         
         List<Optional<RequestMock0>> specifiedRequestsInPipelineOrder = Lists

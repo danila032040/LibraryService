@@ -17,7 +17,7 @@ public class Pipeline<TRequest extends Request<TResult>, TResult> {
         this.baseHandler = baseHandler;
     }
     
-    public static <TRequest extends Request<TResult>, TResult> Pipeline<TRequest, TResult> withHandler(
+    public static <TRequest extends Request<TResult>, TResult> Pipeline<TRequest, TResult> forRequestHandler(
             RequestHandler<TRequest, TResult> baseHandler) {
         return new Pipeline<>(baseHandler);
     }
@@ -27,7 +27,7 @@ public class Pipeline<TRequest extends Request<TResult>, TResult> {
         return this;
     }
     
-    public RequestHandler<TRequest, TResult> buildRequestHandler() {
+    public RequestHandler<TRequest, TResult> buildAsRequestHandler() {
         return IteratorUtils
                 .reduceRemaining(
                         behaviours.descendingIterator(),

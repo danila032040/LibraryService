@@ -20,7 +20,7 @@ public class AuthorId extends ValueObject implements Cloneable<AuthorId>, Compar
     }
     
     @Override
-    public Iterator<Object> getEqualityComponentsIterator() {
+    protected Iterator<Object> getEqualityComponentsIterator() {
         return List.<Object>of(id).iterator();
     }
     

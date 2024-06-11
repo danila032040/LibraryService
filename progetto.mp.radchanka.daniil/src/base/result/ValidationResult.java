@@ -16,29 +16,24 @@ public class ValidationResult {
         return new ValidationResult();
     }
     
-    public ValidationResult withErrorIf(Supplier<Boolean> supplier, ErrorResult error) {
-        Objects.requireNonNull(supplier);
-        Objects.requireNonNull(error);
-        
-        if (supplier.get()) {
-            errors.add(error);
-        }
-        return this;
+    public ValidationResult withErrorIf(Supplier<Boolean> booleanSupplier, ErrorResult error) {
+        return withErrorIf(booleanSupplier, () -> error);
     }
     
-    public ValidationResult withErrorIf(Supplier<Boolean> supplier, Supplier<ErrorResult> errorSupplier) {
-        Objects.requireNonNull(supplier);
+    public ValidationResult withErrorIf(Supplier<Boolean> booleanSupplier, Supplier<ErrorResult> errorSupplier) {
+        Objects.requireNonNull(booleanSupplier);
         Objects.requireNonNull(errorSupplier);
         
-        if (supplier.get()) {
-            errors.add(errorSupplier.get());
+        if (booleanSupplier.get()) {
+            return withError(errorSupplier.get());
         }
         return this;
     }
     
     public ValidationResult withError(ErrorResult error) {
         Objects.requireNonNull(error);
-        return withErrorIf(() -> true, error);
+        errors.add(error);
+        return this;
     }
     
     public ValidationResult unionWith(ValidationResult validationResult) {

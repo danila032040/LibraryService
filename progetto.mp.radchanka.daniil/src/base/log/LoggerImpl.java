@@ -17,7 +17,7 @@ public class LoggerImpl implements Logger {
             return;
         }
         logEntryPublisher
-                .publishLogEntry(
+                .publish(
                         new LogEntry(
                                 logLevel,
                                 logConfiguration.getLocalDateTimeProvider().get(),

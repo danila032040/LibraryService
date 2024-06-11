@@ -59,7 +59,7 @@ public class PrintStreamLogEntryPublisherUnitTests {
                 new Object[] {},
                 (a, b) -> "compiled{" + a + "}");
         String expected = "01-01-2024 01:00:00 [INF]: compiled{origMessage}";
-        logEntryPublisher.publishLogEntry(logEntry);
+        logEntryPublisher.publish(logEntry);
         
         String actual = outputStream.toString().replace(System.getProperty("line.separator"), "");
         

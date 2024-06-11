@@ -19,7 +19,11 @@ public class ValueObjectMock extends ValueObject {
     }
     
     @Override
-    public Iterator<Object> getEqualityComponentsIterator() {
+    protected Iterator<Object> getEqualityComponentsIterator() {
         return Lists.list(integerToCompareWith, objectToCompareWith, stringToCompareWith).iterator();
+    }
+    
+    public Iterator<Object> getEqualityComponentsIteratorPublic(){
+        return this.getEqualityComponentsIterator();
     }
 }

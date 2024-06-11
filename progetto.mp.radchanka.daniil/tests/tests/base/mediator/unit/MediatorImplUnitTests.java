@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 
-import base.mediator.MediatorImpl;
+import base.mediator.Mediator;
 import base.mediator.request.exceptions.RequestHandlerAlreadyRegisteredException;
 import tests.base.mediator.mocks.NotificationDispatcherMock;
 import tests.base.mediator.mocks.NotificationHandlerMock;
@@ -18,13 +18,13 @@ public class MediatorImplUnitTests {
     
     private NotificationDispatcherMock notificationDispatcher;
     private RequestDispatcherMock requestDispatcher;
-    private MediatorImpl mediator;
+    private Mediator mediator;
     
     @Before
     public void setup() {
         notificationDispatcher = new NotificationDispatcherMock();
         requestDispatcher = new RequestDispatcherMock();
-        mediator = new MediatorImpl(requestDispatcher, notificationDispatcher);
+        mediator = new Mediator(requestDispatcher, notificationDispatcher);
     }
     
     @Test

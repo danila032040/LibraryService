@@ -20,7 +20,7 @@ public class BookId extends ValueObject implements Cloneable<BookId>, Comparable
     }
     
     @Override
-    public Iterator<Object> getEqualityComponentsIterator() {
+    protected Iterator<Object> getEqualityComponentsIterator() {
         return List.<Object>of(id).iterator();
     }
     

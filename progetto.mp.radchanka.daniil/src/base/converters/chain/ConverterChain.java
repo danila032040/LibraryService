@@ -1,47 +1,37 @@
 package base.converters.chain;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import base.converters.Converter;
 
-public class ConverterChain<TFrom, TTo>
-        implements
-        Converter<TFrom, TTo>,
-        ConverterChainBuilder<TFrom, TTo>,
-        ConverterChainStartWithBuilder<TFrom, TTo>,
-        ConverterChainContinueWithBuilder<TFrom, TTo> {
-    public static <TFrom, TTo> ConverterChainStartWithBuilder<TFrom, TTo> withBaseConverter(
-            Converter<TFrom, TTo> converter) {
+public class ConverterChain<TFrom, TTo> implements Converter<TFrom, TTo> {
+    public static <TFrom, TTo> ConverterChain<TFrom, TTo> forConverter(Converter<TFrom, TTo> converter) {
         return new ConverterChain<>(converter);
     }
     
     private ConverterChainElement<TFrom, TTo> firstChainConverterElement;
     
-    private ConverterChainElement<TFrom, TTo> lastAddedChainConverterElement;
+    private Optional<ConverterChainElement<TFrom, TTo>> lastAddedChainConverterElement;
     
     private ConverterChain(Converter<TFrom, TTo> baseConverter) {
-        this.firstChainConverterElement = ConverterChainElementImpl.from(baseConverter);
-        this.lastAddedChainConverterElement = this.firstChainConverterElement;
+        this.firstChainConverterElement = ConverterChainElement.from(baseConverter);
+        this.lastAddedChainConverterElement = Optional.empty();
     }
     
-    @Override
-    public Converter<TFrom, TTo> buildConverter() {
+    public ConverterChain<TFrom, TTo> addConverterChainElement(ConverterChainElement<TFrom, TTo> converter) {
+        if (this.lastAddedChainConverterElement.isEmpty())
+            return startWith(converter);
+        converter.setNext(this.lastAddedChainConverterElement.orElseThrow().getNext());
+        this.lastAddedChainConverterElement.orElseThrow().setNext(converter);
+        this.lastAddedChainConverterElement = Optional.of(converter);
         return this;
     }
     
-    @Override
-    public ConverterChainContinueWithBuilder<TFrom, TTo> continueWith(ConverterChainElement<TFrom, TTo> converter) {
-        converter.setNext(this.lastAddedChainConverterElement.getNext());
-        this.lastAddedChainConverterElement.setNext(converter);
-        this.lastAddedChainConverterElement = converter;
-        return this;
-    }
-    
-    @Override
-    public ConverterChainContinueWithBuilder<TFrom, TTo> continueWith(
+    public ConverterChain<TFrom, TTo> addConverterChainElement(
             Predicate<TFrom> canHandlePredicate,
             Converter<TFrom, TTo> converter) {
-        return this.continueWith(ConverterChainElementImpl.from(canHandlePredicate, converter));
+        return this.addConverterChainElement(ConverterChainElement.from(canHandlePredicate, converter));
     }
     
     @Override
@@ -49,19 +39,11 @@ public class ConverterChain<TFrom, TTo>
         return firstChainConverterElement.convert(from);
     }
     
-    @Override
-    public ConverterChainContinueWithBuilder<TFrom, TTo> startWith(ConverterChainElement<TFrom, TTo> converter) {
-        ConverterChainElement<TFrom, TTo> next = this.lastAddedChainConverterElement;
-        this.lastAddedChainConverterElement = converter;
+    private ConverterChain<TFrom, TTo> startWith(ConverterChainElement<TFrom, TTo> converter) {
+        ConverterChainElement<TFrom, TTo> next = this.firstChainConverterElement;
+        this.lastAddedChainConverterElement = Optional.of(converter);
         this.firstChainConverterElement = converter;
         converter.setNext(next);
         return this;
-    }
-    
-    @Override
-    public ConverterChainContinueWithBuilder<TFrom, TTo> startWith(
-            Predicate<TFrom> canHandlePredicate,
-            Converter<TFrom, TTo> converter) {
-        return this.startWith(ConverterChainElementImpl.from(canHandlePredicate, converter));
     }
 }

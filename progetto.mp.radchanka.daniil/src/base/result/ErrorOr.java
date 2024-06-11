@@ -15,6 +15,14 @@ public class ErrorOr<T> {
         oneOf2Result = OneOf2.<T, ErrorResult>from1(ErrorResult.from(errorMessage));
     }
     
+    private ErrorOr(ErrorResult errorResult) {
+        oneOf2Result = OneOf2.<T, ErrorResult>from1(errorResult);
+    }
+    
+    public static <T> ErrorOr<T> fromErrorResult(ErrorResult errorResult) {
+        return new ErrorOr<>(errorResult);
+    }
+    
     public static <T> ErrorOr<T> fromErrorMessage(String errorMessage) {
         return new ErrorOr<>(errorMessage);
     }
@@ -23,8 +31,8 @@ public class ErrorOr<T> {
         return new ErrorOr<>(result);
     }
     
-    public void match(Consumer<T> resultConsumer, Consumer<ErrorResult> errorMessageConsumer) {
-        oneOf2Result.match(resultConsumer, errorMessageConsumer);
+    public void match(Consumer<T> resultConsumer, Consumer<ErrorResult> errorConsumer) {
+        oneOf2Result.match(resultConsumer, errorConsumer);
     }
     
     public boolean isError() {

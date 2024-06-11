@@ -59,7 +59,7 @@ public class Address extends ValueObject implements Cloneable<Address> {
     }
     
     @Override
-    public Iterator<Object> getEqualityComponentsIterator() {
+    protected Iterator<Object> getEqualityComponentsIterator() {
         return List.<Object>of(street, building, city, countryRegion, stateProvince, postalCode).iterator();
     }
     

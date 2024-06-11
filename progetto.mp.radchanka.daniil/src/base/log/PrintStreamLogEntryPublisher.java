@@ -21,7 +21,7 @@ public class PrintStreamLogEntryPublisher implements LogEntryPublisher {
     }
     
     @Override
-    public void publishLogEntry(LogEntry logEntry) {
+    public void publish(LogEntry logEntry) {
         Locale locale = localeSupplier.get();
         String timeStamp = DateTimeFormatter
                 .ofPattern(timeStampFormatSupplier.get(), locale)

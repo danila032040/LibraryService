@@ -19,7 +19,7 @@ public abstract class ValueObject {
         return IteratorUtils.elementsEqual(this.getEqualityComponentsIterator(), other.getEqualityComponentsIterator());
     }
     
-    public abstract Iterator<Object> getEqualityComponentsIterator();
+    protected abstract Iterator<Object> getEqualityComponentsIterator();
     
     @Override
     public int hashCode() {

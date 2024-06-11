@@ -3,12 +3,9 @@ package tests.domain.common;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.assertj.core.util.Streams;
 import org.junit.Test;
 
 import domain.common.Address;
@@ -105,20 +102,5 @@ public class AddressUnitTests {
                 Optional.empty());
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void getEqualityComponents_ShouldReturnCorrectEqualityComponents() {
-        Optional<String> building = Optional.empty();
-        Optional<String> city = Optional.empty();
-        Optional<String> countryRegion = Optional.empty();
-        Optional<String> postalCode = Optional.empty();
-        Optional<String> stateProvince = Optional.empty();
-        Optional<String> street = Optional.empty();
-        Address address = new Address(building, city, countryRegion, postalCode, stateProvince, street);
-        
-        List<Object> actual = Streams.stream(address.getEqualityComponentsIterator()).collect(Collectors.toList());
-        
-        assertThat(actual).containsExactlyInAnyOrder(building, city, countryRegion, postalCode, stateProvince, street);
     }
 }

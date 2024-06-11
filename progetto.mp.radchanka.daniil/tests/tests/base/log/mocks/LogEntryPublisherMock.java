@@ -11,7 +11,7 @@ public class LogEntryPublisherMock implements LogEntryPublisher {
     }
     
     @Override
-    public void publishLogEntry(LogEntry logEntry) {
+    public void publish(LogEntry logEntry) {
         this.lastPublishedLogEntry = logEntry;
     }
     

@@ -40,11 +40,11 @@ public class MessageFormatSupportingTimePackage extends Format {
     private MessageFormatSupportingTimePackage(MessageFormat messageFormat) {
         this.messageFormat = messageFormat;
         this.objectToDateIfItIsFromTimePackageOtherwiseToTheSameObjectConverter = ConverterChain
-                .withBaseConverter(obj -> obj)
-                .startWith(
+                .forConverter(obj -> obj)
+                .addConverterChainElement(
                         LocalDate.class::isInstance,
                         (obj) -> Date.from(((LocalDate) obj).atStartOfDay(ZoneId.systemDefault()).toInstant()))
-                .continueWith(
+                .addConverterChainElement(
                         LocalTime.class::isInstance,
                         (obj) -> Date
                                 .from(
@@ -52,13 +52,12 @@ public class MessageFormatSupportingTimePackage extends Format {
                                                 .atDate(LocalDate.EPOCH)
                                                 .atZone(ZoneId.systemDefault())
                                                 .toInstant()))
-                .continueWith(
+                .addConverterChainElement(
                         LocalDateTime.class::isInstance,
                         (obj) -> Date.from(((LocalDateTime) obj).atZone(ZoneId.systemDefault()).toInstant()))
-                .continueWith(
+                .addConverterChainElement(
                         TemporalAccessor.class::isInstance,
-                        (obj) -> Date.from(Instant.from((TemporalAccessor) obj)))
-                .buildConverter();
+                        (obj) -> Date.from(Instant.from((TemporalAccessor) obj)));
     }
     
     public String format(Object... arguments) {
