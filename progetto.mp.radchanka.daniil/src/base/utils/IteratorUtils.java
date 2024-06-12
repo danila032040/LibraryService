@@ -15,12 +15,6 @@ public final class IteratorUtils {
         return (!a.hasNext() && !b.hasNext());
     }
     
-    public static <T> ArrayList<T> toArrayList(Iterator<T> iterator) {
-        ArrayList<T> list = new ArrayList<>();
-        iterator.forEachRemaining(list::add);
-        return list;
-    }
-    
     public static <T, U> U reduceRemaining(Iterator<T> iterator, U identity, BiFunction<U, ? super T, U> accumulator) {
         Objects.requireNonNull(iterator);
         Objects.requireNonNull(accumulator);
@@ -30,6 +24,12 @@ public final class IteratorUtils {
             result = accumulator.apply(result, element);
         }
         return result;
+    }
+    
+    public static <T> ArrayList<T> toArrayList(Iterator<T> iterator) {
+        ArrayList<T> list = new ArrayList<>();
+        iterator.forEachRemaining(list::add);
+        return list;
     }
     
     private IteratorUtils() {

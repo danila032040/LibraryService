@@ -8,11 +8,8 @@ public class LoggerMock implements Logger {
     private String lastSpecifiedMessage;
     private Object[] lastSpecifiedArgs;
     
-    @Override
-    public void log(LogLevelType logLevel, String message, Object... args) {
-        this.lastSpecifiedLogLevel = logLevel;
-        this.lastSpecifiedMessage = message;
-        this.lastSpecifiedArgs = args;
+    public Object[] getLastSpecifiedArgs() {
+        return lastSpecifiedArgs;
     }
     
     public LogLevelType getLastSpecifiedLogLevel() {
@@ -23,7 +20,10 @@ public class LoggerMock implements Logger {
         return lastSpecifiedMessage;
     }
     
-    public Object[] getLastSpecifiedArgs() {
-        return lastSpecifiedArgs;
+    @Override
+    public void log(LogLevelType logLevel, String message, Object... args) {
+        this.lastSpecifiedLogLevel = logLevel;
+        this.lastSpecifiedMessage = message;
+        this.lastSpecifiedArgs = args;
     }
 }

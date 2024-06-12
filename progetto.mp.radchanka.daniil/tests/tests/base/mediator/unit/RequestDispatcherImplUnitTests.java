@@ -19,25 +19,6 @@ public class RequestDispatcherImplUnitTests {
     
     private RequestDispatcherImpl requestDispatcher;
     
-    @Before
-    public void setup() {
-        requestDispatcher = new RequestDispatcherImpl();
-    }
-    
-    @Test
-    public void registerHandler_WhenRequestTypeIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> requestDispatcher.registerHandler(null, new RequestHandlerMock());
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void registerHandler_WhenRequestHandlerInstanceIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> requestDispatcher.registerHandler(RequestMock0.class, null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
     @Test
     public void registerHandler_Twice_ShouldThrowRequestHandlerAlreadyRegisteredException() {
         ThrowingCallable actual = () -> {
@@ -49,6 +30,20 @@ public class RequestDispatcherImplUnitTests {
         assertThatExceptionOfType(RequestHandlerAlreadyRegisteredException.class)
                 .isThrownBy(actual)
                 .satisfies(exception -> assertThat(exception.getRequestType()).isEqualTo(RequestMock0.class));
+    }
+    
+    @Test
+    public void registerHandler_WhenRequestHandlerInstanceIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> requestDispatcher.registerHandler(RequestMock0.class, null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void registerHandler_WhenRequestTypeIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> requestDispatcher.registerHandler(null, new RequestHandlerMock());
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
     @Test
@@ -74,5 +69,10 @@ public class RequestDispatcherImplUnitTests {
         assertThatExceptionOfType(RequestHandlerNotFoundException.class)
                 .isThrownBy(actual)
                 .satisfies(exception -> assertThat(exception.getRequestType()).isEqualTo(RequestMock2.class));
+    }
+    
+    @Before
+    public void setup() {
+        requestDispatcher = new RequestDispatcherImpl();
     }
 }

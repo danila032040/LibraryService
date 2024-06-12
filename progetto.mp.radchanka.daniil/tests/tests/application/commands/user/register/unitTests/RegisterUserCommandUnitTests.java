@@ -12,27 +12,17 @@ import application.commands.user.register.RegisterUserCommand;
 
 public class RegisterUserCommandUnitTests {
     @Test
-    public void constructor_WhenNameIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> new RegisterUserCommand(
-                null,
-                "",
-                Optional.empty(),
-                new AddressCommandData(
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty()));
+    public void constructor_WhenAddresCIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new RegisterUserCommand(null, "", Optional.empty(), null);
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
     @Test
-    public void constructor_WhenSurnameIsNull_ShouldThrowNullPointerException() {
+    public void constructor_WhenNameIsNull_ShouldThrowNullPointerException() {
         ThrowingCallable actual = () -> new RegisterUserCommand(
-                "",
                 null,
+                "",
                 Optional.empty(),
                 new AddressCommandData(
                         Optional.empty(),
@@ -63,8 +53,18 @@ public class RegisterUserCommandUnitTests {
     }
     
     @Test
-    public void constructor_WhenAddresCIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> new RegisterUserCommand(null, "", Optional.empty(), null);
+    public void constructor_WhenSurnameIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new RegisterUserCommand(
+                "",
+                null,
+                Optional.empty(),
+                new AddressCommandData(
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()));
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }

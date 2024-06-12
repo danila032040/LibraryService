@@ -27,12 +27,21 @@ public class ReturnBookByUserCommandHandlerUnitTests {
     private DomainEventPublisherMock domainEventPublisher;
     private ReturnBookByUserCommandHandler handler;
     
-    @Before
-    public void setUp() {
-        bookRepository = new BookRepositoryMock();
-        userRepository = new UserRepositoryMock();
-        domainEventPublisher = new DomainEventPublisherMock();
-        handler = new ReturnBookByUserCommandHandler(bookRepository, userRepository, domainEventPublisher);
+    @Test
+    public void handle_WhenBookIsSuccessfullyReturned_ShouldReturnSuccessResult()
+            throws BookIsAlreadyBorrowedByAnotherUserDomainException {
+        ReturnBookByUserCommand command = new ReturnBookByUserCommand(1, 1);
+        Book existingBook = createBookWithoutDomainEvents(0);
+        existingBook.borrowByUser(new UserId(1));
+        bookRepository.setBook(Optional.of(existingBook));
+        userRepository.setExists(true);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully returned book");
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
+        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isNotEmpty();
     }
     
     @Test
@@ -95,21 +104,12 @@ public class ReturnBookByUserCommandHandlerUnitTests {
         assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
     }
     
-    @Test
-    public void handle_WhenBookIsSuccessfullyReturned_ShouldReturnSuccessResult()
-            throws BookIsAlreadyBorrowedByAnotherUserDomainException {
-        ReturnBookByUserCommand command = new ReturnBookByUserCommand(1, 1);
-        Book existingBook = createBookWithoutDomainEvents(0);
-        existingBook.borrowByUser(new UserId(1));
-        bookRepository.setBook(Optional.of(existingBook));
-        userRepository.setExists(true);
-        
-        ErrorOr<SuccessResult> result = handler.handle(command);
-        
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully returned book");
-        assertThat(bookRepository.isUpdateCalled()).isTrue();
-        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isNotEmpty();
+    @Before
+    public void setUp() {
+        bookRepository = new BookRepositoryMock();
+        userRepository = new UserRepositoryMock();
+        domainEventPublisher = new DomainEventPublisherMock();
+        handler = new ReturnBookByUserCommandHandler(bookRepository, userRepository, domainEventPublisher);
     }
     
     private Book createBookWithoutDomainEvents(int id) {

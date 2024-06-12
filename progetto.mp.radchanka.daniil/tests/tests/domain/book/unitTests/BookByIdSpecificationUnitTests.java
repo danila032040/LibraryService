@@ -21,13 +21,15 @@ public class BookByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenBookIsNull_ShouldThrowException() {
-        BookId bookId = new BookId(1);
-        BookByIdSpecification specification = new BookByIdSpecification(bookId);
+    public void isSatisfiedBy_WhenBookIdDoesNotMatch_ShouldReturnFalse() {
+        BookId bookId1 = new BookId(1);
+        BookId bookId2 = new BookId(2);
+        BookByIdSpecification specification = new BookByIdSpecification(bookId1);
+        Book book = Book.createNewBook(bookId2, "", "", 0, Optional.empty(), Optional.empty());
         
-        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
+        boolean result = specification.isSatisfiedBy(book);
         
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+        assertThat(result).isFalse();
     }
     
     @Test
@@ -42,14 +44,12 @@ public class BookByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenBookIdDoesNotMatch_ShouldReturnFalse() {
-        BookId bookId1 = new BookId(1);
-        BookId bookId2 = new BookId(2);
-        BookByIdSpecification specification = new BookByIdSpecification(bookId1);
-        Book book = Book.createNewBook(bookId2, "", "", 0, Optional.empty(), Optional.empty());
+    public void isSatisfiedBy_WhenBookIsNull_ShouldThrowException() {
+        BookId bookId = new BookId(1);
+        BookByIdSpecification specification = new BookByIdSpecification(bookId);
         
-        boolean result = specification.isSatisfiedBy(book);
+        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
         
-        assertThat(result).isFalse();
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

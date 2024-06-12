@@ -27,12 +27,27 @@ public class RegisterUserCommandHandlerUnitTests {
     private DomainEventPublisherMock domainEventPublisher;
     private RegisterUserCommandHandler handler;
     
-    @Before
-    public void setUp() {
-        userRepository = new UserRepositoryMock();
-        domainEventPublisher = new DomainEventPublisherMock();
-        Mapper<AddressCommandData, Address> addressMapper = new AddressCommandDataMapper();
-        handler = new RegisterUserCommandHandler(userRepository, domainEventPublisher, addressMapper);
+    @Test
+    public void handle_WhenUserAlreadyExists_ShouldReturnErrorMessage() throws AlreadyExistsException {
+        RegisterUserCommand command = new RegisterUserCommand(
+                "Test",
+                "Test",
+                Optional.empty(),
+                new AddressCommandData(
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()));
+        userRepository.setGeneratedUserId(new UserId(0));
+        userRepository.setThrowAlreadyExistsException(true);
+        
+        ErrorOr<UserId> result = handler.handle(command);
+        
+        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("User already exists");
+        assertThat(userRepository.isAddCalled()).isFalse();
+        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
     }
     
     @Test
@@ -65,26 +80,11 @@ public class RegisterUserCommandHandlerUnitTests {
         });
     }
     
-    @Test
-    public void handle_WhenUserAlreadyExists_ShouldReturnErrorMessage() throws AlreadyExistsException {
-        RegisterUserCommand command = new RegisterUserCommand(
-                "Test",
-                "Test",
-                Optional.empty(),
-                new AddressCommandData(
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty()));
-        userRepository.setGeneratedUserId(new UserId(0));
-        userRepository.setThrowAlreadyExistsException(true);
-        
-        ErrorOr<UserId> result = handler.handle(command);
-        
-        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("User already exists");
-        assertThat(userRepository.isAddCalled()).isFalse();
-        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
+    @Before
+    public void setUp() {
+        userRepository = new UserRepositoryMock();
+        domainEventPublisher = new DomainEventPublisherMock();
+        Mapper<AddressCommandData, Address> addressMapper = new AddressCommandDataMapper();
+        handler = new RegisterUserCommandHandler(userRepository, domainEventPublisher, addressMapper);
     }
 }

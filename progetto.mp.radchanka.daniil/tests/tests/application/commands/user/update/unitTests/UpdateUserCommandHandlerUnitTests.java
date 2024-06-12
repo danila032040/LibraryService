@@ -27,24 +27,23 @@ public class UpdateUserCommandHandlerUnitTests {
     private DomainEventPublisherMock domainEventPublisher;
     private UpdateUserCommandHandler handler;
     
-    @Before
-    public void setUp() {
-        userRepository = new UserRepositoryMock();
-        domainEventPublisher = new DomainEventPublisherMock();
-        Mapper<AddressCommandData, Address> addressMapper = new AddressCommandDataMapper();
-        handler = new UpdateUserCommandHandler(userRepository, domainEventPublisher, addressMapper);
-    }
-    
     @Test
-    public void handle_WhenUserNotFound_ShouldReturnErrorMessage() {
-        UpdateUserCommand command = new UpdateUserCommand(0, Optional.empty(), Optional.empty());
-        userRepository.setUser(Optional.empty());
+    public void handle_WhenAddressUpdated_ShouldReturnSuccessMessage() {
+        AddressCommandData newAddressData = new AddressCommandData(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of("New City"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty());
+        UpdateUserCommand command = new UpdateUserCommand(0, Optional.of(newAddressData), Optional.empty());
+        User user = createUserWithoutDomainEvents(0);
+        userRepository.setUser(Optional.of(user));
         
         ErrorOr<SuccessResult> result = handler.handle(command);
         
-        assertThat(result.isError()).isTrue();
-        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("User with specified id was not found");
-        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated user");
     }
     
     @Test
@@ -75,22 +74,23 @@ public class UpdateUserCommandHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenAddressUpdated_ShouldReturnSuccessMessage() {
-        AddressCommandData newAddressData = new AddressCommandData(
-                Optional.empty(),
-                Optional.empty(),
-                Optional.of("New City"),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty());
-        UpdateUserCommand command = new UpdateUserCommand(0, Optional.of(newAddressData), Optional.empty());
-        User user = createUserWithoutDomainEvents(0);
-        userRepository.setUser(Optional.of(user));
+    public void handle_WhenUserNotFound_ShouldReturnErrorMessage() {
+        UpdateUserCommand command = new UpdateUserCommand(0, Optional.empty(), Optional.empty());
+        userRepository.setUser(Optional.empty());
         
         ErrorOr<SuccessResult> result = handler.handle(command);
         
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated user");
+        assertThat(result.isError()).isTrue();
+        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("User with specified id was not found");
+        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
+    }
+    
+    @Before
+    public void setUp() {
+        userRepository = new UserRepositoryMock();
+        domainEventPublisher = new DomainEventPublisherMock();
+        Mapper<AddressCommandData, Address> addressMapper = new AddressCommandDataMapper();
+        handler = new UpdateUserCommandHandler(userRepository, domainEventPublisher, addressMapper);
     }
     
     private User createUserWithoutDomainEvents(int id) {

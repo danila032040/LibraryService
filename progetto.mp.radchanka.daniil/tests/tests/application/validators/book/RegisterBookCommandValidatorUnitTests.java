@@ -13,15 +13,14 @@ import base.result.ValidationResult;
 public class RegisterBookCommandValidatorUnitTests {
     
     @Test
-    public void validate_WhenNameIsBlank_ShouldBeNotValidWithErrors() {
-        RegisterBookCommand command = new RegisterBookCommand(" ", "Test", 0, Optional.empty(), Optional.empty());
+    public void validate_WhenAllFieldsAreValid_ShouldBeValid() {
+        RegisterBookCommand command = new RegisterBookCommand("Test", "Test", 0, Optional.empty(), Optional.empty());
         RegisterBookCommandValidator validator = new RegisterBookCommandValidator();
         
         ValidationResult validationResult = validator.validate(command);
         
-        assertThat(validationResult.isValid()).isFalse();
-        assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Name must be not blank");
+        assertThat(validationResult.isValid()).isTrue();
+        assertThat(validationResult.getErrors()).isEmpty();
     }
     
     @Test
@@ -37,6 +36,18 @@ public class RegisterBookCommandValidatorUnitTests {
     }
     
     @Test
+    public void validate_WhenNameIsBlank_ShouldBeNotValidWithErrors() {
+        RegisterBookCommand command = new RegisterBookCommand(" ", "Test", 0, Optional.empty(), Optional.empty());
+        RegisterBookCommandValidator validator = new RegisterBookCommandValidator();
+        
+        ValidationResult validationResult = validator.validate(command);
+        
+        assertThat(validationResult.isValid()).isFalse();
+        assertThat(validationResult.getErrors()).hasSize(1);
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Name must be not blank");
+    }
+    
+    @Test
     public void validate_WhenPublicationYearIsNegative_ShouldBeNotValidWithErrors() {
         RegisterBookCommand command = new RegisterBookCommand("Test", "Test", -1, Optional.empty(), Optional.empty());
         RegisterBookCommandValidator validator = new RegisterBookCommandValidator();
@@ -45,18 +56,6 @@ public class RegisterBookCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getMessage())
-                .isEqualTo("Publication year must be not negative");
-    }
-    
-    @Test
-    public void validate_WhenAllFieldsAreValid_ShouldBeValid() {
-        RegisterBookCommand command = new RegisterBookCommand("Test", "Test", 0, Optional.empty(), Optional.empty());
-        RegisterBookCommandValidator validator = new RegisterBookCommandValidator();
-        
-        ValidationResult validationResult = validator.validate(command);
-        
-        assertThat(validationResult.isValid()).isTrue();
-        assertThat(validationResult.getErrors()).isEmpty();
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Publication year must be not negative");
     }
 }

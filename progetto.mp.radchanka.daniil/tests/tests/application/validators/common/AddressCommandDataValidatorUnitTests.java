@@ -13,25 +13,6 @@ import base.result.ValidationResult;
 public class AddressCommandDataValidatorUnitTests {
     
     @Test
-    public void validate_WhenNoFieldsArePresent_ShouldBeNotValidWithErrors() {
-        AddressCommandData address = new AddressCommandData(
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty());
-        AddressCommandDataValidator validator = new AddressCommandDataValidator();
-        
-        ValidationResult validationResult = validator.validate(address);
-        
-        assertThat(validationResult.isValid()).isFalse();
-        assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getMessage())
-                .isEqualTo("At least one field of address must be present");
-    }
-    
-    @Test
     public void validate_WhenBuildingIsPresent_ShouldBeValid() {
         AddressCommandData address = new AddressCommandData(
                 Optional.of("Test"),
@@ -80,6 +61,25 @@ public class AddressCommandDataValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isTrue();
         assertThat(validationResult.getErrors()).isEmpty();
+    }
+    
+    @Test
+    public void validate_WhenNoFieldsArePresent_ShouldBeNotValidWithErrors() {
+        AddressCommandData address = new AddressCommandData(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty());
+        AddressCommandDataValidator validator = new AddressCommandDataValidator();
+        
+        ValidationResult validationResult = validator.validate(address);
+        
+        assertThat(validationResult.isValid()).isFalse();
+        assertThat(validationResult.getErrors()).hasSize(1);
+        assertThat(validationResult.getErrors().get(0).getMessage())
+                .isEqualTo("At least one field of address must be present");
     }
     
     @Test

@@ -15,13 +15,14 @@ public class LibraryId extends ValueObject implements Cloneable<LibraryId>, Comp
     }
     
     @Override
-    public LibraryId createClone() {
-        return new LibraryId(this.getId());
+    public int compareTo(LibraryId other) {
+        Objects.requireNonNull(other);
+        return Integer.compare(this.getId(), other.getId());
     }
     
     @Override
-    protected Iterator<Object> getEqualityComponentsIterator() {
-        return List.<Object>of(id).iterator();
+    public LibraryId createClone() {
+        return new LibraryId(this.getId());
     }
     
     public int getId() {
@@ -29,8 +30,7 @@ public class LibraryId extends ValueObject implements Cloneable<LibraryId>, Comp
     }
     
     @Override
-    public int compareTo(LibraryId other) {
-        Objects.requireNonNull(other);
-        return Integer.compare(this.getId(), other.getId());
+    protected Iterator<Object> getEqualityComponentsIterator() {
+        return List.<Object>of(id).iterator();
     }
 }

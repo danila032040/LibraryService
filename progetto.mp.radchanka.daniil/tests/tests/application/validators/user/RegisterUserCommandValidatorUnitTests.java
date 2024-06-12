@@ -38,6 +38,27 @@ public class RegisterUserCommandValidatorUnitTests {
     }
     
     @Test
+    public void validate_WhenAllFieldsAreValid_ShouldBeValid() {
+        RegisterUserCommandValidator validator = new RegisterUserCommandValidator(address -> ValidationResult.create());
+        RegisterUserCommand command = new RegisterUserCommand(
+                "Test",
+                "Test",
+                Optional.empty(),
+                new AddressCommandData(
+                        Optional.of("Test"),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty(),
+                        Optional.empty()));
+        
+        ValidationResult validationResult = validator.validate(command);
+        
+        assertThat(validationResult.isValid()).isTrue();
+        assertThat(validationResult.getErrors()).isEmpty();
+    }
+    
+    @Test
     public void validate_WhenNameIsBlank_ShouldBeNotValidWithErrors() {
         RegisterUserCommandValidator validator = new RegisterUserCommandValidator(address -> ValidationResult.create());
         RegisterUserCommand command = new RegisterUserCommand(
@@ -57,28 +78,6 @@ public class RegisterUserCommandValidatorUnitTests {
         assertThat(validationResult.isValid()).isFalse();
         assertThat(validationResult.getErrors()).hasSize(1);
         assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Name must be not blank");
-    }
-    
-    @Test
-    public void validate_WhenSurnameIsBlank_ShouldBeNotValidWithErrors() {
-        RegisterUserCommandValidator validator = new RegisterUserCommandValidator(address -> ValidationResult.create());
-        RegisterUserCommand command = new RegisterUserCommand(
-                "Test",
-                "",
-                Optional.empty(),
-                new AddressCommandData(
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty(),
-                        Optional.empty()));
-        
-        ValidationResult validationResult = validator.validate(command);
-        
-        assertThat(validationResult.isValid()).isFalse();
-        assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Surname must be not blank");
     }
     
     @Test
@@ -105,14 +104,14 @@ public class RegisterUserCommandValidatorUnitTests {
     }
     
     @Test
-    public void validate_WhenAllFieldsAreValid_ShouldBeValid() {
+    public void validate_WhenSurnameIsBlank_ShouldBeNotValidWithErrors() {
         RegisterUserCommandValidator validator = new RegisterUserCommandValidator(address -> ValidationResult.create());
         RegisterUserCommand command = new RegisterUserCommand(
                 "Test",
-                "Test",
+                "",
                 Optional.empty(),
                 new AddressCommandData(
-                        Optional.of("Test"),
+                        Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
                         Optional.empty(),
@@ -121,7 +120,8 @@ public class RegisterUserCommandValidatorUnitTests {
         
         ValidationResult validationResult = validator.validate(command);
         
-        assertThat(validationResult.isValid()).isTrue();
-        assertThat(validationResult.getErrors()).isEmpty();
+        assertThat(validationResult.isValid()).isFalse();
+        assertThat(validationResult.getErrors()).hasSize(1);
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Surname must be not blank");
     }
 }

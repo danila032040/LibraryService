@@ -33,19 +33,24 @@ public class UpdateBookCommandHandlerUnitTests {
     private DomainEventPublisherMock domainEventPublisher;
     private UpdateBookCommandHandler handler;
     
-    @Before
-    public void setUp() {
-        bookRepository = new BookRepositoryMock();
-        libraryRepository = new LibraryRepositoryMock();
-        authorRepository = new AuthorRepositoryMock();
-        domainEventPublisher = new DomainEventPublisherMock();
-        Mapper<AddressCommandData, Address> addressMapper = new AddressCommandDataMapper();
-        handler = new UpdateBookCommandHandler(
-                bookRepository,
-                libraryRepository,
-                authorRepository,
-                domainEventPublisher,
-                addressMapper);
+    @Test
+    public void handle_WhenAuthorNotFound_ShouldReturnErrorMessage() {
+        UpdateBookCommand command = new UpdateBookCommand(
+                1,
+                "New Name",
+                "New Genre",
+                0,
+                Optional.of(1),
+                Optional.of(1));
+        bookRepository.setBook(Optional.of(createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0)));
+        libraryRepository.setExists(true);
+        authorRepository.setExists(false);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isTrue();
+        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("Author with specified id was not found");
+        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
     }
     
     @Test
@@ -86,26 +91,6 @@ public class UpdateBookCommandHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenAuthorNotFound_ShouldReturnErrorMessage() {
-        UpdateBookCommand command = new UpdateBookCommand(
-                1,
-                "New Name",
-                "New Genre",
-                0,
-                Optional.of(1),
-                Optional.of(1));
-        bookRepository.setBook(Optional.of(createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0)));
-        libraryRepository.setExists(true);
-        authorRepository.setExists(false);
-        
-        ErrorOr<SuccessResult> result = handler.handle(command);
-        
-        assertThat(result.isError()).isTrue();
-        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("Author with specified id was not found");
-        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
-    }
-    
-    @Test
     public void handle_WhenNoUpdateNeeded_ShouldReturnSuccessResultWithoutUpdate() {
         Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0);
         UpdateBookCommand command = new UpdateBookCommand(
@@ -130,14 +115,14 @@ public class UpdateBookCommandHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenUpdateIsNeededOnlyForName_ShouldUpdateBook() {
+    public void handle_WhenUpdateIsNeededOnlyForAuthorId_ShouldUpdateBook() {
         Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
         UpdateBookCommand command = new UpdateBookCommand(
                 1,
-                "New Name",
+                "Old Name",
                 "Old Genre",
                 0,
-                Optional.of(1),
+                Optional.of(2),
                 Optional.of(1));
         bookRepository.setBook(Optional.of(existingBook));
         libraryRepository.setExists(true);
@@ -157,6 +142,48 @@ public class UpdateBookCommandHandlerUnitTests {
                 1,
                 "Old Name",
                 "New Genre",
+                0,
+                Optional.of(1),
+                Optional.of(1));
+        bookRepository.setBook(Optional.of(existingBook));
+        libraryRepository.setExists(true);
+        authorRepository.setExists(true);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    }
+    
+    @Test
+    public void handle_WhenUpdateIsNeededOnlyForLibraryId_ShouldUpdateBook() {
+        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
+        UpdateBookCommand command = new UpdateBookCommand(
+                1,
+                "Old Name",
+                "Old Genre",
+                0,
+                Optional.of(1),
+                Optional.of(2));
+        bookRepository.setBook(Optional.of(existingBook));
+        libraryRepository.setExists(true);
+        authorRepository.setExists(true);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
+        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    }
+    
+    @Test
+    public void handle_WhenUpdateIsNeededOnlyForName_ShouldUpdateBook() {
+        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
+        UpdateBookCommand command = new UpdateBookCommand(
+                1,
+                "New Name",
+                "Old Genre",
                 0,
                 Optional.of(1),
                 Optional.of(1));
@@ -192,46 +219,26 @@ public class UpdateBookCommandHandlerUnitTests {
         assertThat(bookRepository.isUpdateCalled()).isTrue();
     }
     
-    @Test
-    public void handle_WhenUpdateIsNeededOnlyForAuthorId_ShouldUpdateBook() {
-        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
-        UpdateBookCommand command = new UpdateBookCommand(
-                1,
-                "Old Name",
-                "Old Genre",
-                0,
-                Optional.of(2),
-                Optional.of(1));
-        bookRepository.setBook(Optional.of(existingBook));
-        libraryRepository.setExists(true);
-        authorRepository.setExists(true);
-        
-        ErrorOr<SuccessResult> result = handler.handle(command);
-        
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
-        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    @Before
+    public void setUp() {
+        bookRepository = new BookRepositoryMock();
+        libraryRepository = new LibraryRepositoryMock();
+        authorRepository = new AuthorRepositoryMock();
+        domainEventPublisher = new DomainEventPublisherMock();
+        Mapper<AddressCommandData, Address> addressMapper = new AddressCommandDataMapper();
+        handler = new UpdateBookCommandHandler(
+                bookRepository,
+                libraryRepository,
+                authorRepository,
+                domainEventPublisher,
+                addressMapper);
     }
     
-    @Test
-    public void handle_WhenUpdateIsNeededOnlyForLibraryId_ShouldUpdateBook() {
-        Book existingBook = createBookWithoutDomainEvents(1, "Old Name", "Old Genre", 0, 1, 1);
-        UpdateBookCommand command = new UpdateBookCommand(
-                1,
-                "Old Name",
-                "Old Genre",
-                0,
-                Optional.of(1),
-                Optional.of(2));
-        bookRepository.setBook(Optional.of(existingBook));
-        libraryRepository.setExists(true);
-        authorRepository.setExists(true);
-        
-        ErrorOr<SuccessResult> result = handler.handle(command);
-        
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult()).map(SuccessResult::getMessage).hasValue("Successfully updated book information");
-        assertThat(bookRepository.isUpdateCalled()).isTrue();
+    private Book createBookWithoutDomainEvents(int id, String name, String genre, int publicationYear) {
+        Book createdBook = Book
+                .createNewBook(new BookId(id), name, genre, publicationYear, Optional.empty(), Optional.empty());
+        createdBook.extractAllDomainEvents();
+        return createdBook;
     }
     
     private Book createBookWithoutDomainEvents(
@@ -249,13 +256,6 @@ public class UpdateBookCommandHandlerUnitTests {
                         publicationYear,
                         Optional.of(new AuthorId(authorId)),
                         Optional.of(new LibraryId(libraryId)));
-        createdBook.extractAllDomainEvents();
-        return createdBook;
-    }
-    
-    private Book createBookWithoutDomainEvents(int id, String name, String genre, int publicationYear) {
-        Book createdBook = Book
-                .createNewBook(new BookId(id), name, genre, publicationYear, Optional.empty(), Optional.empty());
         createdBook.extractAllDomainEvents();
         return createdBook;
     }

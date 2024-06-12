@@ -58,11 +58,6 @@ public class Address extends ValueObject implements Cloneable<Address> {
         return countryRegion;
     }
     
-    @Override
-    protected Iterator<Object> getEqualityComponentsIterator() {
-        return List.<Object>of(street, building, city, countryRegion, stateProvince, postalCode).iterator();
-    }
-    
     public Optional<String> getPostalCode() {
         return postalCode;
     }
@@ -73,5 +68,10 @@ public class Address extends ValueObject implements Cloneable<Address> {
     
     public Optional<String> getStreet() {
         return street;
+    }
+    
+    @Override
+    protected Iterator<Object> getEqualityComponentsIterator() {
+        return List.<Object>of(street, building, city, countryRegion, stateProvince, postalCode).iterator();
     }
 }

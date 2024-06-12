@@ -12,9 +12,9 @@ import application.commands.book.update.UpdateBookCommand;
 public class UpdateBookCommandUnitTests {
     
     @Test
-    public void updateBookCommand_WhenNameIsNull_ShouldThrowNullPointerException() {
+    public void updateBookCommand_WhenauthorIdIsNull_ShouldThrowNullPointerException() {
         
-        ThrowingCallable actual = () -> new UpdateBookCommand(8, null, "", 2003, Optional.empty(), Optional.empty());
+        ThrowingCallable actual = () -> new UpdateBookCommand(8, "", "", 2003, null, Optional.empty());
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
         
@@ -30,18 +30,18 @@ public class UpdateBookCommandUnitTests {
     }
     
     @Test
-    public void updateBookCommand_WhenauthorIdIsNull_ShouldThrowNullPointerException() {
+    public void updateBookCommand_WhenlibraryIdIsNull_ShouldThrowNullPointerException() {
         
-        ThrowingCallable actual = () -> new UpdateBookCommand(8, "", "", 2003, null, Optional.empty());
+        ThrowingCallable actual = () -> new UpdateBookCommand(8, "", "", 2003, Optional.empty(), null);
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
         
     }
     
     @Test
-    public void updateBookCommand_WhenlibraryIdIsNull_ShouldThrowNullPointerException() {
+    public void updateBookCommand_WhenNameIsNull_ShouldThrowNullPointerException() {
         
-        ThrowingCallable actual = () -> new UpdateBookCommand(8, "", "", 2003, Optional.empty(), null);
+        ThrowingCallable actual = () -> new UpdateBookCommand(8, null, "", 2003, Optional.empty(), Optional.empty());
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
         

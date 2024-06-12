@@ -19,15 +19,15 @@ public class UpdateUserCommand implements Request<ErrorOr<SuccessResult>> {
         this.newPhoneNumber = Objects.requireNonNull(newPhoneNumber);
     }
     
-    public int getUserId() {
-        return userId;
-    }
-    
     public Optional<AddressCommandData> getNewAddress() {
         return newAddress;
     }
     
     public Optional<String> getNewPhoneNumber() {
         return newPhoneNumber;
+    }
+    
+    public int getUserId() {
+        return userId;
     }
 }

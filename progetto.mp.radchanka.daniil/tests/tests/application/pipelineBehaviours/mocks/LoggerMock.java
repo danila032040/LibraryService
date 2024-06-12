@@ -11,24 +11,23 @@ public class LoggerMock implements Logger {
     private final List<String> specifiedMessages = new ArrayList<>();
     private final List<Object[]> specifiedArgumentsList = new ArrayList<>();
     
+    public List<Object[]> getSpecifiedArgumentsList() {
+        return specifiedArgumentsList;
+    }
+    
+    public List<String> getSpecifiedMessages() {
+        return specifiedMessages;
+    }
+    
+    public List<LogLevelType> getSpesifiedLogLevels() {
+        return spesifiedLogLevels;
+    }
+    
     @Override
     public void log(LogLevelType logLevel, String message, Object... args) {
         this.spesifiedLogLevels.add(logLevel);
         this.specifiedMessages.add(message);
         this.specifiedArgumentsList.add(args);
     }
-
-    public List<LogLevelType> getSpesifiedLogLevels() {
-        return spesifiedLogLevels;
-    }
-
-    public List<String> getSpecifiedMessages() {
-        return specifiedMessages;
-    }
-
-    public List<Object[]> getSpecifiedArgumentsList() {
-        return specifiedArgumentsList;
-    }
- 
     
 }

@@ -26,19 +26,19 @@ public class OptionalComparatorUnitTests {
     }
     
     @Test
-    public void compare_WhenFirstFieldIsEmptyAndSecondFieldIsNonEmpty_ShouldReturnNegative() {
-        Optional<Integer> o1 = Optional.empty();
+    public void compare_WhenBothFieldsAreNonEmptyAndEqual_ShouldReturnZero() {
+        Optional<Integer> o1 = Optional.of(1);
         Optional<Integer> o2 = Optional.of(1);
         
         int actual = comparator.compare(o1, o2);
         
-        assertThat(actual).isLessThan(0);
+        assertThat(actual).isEqualTo(0);
     }
     
     @Test
-    public void compare_WhenFirstFieldIsNonEmptyAndSecondFieldIsEmpty_ShouldReturnPositive() {
-        Optional<Integer> o1 = Optional.of(1);
-        Optional<Integer> o2 = Optional.empty();
+    public void compare_WhenBothFieldsAreNonEmptyAndFirstIsGreaterThanSecond_ShouldReturnPositive() {
+        Optional<Integer> o1 = Optional.of(2);
+        Optional<Integer> o2 = Optional.of(1);
         
         int actual = comparator.compare(o1, o2);
         
@@ -56,23 +56,23 @@ public class OptionalComparatorUnitTests {
     }
     
     @Test
-    public void compare_WhenBothFieldsAreNonEmptyAndFirstIsGreaterThanSecond_ShouldReturnPositive() {
-        Optional<Integer> o1 = Optional.of(2);
+    public void compare_WhenFirstFieldIsEmptyAndSecondFieldIsNonEmpty_ShouldReturnNegative() {
+        Optional<Integer> o1 = Optional.empty();
         Optional<Integer> o2 = Optional.of(1);
+        
+        int actual = comparator.compare(o1, o2);
+        
+        assertThat(actual).isLessThan(0);
+    }
+    
+    @Test
+    public void compare_WhenFirstFieldIsNonEmptyAndSecondFieldIsEmpty_ShouldReturnPositive() {
+        Optional<Integer> o1 = Optional.of(1);
+        Optional<Integer> o2 = Optional.empty();
         
         int actual = comparator.compare(o1, o2);
         
         assertThat(actual).isGreaterThan(0);
-    }
-    
-    @Test
-    public void compare_WhenBothFieldsAreNonEmptyAndEqual_ShouldReturnZero() {
-        Optional<Integer> o1 = Optional.of(1);
-        Optional<Integer> o2 = Optional.of(1);
-        
-        int actual = comparator.compare(o1, o2);
-        
-        assertThat(actual).isEqualTo(0);
     }
     
     @Test

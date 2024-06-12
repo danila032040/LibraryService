@@ -14,27 +14,23 @@ import domain.author.AuthorRepository;
 public class AuthorRepositoryMock implements AuthorRepository {
     private boolean exists;
     
-    public void setExists(boolean exists) {
-        this.exists = exists;
-    }
-    
-    @Override
-    public Optional<Author> getFirst(Specification<Author> specification) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    
     @Override
     public void add(Author entity) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public void update(Author entity) {
+    public void addRange(Collection<Author> entity) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public void addRange(Collection<Author> entity) {
+    public boolean exists(Specification<Author> specification) {
+        return exists;
+    }
+    
+    @Override
+    public AuthorId generateNewAuthorId() {
         throw new UnsupportedOperationException("Not implemented");
     }
     
@@ -62,6 +58,11 @@ public class AuthorRepositoryMock implements AuthorRepository {
     }
     
     @Override
+    public Optional<Author> getFirst(Specification<Author> specification) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
     public void remove(AuthorId entityId) {
         throw new UnsupportedOperationException("Not implemented");
     }
@@ -71,18 +72,17 @@ public class AuthorRepositoryMock implements AuthorRepository {
         throw new UnsupportedOperationException("Not implemented");
     }
     
+    public void setExists(boolean exists) {
+        this.exists = exists;
+    }
+    
     @Override
-    public void updateRange(Collection<Author> entity) {
+    public void update(Author entity) {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public boolean exists(Specification<Author> specification) {
-        return exists;
-    }
-    
-    @Override
-    public AuthorId generateNewAuthorId() {
+    public void updateRange(Collection<Author> entity) {
         throw new UnsupportedOperationException("Not implemented");
     }
 }

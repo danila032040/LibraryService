@@ -15,13 +15,14 @@ public class UserId extends ValueObject implements Cloneable<UserId>, Comparable
     }
     
     @Override
-    public UserId createClone() {
-        return new UserId(this.getId());
+    public int compareTo(UserId other) {
+        Objects.requireNonNull(other);
+        return Integer.compare(this.getId(), other.getId());
     }
     
     @Override
-    protected Iterator<Object> getEqualityComponentsIterator() {
-        return List.<Object>of(id).iterator();
+    public UserId createClone() {
+        return new UserId(this.getId());
     }
     
     public int getId() {
@@ -29,8 +30,7 @@ public class UserId extends ValueObject implements Cloneable<UserId>, Comparable
     }
     
     @Override
-    public int compareTo(UserId other) {
-        Objects.requireNonNull(other);
-        return Integer.compare(this.getId(), other.getId());
+    protected Iterator<Object> getEqualityComponentsIterator() {
+        return List.<Object>of(id).iterator();
     }
 }

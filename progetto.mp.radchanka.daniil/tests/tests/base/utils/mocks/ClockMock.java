@@ -11,14 +11,13 @@ public class ClockMock extends Clock {
         this.instant = instant;
     }
     
-    @Override
-    public ZoneId getZone() {
-        return ZoneId.systemDefault();
+    public void addSeconds(long seconds) {
+        instant = instant.plusSeconds(seconds);
     }
     
     @Override
-    public Clock withZone(ZoneId zone) {
-        return this;
+    public ZoneId getZone() {
+        return ZoneId.systemDefault();
     }
     
     @Override
@@ -26,7 +25,8 @@ public class ClockMock extends Clock {
         return instant;
     }
     
-    public void addSeconds(long seconds) {
-        instant = instant.plusSeconds(seconds);
+    @Override
+    public Clock withZone(ZoneId zone) {
+        return this;
     }
 }

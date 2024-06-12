@@ -19,14 +19,8 @@ public class BookRepositoryMock implements BookRepository {
     private final List<Book> books = new ArrayList<>();
     
     @Override
-    public List<Book> get(Specification<Book> specification, SortCriteria<Book> sortCriteria, Pagination pagination) {
-        return books
-                .stream()
-                .filter(specification::isSatisfiedBy)
-                .sorted(sortCriteria.getSortComparator())
-                .skip(pagination.getPageIndex() * pagination.getPageSize())
-                .limit(pagination.getPageSize())
-                .collect(Collectors.toList());
+    public void add(Book entity) throws AlreadyExistsException {
+        throw new UnsupportedOperationException("Not implemented");
     }
     
     public void addBook(Book book) {
@@ -38,12 +32,12 @@ public class BookRepositoryMock implements BookRepository {
     }
     
     @Override
-    public void add(Book entity) throws AlreadyExistsException {
+    public void addRange(Collection<Book> entity) throws AlreadyExistsException {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
-    public void addRange(Collection<Book> entity) throws AlreadyExistsException {
+    public BookId generateNewBookId() {
         throw new UnsupportedOperationException("Not implemented");
     }
     
@@ -55,6 +49,17 @@ public class BookRepositoryMock implements BookRepository {
     @Override
     public List<Book> get(Specification<Book> specification, Pagination pagination) {
         throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public List<Book> get(Specification<Book> specification, SortCriteria<Book> sortCriteria, Pagination pagination) {
+        return books
+                .stream()
+                .filter(specification::isSatisfiedBy)
+                .sorted(sortCriteria.getSortComparator())
+                .skip(pagination.getPageIndex() * pagination.getPageSize())
+                .limit(pagination.getPageSize())
+                .collect(Collectors.toList());
     }
     
     @Override
@@ -84,11 +89,6 @@ public class BookRepositoryMock implements BookRepository {
     
     @Override
     public void updateRange(Collection<Book> entity) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    @Override
-    public BookId generateNewBookId() {
         throw new UnsupportedOperationException("Not implemented");
     }
 }

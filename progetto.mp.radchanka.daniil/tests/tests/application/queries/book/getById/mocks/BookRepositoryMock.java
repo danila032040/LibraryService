@@ -16,15 +16,6 @@ public class BookRepositoryMock implements BookRepository {
     private Optional<Book> book;
     
     @Override
-    public Optional<Book> getFirst(Specification<Book> specification) {
-        return book;
-    }
-    
-    public void setBook(Optional<Book> book) {
-        this.book = book;
-    }
-    
-    @Override
     public void add(Book entity) throws AlreadyExistsException {
         throw new UnsupportedOperationException("Not implemented");
         
@@ -32,6 +23,11 @@ public class BookRepositoryMock implements BookRepository {
     
     @Override
     public void addRange(Collection<Book> entity) throws AlreadyExistsException {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public BookId generateNewBookId() {
         throw new UnsupportedOperationException("Not implemented");
     }
     
@@ -56,6 +52,11 @@ public class BookRepositoryMock implements BookRepository {
     }
     
     @Override
+    public Optional<Book> getFirst(Specification<Book> specification) {
+        return book;
+    }
+    
+    @Override
     public void remove(BookId entityId) {
         throw new UnsupportedOperationException("Not implemented");
     }
@@ -65,6 +66,10 @@ public class BookRepositoryMock implements BookRepository {
         throw new UnsupportedOperationException("Not implemented");
     }
     
+    public void setBook(Optional<Book> book) {
+        this.book = book;
+    }
+    
     @Override
     public void update(Book entity) {
         throw new UnsupportedOperationException("Not implemented");
@@ -72,11 +77,6 @@ public class BookRepositoryMock implements BookRepository {
     
     @Override
     public void updateRange(Collection<Book> entity) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    @Override
-    public BookId generateNewBookId() {
         throw new UnsupportedOperationException("Not implemented");
     }
 }

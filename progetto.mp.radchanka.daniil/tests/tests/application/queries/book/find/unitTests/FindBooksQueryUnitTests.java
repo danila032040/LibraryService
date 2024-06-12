@@ -13,13 +13,13 @@ import application.queries.common.sortData.SortTypeQueryData;
 
 public class FindBooksQueryUnitTests {
     @Test
-    public void constructor_WhenNameIsNull_ShouldThrowNullPointerException() {
+    public void constructor_WhenAuthorIdIsNull_ShouldThrowNullPointerException() {
         ThrowingCallable actual = () -> new FindBooksQuery(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
                 null,
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
                 Optional.empty(),
                 0,
                 0,
@@ -51,11 +51,30 @@ public class FindBooksQueryUnitTests {
     }
     
     @Test
-    public void constructor_WhenPublicationYearPeriodStartIsNull_ShouldThrowNullPointerException() {
+    public void constructor_WhenLibraryIdIsNull_ShouldThrowNullPointerException() {
         ThrowingCallable actual = () -> new FindBooksQuery(
                 Optional.empty(),
                 Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
                 null,
+                0,
+                0,
+                BookSortByFieldQueryData.Id,
+                SortTypeQueryData.Ascending,
+                Optional.empty(),
+                Optional.empty());
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void constructor_WhenNameIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> new FindBooksQuery(
+                null,
+                Optional.empty(),
+                Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
@@ -89,33 +108,14 @@ public class FindBooksQueryUnitTests {
     }
     
     @Test
-    public void constructor_WhenAuthorIdIsNull_ShouldThrowNullPointerException() {
+    public void constructor_WhenPublicationYearPeriodStartIsNull_ShouldThrowNullPointerException() {
         ThrowingCallable actual = () -> new FindBooksQuery(
-                Optional.empty(),
-                Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
                 null,
                 Optional.empty(),
-                0,
-                0,
-                BookSortByFieldQueryData.Id,
-                SortTypeQueryData.Ascending,
-                Optional.empty(),
-                Optional.empty());
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void constructor_WhenLibraryIdIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> new FindBooksQuery(
                 Optional.empty(),
                 Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                null,
                 0,
                 0,
                 BookSortByFieldQueryData.Id,

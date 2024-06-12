@@ -21,11 +21,18 @@ public class RegisterBookCommandHandlerUnitTests {
     private DomainEventPublisherMock domainEventPublisher;
     private RegisterBookCommandHandler handler;
     
-    @Before
-    public void setUp() {
-        bookRepository = new BookRepositoryMock();
-        domainEventPublisher = new DomainEventPublisherMock();
-        handler = new RegisterBookCommandHandler(bookRepository, domainEventPublisher);
+    @Test
+    public void handle_WhenBookAlreadyExists_ShouldReturnErrorMessage() {
+        RegisterBookCommand command = new RegisterBookCommand("Test", "Test", 0, Optional.empty(), Optional.empty());
+        bookRepository.setThrowAlreadyExistsException(true);
+        
+        ErrorOr<BookId> result = handler.handle(command);
+        
+        assertThat(result.isError()).isTrue();
+        assertThat(bookRepository.isAddCalled()).isFalse();
+        assertThat(result.getError())
+                .hasValueSatisfying(error -> assertThat(error.getMessage()).isEqualTo("Book already exists"));
+        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
     }
     
     @Test
@@ -49,17 +56,10 @@ public class RegisterBookCommandHandlerUnitTests {
         });
     }
     
-    @Test
-    public void handle_WhenBookAlreadyExists_ShouldReturnErrorMessage() {
-        RegisterBookCommand command = new RegisterBookCommand("Test", "Test", 0, Optional.empty(), Optional.empty());
-        bookRepository.setThrowAlreadyExistsException(true);
-        
-        ErrorOr<BookId> result = handler.handle(command);
-        
-        assertThat(result.isError()).isTrue();
-        assertThat(bookRepository.isAddCalled()).isFalse();
-        assertThat(result.getError())
-                .hasValueSatisfying(error -> assertThat(error.getMessage()).isEqualTo("Book already exists"));
-        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
+    @Before
+    public void setUp() {
+        bookRepository = new BookRepositoryMock();
+        domainEventPublisher = new DomainEventPublisherMock();
+        handler = new RegisterBookCommandHandler(bookRepository, domainEventPublisher);
     }
 }

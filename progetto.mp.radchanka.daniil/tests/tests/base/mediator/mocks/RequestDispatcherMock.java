@@ -9,6 +9,14 @@ public class RequestDispatcherMock implements RequestDispatcher {
     private int registerHandlerExecutionsCount;
     private int sendRequestExecutionsCount;
     
+    public int getRegisterHandlerExecutionsCount() {
+        return registerHandlerExecutionsCount;
+    }
+    
+    public int getSendRequestExecutionsCount() {
+        return sendRequestExecutionsCount;
+    }
+    
     @Override
     public <TRequest extends Request<TResult>, TResult> RequestDispatcher registerHandler(
             Class<TRequest> requestType,
@@ -22,13 +30,5 @@ public class RequestDispatcherMock implements RequestDispatcher {
     public <TRequest extends Request<TResult>, TResult> TResult sendRequest(TRequest request) {
         ++sendRequestExecutionsCount;
         return null;
-    }
-    
-    public int getRegisterHandlerExecutionsCount() {
-        return registerHandlerExecutionsCount;
-    }
-    
-    public int getSendRequestExecutionsCount() {
-        return sendRequestExecutionsCount;
     }
 }

@@ -37,31 +37,17 @@ public class AuthorRepositoryImplUnitTests {
     }
     
     @Test
-    public void generateNewAuthorId_WhenStorageIsEmpty_ShouldReturnAuthorIdZero() {
+    public void exists_WhenStorageIsEmpty_ShouldReturnFalse() {
         AuthorRepositoryImpl authorRepository = new AuthorRepositoryImpl(
                 new ArrayList<>(),
                 ArrayList::new,
                 Author::createClone);
         
-        AuthorId newAuthorId = authorRepository.generateNewAuthorId();
+        Specification<Author> specification = u -> u.getId().equals(new AuthorId(1));
         
-        assertThat(newAuthorId.getId()).isEqualTo(0);
-    }
-    
-    @Test
-    public void generateNewAuthorId_WhenStorageIsNotEmpty_ShouldReturnNextAuthorId() {
-        AuthorRepositoryImpl authorRepository = new AuthorRepositoryImpl(
-                Lists
-                        .newArrayList(
-                                Author.createNewAuthor(new AuthorId(1), "", "", ""),
-                                Author.createNewAuthor(new AuthorId(2), "", "", ""),
-                                Author.createNewAuthor(new AuthorId(5), "", "", "")),
-                ArrayList::new,
-                Author::createClone);
+        boolean result = authorRepository.exists(specification);
         
-        AuthorId newAuthorId = authorRepository.generateNewAuthorId();
-        
-        assertThat(newAuthorId.getId()).isEqualTo(6);
+        assertThat(result).isFalse();
     }
     
     @Test
@@ -95,16 +81,30 @@ public class AuthorRepositoryImplUnitTests {
     }
     
     @Test
-    public void exists_WhenStorageIsEmpty_ShouldReturnFalse() {
+    public void generateNewAuthorId_WhenStorageIsEmpty_ShouldReturnAuthorIdZero() {
         AuthorRepositoryImpl authorRepository = new AuthorRepositoryImpl(
                 new ArrayList<>(),
                 ArrayList::new,
                 Author::createClone);
         
-        Specification<Author> specification = u -> u.getId().equals(new AuthorId(1));
+        AuthorId newAuthorId = authorRepository.generateNewAuthorId();
         
-        boolean result = authorRepository.exists(specification);
+        assertThat(newAuthorId.getId()).isEqualTo(0);
+    }
+    
+    @Test
+    public void generateNewAuthorId_WhenStorageIsNotEmpty_ShouldReturnNextAuthorId() {
+        AuthorRepositoryImpl authorRepository = new AuthorRepositoryImpl(
+                Lists
+                        .newArrayList(
+                                Author.createNewAuthor(new AuthorId(1), "", "", ""),
+                                Author.createNewAuthor(new AuthorId(2), "", "", ""),
+                                Author.createNewAuthor(new AuthorId(5), "", "", "")),
+                ArrayList::new,
+                Author::createClone);
         
-        assertThat(result).isFalse();
+        AuthorId newAuthorId = authorRepository.generateNewAuthorId();
+        
+        assertThat(newAuthorId.getId()).isEqualTo(6);
     }
 }

@@ -20,6 +20,20 @@ import domain.library.LibraryId;
 public class BookSortCriteriaBuilderUnitTests {
     
     @Test
+    public void sortBy_WhenAuthorIdAscending_ShouldSortBooksByAuthorId() {
+        Book book1 = createBookWithAuthor(1, "Test1", new AuthorId(2));
+        Book book2 = createBookWithAuthor(2, "Test2", new AuthorId(1));
+        List<Book> books = Arrays.asList(book1, book2);
+        BookSortCriteriaBuilder builder = BookSortCriteriaBuilder
+                .sortBy(BookSortByFieldQueryData.AuthorId, SortType.Ascending);
+        SortCriteria<Book> criteria = builder.build();
+        
+        books.sort(criteria.getSortComparator());
+        
+        assertThat(books).containsExactly(book2, book1);
+    }
+    
+    @Test
     public void sortBy_WhenIdAscending_ShouldSortBooksById() {
         Book book1 = createBook(1, "Test1");
         Book book2 = createBook(2, "Test2");
@@ -31,6 +45,20 @@ public class BookSortCriteriaBuilderUnitTests {
         books.sort(criteria.getSortComparator());
         
         assertThat(books).containsExactly(book1, book2);
+    }
+    
+    @Test
+    public void sortBy_WhenLibraryIdDescending_ShouldSortBooksByLibraryId() {
+        Book book1 = createBookWithLibrary(1, "Test1", new LibraryId(1));
+        Book book2 = createBookWithLibrary(2, "Test2", new LibraryId(2));
+        List<Book> books = Arrays.asList(book1, book2);
+        BookSortCriteriaBuilder builder = BookSortCriteriaBuilder
+                .sortBy(BookSortByFieldQueryData.LibraryId, SortType.Descending);
+        SortCriteria<Book> criteria = builder.build();
+        
+        books.sort(criteria.getSortComparator());
+        
+        assertThat(books).containsExactly(book2, book1);
     }
     
     @Test
@@ -75,34 +103,6 @@ public class BookSortCriteriaBuilderUnitTests {
         books.sort(criteria.getSortComparator());
         
         assertThat(books).containsExactly(book2, book1, book3);
-    }
-    
-    @Test
-    public void sortBy_WhenAuthorIdAscending_ShouldSortBooksByAuthorId() {
-        Book book1 = createBookWithAuthor(1, "Test1", new AuthorId(2));
-        Book book2 = createBookWithAuthor(2, "Test2", new AuthorId(1));
-        List<Book> books = Arrays.asList(book1, book2);
-        BookSortCriteriaBuilder builder = BookSortCriteriaBuilder
-                .sortBy(BookSortByFieldQueryData.AuthorId, SortType.Ascending);
-        SortCriteria<Book> criteria = builder.build();
-        
-        books.sort(criteria.getSortComparator());
-        
-        assertThat(books).containsExactly(book2, book1);
-    }
-    
-    @Test
-    public void sortBy_WhenLibraryIdDescending_ShouldSortBooksByLibraryId() {
-        Book book1 = createBookWithLibrary(1, "Test1", new LibraryId(1));
-        Book book2 = createBookWithLibrary(2, "Test2", new LibraryId(2));
-        List<Book> books = Arrays.asList(book1, book2);
-        BookSortCriteriaBuilder builder = BookSortCriteriaBuilder
-                .sortBy(BookSortByFieldQueryData.LibraryId, SortType.Descending);
-        SortCriteria<Book> criteria = builder.build();
-        
-        books.sort(criteria.getSortComparator());
-        
-        assertThat(books).containsExactly(book2, book1);
     }
     
     private Book createBook(int id, String name) {

@@ -16,16 +16,6 @@ import tests.base.mediator.mocks.RequestMock0;
 
 public class PipelineUnitTests {
     @Test
-    public void buildRequestHandler_WithNoBehaviours_ShouldReturnBaseHandler() {
-        RequestHandlerMock handler = new RequestHandlerMock();
-        Pipeline<RequestMock0, Integer> pipeline = Pipeline.forRequestHandler(handler);
-        
-        RequestHandler<RequestMock0, Integer> resultHandler = pipeline.buildAsRequestHandler();
-        
-        assertThat(resultHandler).isSameAs(handler);
-    }
-    
-    @Test
     public void buildRequestHandler_WithBehaviours_ShouldReturnHandlerWhichRepresentsPipelineCorrectly() {
         RequestHandlerMock handler = new RequestHandlerMock();
         RequestMock0 request1 = new RequestMock0();
@@ -54,5 +44,15 @@ public class PipelineUnitTests {
                         specifiedRequest -> assertThat(specifiedRequest).containsSame(request1),
                         specifiedRequest -> assertThat(specifiedRequest).containsSame(request2),
                         specifiedRequest -> assertThat(specifiedRequest).containsSame(request3));
+    }
+    
+    @Test
+    public void buildRequestHandler_WithNoBehaviours_ShouldReturnBaseHandler() {
+        RequestHandlerMock handler = new RequestHandlerMock();
+        Pipeline<RequestMock0, Integer> pipeline = Pipeline.forRequestHandler(handler);
+        
+        RequestHandler<RequestMock0, Integer> resultHandler = pipeline.buildAsRequestHandler();
+        
+        assertThat(resultHandler).isSameAs(handler);
     }
 }

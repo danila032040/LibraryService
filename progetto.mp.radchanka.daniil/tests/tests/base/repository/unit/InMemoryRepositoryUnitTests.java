@@ -26,12 +26,6 @@ public class InMemoryRepositoryUnitTests {
     private InMemoryRepository<EntityMock, Integer> repository;
     private ArrayList<EntityMock> storage;
     
-    @Before
-    public void setup() {
-        storage = Lists.newArrayList();
-        repository = new InMemoryRepository<>(storage, ArrayList::new, EntityMock::createClone);
-    }
-    
     @Test
     public void add_ShouldAddClonedEntityToTheStorage() throws AlreadyExistsException {
         EntityMock expected = new EntityMock(1, 5);
@@ -214,6 +208,12 @@ public class InMemoryRepositoryUnitTests {
         repository.removeRange(expectedRemovedEntityIds);
         
         assertThatList(storage).doesNotContain(expectedRemovedEntities.toArray(size -> new EntityMock[size]));
+    }
+    
+    @Before
+    public void setup() {
+        storage = Lists.newArrayList();
+        repository = new InMemoryRepository<>(storage, ArrayList::new, EntityMock::createClone);
     }
     
     @Test

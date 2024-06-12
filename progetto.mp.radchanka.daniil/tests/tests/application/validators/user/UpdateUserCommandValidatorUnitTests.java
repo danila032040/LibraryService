@@ -28,6 +28,31 @@ public class UpdateUserCommandValidatorUnitTests {
     }
     
     @Test
+    public void validate_WhenNewPhoneNumberAndAddressArePresentAndAddressIsInvalid_ShouldBeNotValidWithErrors() {
+        UpdateUserCommandValidator validator = new UpdateUserCommandValidator(
+                address -> ValidationResult.create().withError(ErrorResult.from("Address is invalid")));
+        
+        UpdateUserCommand command = new UpdateUserCommand(
+                0,
+                Optional
+                        .of(
+                                new AddressCommandData(
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty(),
+                                        Optional.empty())),
+                Optional.of("Test"));
+        
+        ValidationResult validationResult = validator.validate(command);
+        
+        assertThat(validationResult.isValid()).isFalse();
+        assertThat(validationResult.getErrors()).hasSize(1);
+        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Address is invalid");
+    }
+    
+    @Test
     public void validate_WhenNewPhoneNumberIsBlank_ShouldBeNotValidWithErrors() {
         UpdateUserCommandValidator validator = new UpdateUserCommandValidator(address -> ValidationResult.create());
         UpdateUserCommand command = new UpdateUserCommand(0, Optional.empty(), Optional.of(""));
@@ -60,30 +85,5 @@ public class UpdateUserCommandValidatorUnitTests {
         
         assertThat(validationResult.isValid()).isTrue();
         assertThat(validationResult.getErrors()).isEmpty();
-    }
-    
-    @Test
-    public void validate_WhenNewPhoneNumberAndAddressArePresentAndAddressIsInvalid_ShouldBeNotValidWithErrors() {
-        UpdateUserCommandValidator validator = new UpdateUserCommandValidator(
-                address -> ValidationResult.create().withError(ErrorResult.from("Address is invalid")));
-        
-        UpdateUserCommand command = new UpdateUserCommand(
-                0,
-                Optional
-                        .of(
-                                new AddressCommandData(
-                                        Optional.empty(),
-                                        Optional.empty(),
-                                        Optional.empty(),
-                                        Optional.empty(),
-                                        Optional.empty(),
-                                        Optional.empty())),
-                Optional.of("Test"));
-        
-        ValidationResult validationResult = validator.validate(command);
-        
-        assertThat(validationResult.isValid()).isFalse();
-        assertThat(validationResult.getErrors()).hasSize(1);
-        assertThat(validationResult.getErrors().get(0).getMessage()).isEqualTo("Address is invalid");
     }
 }

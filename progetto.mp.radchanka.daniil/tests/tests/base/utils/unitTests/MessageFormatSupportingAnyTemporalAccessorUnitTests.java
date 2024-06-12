@@ -119,7 +119,7 @@ public class MessageFormatSupportingAnyTemporalAccessorUnitTests {
         String expected = "2024-05-01 01:00:00+0500";
         Locale locale = Locale.getDefault();
         MessageFormatSupportingTimePackage messageFormatToTest = MessageFormatSupportingTimePackage.of(pattern, locale);
-
+        
         String actual = messageFormatToTest.format(arguments);
         
         assertThat(actual).isEqualTo(expected);
@@ -133,7 +133,7 @@ public class MessageFormatSupportingAnyTemporalAccessorUnitTests {
         String expected = "2024-05-01 01:00:00-0400";
         Locale locale = Locale.getDefault();
         MessageFormatSupportingTimePackage messageFormatToTest = MessageFormatSupportingTimePackage.of(pattern, locale);
-
+        
         String actual = messageFormatToTest.format(arguments);
         
         assertThat(actual).isEqualTo(expected);

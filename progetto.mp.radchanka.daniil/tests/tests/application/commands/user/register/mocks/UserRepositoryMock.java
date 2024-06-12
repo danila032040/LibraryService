@@ -18,28 +18,6 @@ public class UserRepositoryMock implements UserRepository {
     private boolean throwAlreadyExistsException;
     private boolean isAddCalled;
     
-    public void setUser(Optional<User> user) {
-        this.user = user;
-    }
-    
-    public void setGeneratedUserId(UserId generatedUserId) {
-        this.generatedUserId = generatedUserId;
-    }
-    
-    public void setThrowAlreadyExistsException(boolean throwAlreadyExistsException) {
-        this.throwAlreadyExistsException = throwAlreadyExistsException;
-    }
-    
-    @Override
-    public Optional<User> getFirst(Specification<User> specification) {
-        return user;
-    }
-    
-    @Override
-    public void update(User user) {
-        // No-op
-    }
-    
     @Override
     public void add(User entity) throws AlreadyExistsException {
         if (throwAlreadyExistsException) {
@@ -51,6 +29,16 @@ public class UserRepositoryMock implements UserRepository {
     @Override
     public void addRange(Collection<User> entity) throws AlreadyExistsException {
         throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public boolean exists(Specification<User> specification) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public UserId generateNewUserId() {
+        return generatedUserId;
     }
     
     @Override
@@ -74,6 +62,15 @@ public class UserRepositoryMock implements UserRepository {
     }
     
     @Override
+    public Optional<User> getFirst(Specification<User> specification) {
+        return user;
+    }
+    
+    public boolean isAddCalled() {
+        return isAddCalled;
+    }
+    
+    @Override
     public void remove(UserId entityId) {
         throw new UnsupportedOperationException("Not implemented");
     }
@@ -83,22 +80,25 @@ public class UserRepositoryMock implements UserRepository {
         throw new UnsupportedOperationException("Not implemented");
     }
     
+    public void setGeneratedUserId(UserId generatedUserId) {
+        this.generatedUserId = generatedUserId;
+    }
+    
+    public void setThrowAlreadyExistsException(boolean throwAlreadyExistsException) {
+        this.throwAlreadyExistsException = throwAlreadyExistsException;
+    }
+    
+    public void setUser(Optional<User> user) {
+        this.user = user;
+    }
+    
+    @Override
+    public void update(User user) {
+        // No-op
+    }
+    
     @Override
     public void updateRange(Collection<User> entity) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    @Override
-    public UserId generateNewUserId() {
-        return generatedUserId;
-    }
-    
-    public boolean isAddCalled() {
-        return isAddCalled;
-    }
-    
-    @Override
-    public boolean exists(Specification<User> specification) {
         throw new UnsupportedOperationException("Not implemented");
     }
 }

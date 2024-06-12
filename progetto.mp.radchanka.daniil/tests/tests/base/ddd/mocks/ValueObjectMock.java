@@ -18,12 +18,12 @@ public class ValueObjectMock extends ValueObject {
         this.stringToCompareWith = stringToCompareWith;
     }
     
+    public Iterator<Object> getEqualityComponentsIteratorPublic() {
+        return this.getEqualityComponentsIterator();
+    }
+    
     @Override
     protected Iterator<Object> getEqualityComponentsIterator() {
         return Lists.list(integerToCompareWith, objectToCompareWith, stringToCompareWith).iterator();
-    }
-    
-    public Iterator<Object> getEqualityComponentsIteratorPublic(){
-        return this.getEqualityComponentsIterator();
     }
 }

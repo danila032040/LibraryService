@@ -29,12 +29,12 @@ public class LibraryRepositoryImpl extends InMemoryRepository<Library, LibraryId
     }
     
     @Override
-    public LibraryId generateNewLibraryId() {
-        return new LibraryId(idSeed++);
+    public boolean exists(Specification<Library> specification) {
+        return this.getFirst(specification).isPresent();
     }
     
     @Override
-    public boolean exists(Specification<Library> specification) {
-        return this.getFirst(specification).isPresent();
+    public LibraryId generateNewLibraryId() {
+        return new LibraryId(idSeed++);
     }
 }

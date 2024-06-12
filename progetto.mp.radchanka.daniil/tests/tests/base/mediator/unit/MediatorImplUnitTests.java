@@ -20,27 +20,11 @@ public class MediatorImplUnitTests {
     private RequestDispatcherMock requestDispatcher;
     private Mediator mediator;
     
-    @Before
-    public void setup() {
-        notificationDispatcher = new NotificationDispatcherMock();
-        requestDispatcher = new RequestDispatcherMock();
-        mediator = new Mediator(requestDispatcher, notificationDispatcher);
-    }
-    
     @Test
     public void registerHandler_WithNotificationHandler_ShouldUseRegisterHandlerOfNotificationDispatcherExactlyOnce() {
         mediator.registerHandler(NotificationMock.class, new NotificationHandlerMock());
         
         int actualExecutions = notificationDispatcher.getRegisterHandlerExecutionsCount();
-        
-        assertThat(actualExecutions).isEqualTo(1);
-    }
-    
-    @Test
-    public void sendNotification_ShouldUseSendNotificationOfNotificationDispatcherExactlyOnce() {
-        mediator.sendNotification(new NotificationMock());
-        
-        int actualExecutions = notificationDispatcher.getSendNotificationExecutionsCount();
         
         assertThat(actualExecutions).isEqualTo(1);
     }
@@ -56,11 +40,27 @@ public class MediatorImplUnitTests {
     }
     
     @Test
+    public void sendNotification_ShouldUseSendNotificationOfNotificationDispatcherExactlyOnce() {
+        mediator.sendNotification(new NotificationMock());
+        
+        int actualExecutions = notificationDispatcher.getSendNotificationExecutionsCount();
+        
+        assertThat(actualExecutions).isEqualTo(1);
+    }
+    
+    @Test
     public void sendRequest_ShouldUseSendRequestOfRequestDispatcherExactlyOnce() {
         mediator.sendRequest(new RequestMock0());
         
         int actualExecutions = requestDispatcher.getSendRequestExecutionsCount();
         
         assertThat(actualExecutions).isEqualTo(1);
+    }
+    
+    @Before
+    public void setup() {
+        notificationDispatcher = new NotificationDispatcherMock();
+        requestDispatcher = new RequestDispatcherMock();
+        mediator = new Mediator(requestDispatcher, notificationDispatcher);
     }
 }

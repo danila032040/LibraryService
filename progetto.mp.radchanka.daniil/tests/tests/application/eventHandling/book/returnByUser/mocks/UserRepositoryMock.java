@@ -17,17 +17,22 @@ public class UserRepositoryMock implements UserRepository {
     private Optional<User> lastSpecifiedUserInUpdate = Optional.empty();
     
     @Override
-    public Optional<User> getFirst(Specification<User> specification) {
-        return user.filter(specification::isSatisfiedBy);
-    }
-    
-    @Override
     public void add(User entity) throws AlreadyExistsException {
         throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
     public void addRange(Collection<User> entity) throws AlreadyExistsException {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public boolean exists(Specification<User> specification) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public UserId generateNewUserId() {
         throw new UnsupportedOperationException("Not implemented");
     }
     
@@ -52,6 +57,19 @@ public class UserRepositoryMock implements UserRepository {
     }
     
     @Override
+    public Optional<User> getFirst(Specification<User> specification) {
+        return user.filter(specification::isSatisfiedBy);
+    }
+    
+    public Optional<User> getLastSpecifiedUserInUpdate() {
+        return lastSpecifiedUserInUpdate;
+    }
+    
+    public Optional<User> getUser() {
+        return user;
+    }
+    
+    @Override
     public void remove(UserId entityId) {
         throw new UnsupportedOperationException("Not implemented");
     }
@@ -59,6 +77,10 @@ public class UserRepositoryMock implements UserRepository {
     @Override
     public void removeRange(Collection<UserId> entityIds) {
         throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    public void setUser(User user) {
+        this.user = Optional.of(user);
     }
     
     @Override
@@ -69,27 +91,5 @@ public class UserRepositoryMock implements UserRepository {
     @Override
     public void updateRange(Collection<User> entity) {
         throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    @Override
-    public UserId generateNewUserId() {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    @Override
-    public boolean exists(Specification<User> specification) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    public Optional<User> getUser() {
-        return user;
-    }
-    
-    public void setUser(User user) {
-        this.user = Optional.of(user);
-    }
-    
-    public Optional<User> getLastSpecifiedUserInUpdate() {
-        return lastSpecifiedUserInUpdate;
     }
 }

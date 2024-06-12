@@ -22,13 +22,15 @@ public class UserByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenUserIsNull_ShouldThrowException() {
-        UserId userId = new UserId(1);
-        UserByIdSpecification specification = new UserByIdSpecification(userId);
+    public void isSatisfiedBy_WhenUserIdDoesNotMatch_ShouldReturnFalse() {
+        UserId userId1 = new UserId(1);
+        UserId userId2 = new UserId(2);
+        UserByIdSpecification specification = new UserByIdSpecification(userId1);
+        User user = User.createNewUser(userId2, "", "", new Address(), Optional.empty());
         
-        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
+        boolean result = specification.isSatisfiedBy(user);
         
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+        assertThat(result).isFalse();
     }
     
     @Test
@@ -43,14 +45,12 @@ public class UserByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenUserIdDoesNotMatch_ShouldReturnFalse() {
-        UserId userId1 = new UserId(1);
-        UserId userId2 = new UserId(2);
-        UserByIdSpecification specification = new UserByIdSpecification(userId1);
-        User user = User.createNewUser(userId2, "", "", new Address(), Optional.empty());
+    public void isSatisfiedBy_WhenUserIsNull_ShouldThrowException() {
+        UserId userId = new UserId(1);
+        UserByIdSpecification specification = new UserByIdSpecification(userId);
         
-        boolean result = specification.isSatisfiedBy(user);
+        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
         
-        assertThat(result).isFalse();
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

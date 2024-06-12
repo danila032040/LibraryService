@@ -6,10 +6,6 @@ import java.util.function.Function;
 
 public class SortCriteria<T> {
     
-    public static <T> SortCriteria<T> sortUsingComparator(Comparator<T> comparator) {
-        return new SortCriteria<>(comparator);
-    }
-    
     public static <T, U extends Comparable<? super U>> SortCriteria<T> sortBy(
             Function<T, ? extends U> fieldExpression,
             SortType sortType) {
@@ -31,6 +27,10 @@ public class SortCriteria<T> {
         return sortBy(fieldExpression, SortType.Descending);
     }
     
+    public static <T> SortCriteria<T> sortUsingComparator(Comparator<T> comparator) {
+        return new SortCriteria<>(comparator);
+    }
+    
     private static <T, U extends Comparable<? super U>> Comparator<T> createComparatorFromAFieldExpression(
             Function<T, ? extends U> fieldExpression) {
         return Comparator.comparing(Objects.requireNonNull(fieldExpression));
@@ -44,11 +44,6 @@ public class SortCriteria<T> {
     
     public Comparator<T> getSortComparator() {
         return this.sortComparator;
-    }
-    
-    public SortCriteria<T> thenSortUsingComparator(Comparator<T> comparator) {
-        sortComparator = sortComparator.thenComparing(comparator);
-        return this;
     }
     
     public <U extends Comparable<? super U>> SortCriteria<T> thenSortBy(
@@ -67,5 +62,10 @@ public class SortCriteria<T> {
     
     public <U extends Comparable<? super U>> SortCriteria<T> thenSortByDesc(Function<T, ? extends U> fieldExpression) {
         return this.thenSortBy(fieldExpression, SortType.Descending);
+    }
+    
+    public SortCriteria<T> thenSortUsingComparator(Comparator<T> comparator) {
+        sortComparator = sortComparator.thenComparing(comparator);
+        return this;
     }
 }

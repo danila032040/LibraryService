@@ -12,9 +12,9 @@ import application.commands.book.register.RegisterBookCommand;
 public class RegisterBookCommandUnitTests {
     
     @Test
-    public void registerBookCommand_WhenNameIsNull_ShouldThrowNullPointerException() {
+    public void registerBookCommand_WhenAuthorIdIsNull_ShouldThrowNullPointerException() {
         
-        ThrowingCallable actual = () -> new RegisterBookCommand(null, "", 8, Optional.empty(), Optional.empty());
+        ThrowingCallable actual = () -> new RegisterBookCommand("", "", 8, null, Optional.empty());
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
         
@@ -30,18 +30,18 @@ public class RegisterBookCommandUnitTests {
     }
     
     @Test
-    public void registerBookCommand_WhenAuthorIdIsNull_ShouldThrowNullPointerException() {
+    public void registerBookCommand_WhenLibraryIdIsNull_ShouldThrowNullPointerException() {
         
-        ThrowingCallable actual = () -> new RegisterBookCommand("", "", 8, null, Optional.empty());
+        ThrowingCallable actual = () -> new RegisterBookCommand("", "", 8, Optional.empty(), null);
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
         
     }
     
     @Test
-    public void registerBookCommand_WhenLibraryIdIsNull_ShouldThrowNullPointerException() {
+    public void registerBookCommand_WhenNameIsNull_ShouldThrowNullPointerException() {
         
-        ThrowingCallable actual = () -> new RegisterBookCommand("", "", 8, Optional.empty(), null);
+        ThrowingCallable actual = () -> new RegisterBookCommand(null, "", 8, Optional.empty(), Optional.empty());
         
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
         

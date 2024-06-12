@@ -16,12 +16,6 @@ public class DomainEventNotificationPublisherUnitTests {
     private DomainEventNotificationPublisher domainEventPublisher;
     private NotificationDispatcherMock notificationDispatcher;
     
-    @Before
-    public void setUp() {
-        notificationDispatcher = new NotificationDispatcherMock();
-        domainEventPublisher = new DomainEventNotificationPublisher(notificationDispatcher);
-    }
-    
     @Test
     public void publishDomainEvents_ShouldSendNotificationOfTheNotificationDispatcherExactlyOnce() {
         DomainEventMock domainEvent = new DomainEventMock();
@@ -45,5 +39,11 @@ public class DomainEventNotificationPublisherUnitTests {
                             .isExactlyInstanceOf(DomainEventMock.class)
                             .isSameAs(domainEvent);
                 });
+    }
+    
+    @Before
+    public void setUp() {
+        notificationDispatcher = new NotificationDispatcherMock();
+        domainEventPublisher = new DomainEventNotificationPublisher(notificationDispatcher);
     }
 }

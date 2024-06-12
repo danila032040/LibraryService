@@ -38,31 +38,17 @@ public class LibraryRepositoryImplUnitTests {
     }
     
     @Test
-    public void generateNewLibraryId_WhenStorageIsEmpty_ShouldReturnLibraryIdZero() {
+    public void exists_WhenStorageIsEmpty_ShouldReturnFalse() {
         LibraryRepositoryImpl libraryRepository = new LibraryRepositoryImpl(
                 new ArrayList<>(),
                 ArrayList::new,
                 Library::createClone);
         
-        LibraryId newLibraryId = libraryRepository.generateNewLibraryId();
+        Specification<Library> specification = u -> u.getId().equals(new LibraryId(1));
         
-        assertThat(newLibraryId.getId()).isEqualTo(0);
-    }
-    
-    @Test
-    public void generateNewLibraryId_WhenStorageIsNotEmpty_ShouldReturnNextLibraryId() {
-        LibraryRepositoryImpl libraryRepository = new LibraryRepositoryImpl(
-                Lists
-                        .newArrayList(
-                                Library.createNewLibrary(new LibraryId(1), new Address()),
-                                Library.createNewLibrary(new LibraryId(2), new Address()),
-                                Library.createNewLibrary(new LibraryId(5), new Address())),
-                ArrayList::new,
-                Library::createClone);
+        boolean result = libraryRepository.exists(specification);
         
-        LibraryId newLibraryId = libraryRepository.generateNewLibraryId();
-        
-        assertThat(newLibraryId.getId()).isEqualTo(6);
+        assertThat(result).isFalse();
     }
     
     @Test
@@ -96,16 +82,30 @@ public class LibraryRepositoryImplUnitTests {
     }
     
     @Test
-    public void exists_WhenStorageIsEmpty_ShouldReturnFalse() {
+    public void generateNewLibraryId_WhenStorageIsEmpty_ShouldReturnLibraryIdZero() {
         LibraryRepositoryImpl libraryRepository = new LibraryRepositoryImpl(
                 new ArrayList<>(),
                 ArrayList::new,
                 Library::createClone);
         
-        Specification<Library> specification = u -> u.getId().equals(new LibraryId(1));
+        LibraryId newLibraryId = libraryRepository.generateNewLibraryId();
         
-        boolean result = libraryRepository.exists(specification);
+        assertThat(newLibraryId.getId()).isEqualTo(0);
+    }
+    
+    @Test
+    public void generateNewLibraryId_WhenStorageIsNotEmpty_ShouldReturnNextLibraryId() {
+        LibraryRepositoryImpl libraryRepository = new LibraryRepositoryImpl(
+                Lists
+                        .newArrayList(
+                                Library.createNewLibrary(new LibraryId(1), new Address()),
+                                Library.createNewLibrary(new LibraryId(2), new Address()),
+                                Library.createNewLibrary(new LibraryId(5), new Address())),
+                ArrayList::new,
+                Library::createClone);
         
-        assertThat(result).isFalse();
+        LibraryId newLibraryId = libraryRepository.generateNewLibraryId();
+        
+        assertThat(newLibraryId.getId()).isEqualTo(6);
     }
 }

@@ -19,16 +19,15 @@ public class NotificationDispatcherImplUnitTests {
     
     private NotificationDispatcherImpl notificationDispatcher;
     
-    @Before
-    public void setup() {
-        notificationDispatcher = new NotificationDispatcherImpl();
-    }
-    
     @Test
-    public void registerHandler_WhenNotificationTypeIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> notificationDispatcher.registerHandler(null, new NotificationHandlerMock());
+    public void registerHandler_Twice_ShouldNotThrowAnyException() {
+        ThrowingCallable actual = () -> {
+            notificationDispatcher
+                    .registerHandler(NotificationMock.class, new NotificationHandlerMock())
+                    .registerHandler(NotificationMock.class, new NotificationHandlerMock());
+        };
         
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+        assertThatNoException().isThrownBy(actual);
     }
     
     @Test
@@ -39,14 +38,10 @@ public class NotificationDispatcherImplUnitTests {
     }
     
     @Test
-    public void registerHandler_Twice_ShouldNotThrowAnyException() {
-        ThrowingCallable actual = () -> {
-            notificationDispatcher
-                    .registerHandler(NotificationMock.class, new NotificationHandlerMock())
-                    .registerHandler(NotificationMock.class, new NotificationHandlerMock());
-        };
+    public void registerHandler_WhenNotificationTypeIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> notificationDispatcher.registerHandler(null, new NotificationHandlerMock());
         
-        assertThatNoException().isThrownBy(actual);
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
     @Test
@@ -85,5 +80,10 @@ public class NotificationDispatcherImplUnitTests {
         assertThatExceptionOfType(NotificationHandlerNotFoundException.class)
                 .isThrownBy(actual)
                 .satisfies(exception -> assertThat(exception.getNotificationType()).isEqualTo(NotificationMock2.class));
+    }
+    
+    @Before
+    public void setup() {
+        notificationDispatcher = new NotificationDispatcherImpl();
     }
 }

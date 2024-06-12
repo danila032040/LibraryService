@@ -104,28 +104,6 @@ public class AddressUnitTests {
         assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
-
-    @Test
-    public void equals_ShouldReturnTrueForEqualAddresses() {
-        Address address1 = new Address(
-                Optional.of("Building 1"),
-                Optional.of("City A"),
-                Optional.of("Country X"),
-                Optional.of("12345"),
-                Optional.of("State Y"),
-                Optional.of("Street 123"));
-
-        Address address2 = new Address(
-                Optional.of("Building 1"),
-                Optional.of("City A"),
-                Optional.of("Country X"),
-                Optional.of("12345"),
-                Optional.of("State Y"),
-                Optional.of("Street 123"));
-
-        assertThat(address1).isEqualTo(address2);
-    }
-
     @Test
     public void equals_ShouldReturnFalseForDifferentAddresses() {
         Address address1 = new Address(
@@ -135,7 +113,7 @@ public class AddressUnitTests {
                 Optional.of("12345"),
                 Optional.of("State Y"),
                 Optional.of("Street 123"));
-
+        
         Address address2 = new Address(
                 Optional.of("Building 2"),
                 Optional.of("City B"),
@@ -143,12 +121,12 @@ public class AddressUnitTests {
                 Optional.of("67890"),
                 Optional.of("State Z"),
                 Optional.of("Street 456"));
-
+        
         assertThat(address1).isNotEqualTo(address2);
     }
-
+    
     @Test
-    public void hashCode_ShouldBeEqualForEqualAddresses() {
+    public void equals_ShouldReturnTrueForEqualAddresses() {
         Address address1 = new Address(
                 Optional.of("Building 1"),
                 Optional.of("City A"),
@@ -156,7 +134,7 @@ public class AddressUnitTests {
                 Optional.of("12345"),
                 Optional.of("State Y"),
                 Optional.of("Street 123"));
-
+        
         Address address2 = new Address(
                 Optional.of("Building 1"),
                 Optional.of("City A"),
@@ -164,10 +142,10 @@ public class AddressUnitTests {
                 Optional.of("12345"),
                 Optional.of("State Y"),
                 Optional.of("Street 123"));
-
-        assertThat(address1.hashCode()).isEqualTo(address2.hashCode());
+        
+        assertThat(address1).isEqualTo(address2);
     }
-
+    
     @Test
     public void hashCode_ShouldBeDifferentForDifferentAddresses() {
         Address address1 = new Address(
@@ -177,7 +155,7 @@ public class AddressUnitTests {
                 Optional.of("12345"),
                 Optional.of("State Y"),
                 Optional.of("Street 123"));
-
+        
         Address address2 = new Address(
                 Optional.of("Building 2"),
                 Optional.of("City B"),
@@ -185,7 +163,28 @@ public class AddressUnitTests {
                 Optional.of("67890"),
                 Optional.of("State Z"),
                 Optional.of("Street 456"));
-
+        
         assertThat(address1.hashCode()).isNotEqualTo(address2.hashCode());
+    }
+    
+    @Test
+    public void hashCode_ShouldBeEqualForEqualAddresses() {
+        Address address1 = new Address(
+                Optional.of("Building 1"),
+                Optional.of("City A"),
+                Optional.of("Country X"),
+                Optional.of("12345"),
+                Optional.of("State Y"),
+                Optional.of("Street 123"));
+        
+        Address address2 = new Address(
+                Optional.of("Building 1"),
+                Optional.of("City A"),
+                Optional.of("Country X"),
+                Optional.of("12345"),
+                Optional.of("State Y"),
+                Optional.of("Street 123"));
+        
+        assertThat(address1.hashCode()).isEqualTo(address2.hashCode());
     }
 }

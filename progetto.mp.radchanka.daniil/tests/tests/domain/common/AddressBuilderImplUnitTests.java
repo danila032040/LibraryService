@@ -13,51 +13,6 @@ import domain.common.AddressBuilder;
 public class AddressBuilderImplUnitTests {
     
     @Test
-    public void withBuilding_WhenBuildingIsNull_ShouldThrowNullPointerException() {
-        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
-        
-        ThrowingCallable actual = () -> addressBuilder.withBuilding(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void withCity_WhenCityIsNull_ShouldThrowNullPointerException() {
-        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
-        
-        ThrowingCallable actual = () -> addressBuilder.withCity(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void withCountryRegion_WhenCountryRegionIsNull_ShouldThrowNullPointerException() {
-        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
-        
-        ThrowingCallable actual = () -> addressBuilder.withCountryRegion(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void withPostalCode_WhenPostalCodeIsNull_ShouldThrowNullPointerException() {
-        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
-        
-        ThrowingCallable actual = () -> addressBuilder.withPostalCode(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void withStateProvince_WhenStateProvinceIsNull_ShouldThrowNullPointerException() {
-        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
-        
-        ThrowingCallable actual = () -> addressBuilder.withStateProvince(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
     public void build_WhenNoFieldsProvided_ShouldNotThrowAnyException() {
         AddressBuilder addressBuilder = AddressBuilder.createBuilder();
         
@@ -148,5 +103,50 @@ public class AddressBuilderImplUnitTests {
         assertThat(actualAddress.getPostalCode()).isEmpty();
         assertThat(actualAddress.getStateProvince()).isEmpty();
         assertThat(actualAddress.getStreet()).hasValue(street);
+    }
+    
+    @Test
+    public void withBuilding_WhenBuildingIsNull_ShouldThrowNullPointerException() {
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
+        
+        ThrowingCallable actual = () -> addressBuilder.withBuilding(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void withCity_WhenCityIsNull_ShouldThrowNullPointerException() {
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
+        
+        ThrowingCallable actual = () -> addressBuilder.withCity(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void withCountryRegion_WhenCountryRegionIsNull_ShouldThrowNullPointerException() {
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
+        
+        ThrowingCallable actual = () -> addressBuilder.withCountryRegion(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void withPostalCode_WhenPostalCodeIsNull_ShouldThrowNullPointerException() {
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
+        
+        ThrowingCallable actual = () -> addressBuilder.withPostalCode(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void withStateProvince_WhenStateProvinceIsNull_ShouldThrowNullPointerException() {
+        AddressBuilder addressBuilder = AddressBuilder.createBuilder();
+        
+        ThrowingCallable actual = () -> addressBuilder.withStateProvince(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

@@ -14,6 +14,13 @@ import tests.base.utils.mocks.ClockMock;
 
 public class StopWatchUnitTests {
     @Test
+    public void from_WhenClockIsNull_ShoultThrowNullPointerException() {
+        ThrowingCallable actual = () -> StopWatch.from(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
     public void getDuration_WhenStopWatchNotStarted_ShouldReturnZero() {
         Instant instant = Instant.now();
         ClockMock clockMock = new ClockMock(instant);
@@ -22,6 +29,20 @@ public class StopWatchUnitTests {
         Duration duration = stopWatch.getDuration();
         
         assertThat(duration).isEqualTo(Duration.ZERO);
+    }
+    
+    @Test
+    public void getDuration_WhenStopWatchStartedAndNotStopped_ShouldReturnElapsedTimeUntilNow() {
+        Instant instant = Instant.now();
+        ClockMock clockMock = new ClockMock(instant);
+        StopWatch stopWatch = StopWatch.from(clockMock);
+        
+        stopWatch.start();
+        clockMock.addSeconds(5);
+        
+        Duration duration = stopWatch.getDuration();
+        
+        assertThat(duration.toSeconds()).isEqualTo(5);
     }
     
     @Test
@@ -50,20 +71,6 @@ public class StopWatchUnitTests {
         clockMock.addSeconds(1);
         stopWatch.stop();
         clockMock.addSeconds(1);
-        Duration duration = stopWatch.getDuration();
-        
-        assertThat(duration.toSeconds()).isEqualTo(5);
-    }
-    
-    @Test
-    public void getDuration_WhenStopWatchStartedAndNotStopped_ShouldReturnElapsedTimeUntilNow() {
-        Instant instant = Instant.now();
-        ClockMock clockMock = new ClockMock(instant);
-        StopWatch stopWatch = StopWatch.from(clockMock);
-        
-        stopWatch.start();
-        clockMock.addSeconds(5);
-        
         Duration duration = stopWatch.getDuration();
         
         assertThat(duration.toSeconds()).isEqualTo(5);
@@ -103,12 +110,5 @@ public class StopWatchUnitTests {
         Duration duration = stopWatch.getDuration();
         
         assertThat(duration.toSeconds()).isEqualTo(2);
-    }
-    
-    @Test
-    public void from_WhenClockIsNull_ShoultThrowNullPointerException() {
-        ThrowingCallable actual = () -> StopWatch.from(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

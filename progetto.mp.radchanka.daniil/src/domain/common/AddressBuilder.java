@@ -3,11 +3,15 @@ package domain.common;
 import java.util.Optional;
 
 public class AddressBuilder {
+    public static AddressBuilder createBuilder() {
+        return new AddressBuilder();
+    }
     private Optional<String> building;
     private Optional<String> city;
     private Optional<String> countryRegion;
     private Optional<String> postalCode;
     private Optional<String> stateProvince;
+    
     private Optional<String> street;
     
     private AddressBuilder() {
@@ -19,8 +23,8 @@ public class AddressBuilder {
         this.street = Optional.empty();
     }
     
-    public static AddressBuilder createBuilder() {
-        return new AddressBuilder();
+    public Address build() {
+        return new Address(building, city, countryRegion, postalCode, stateProvince, street);
     }
     
     public AddressBuilder withBuilding(String building) {
@@ -51,10 +55,6 @@ public class AddressBuilder {
     public AddressBuilder withStreet(String street) {
         this.street = Optional.of(street);
         return this;
-    }
-    
-    public Address build() {
-        return new Address(building, city, countryRegion, postalCode, stateProvince, street);
     }
     
 }

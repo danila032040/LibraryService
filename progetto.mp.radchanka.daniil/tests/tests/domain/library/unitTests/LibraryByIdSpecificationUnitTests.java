@@ -20,13 +20,15 @@ public class LibraryByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenLibraryIsNull_ShouldThrowException() {
-        LibraryId libraryId = new LibraryId(1);
-        LibraryByIdSpecification specification = new LibraryByIdSpecification(libraryId);
+    public void isSatisfiedBy_WhenLibraryIdDoesNotMatch_ShouldReturnFalse() {
+        LibraryId libraryId1 = new LibraryId(1);
+        LibraryId libraryId2 = new LibraryId(2);
+        LibraryByIdSpecification specification = new LibraryByIdSpecification(libraryId1);
+        Library library = Library.createNewLibrary(libraryId2, new Address());
         
-        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
+        boolean result = specification.isSatisfiedBy(library);
         
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+        assertThat(result).isFalse();
     }
     
     @Test
@@ -41,14 +43,12 @@ public class LibraryByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenLibraryIdDoesNotMatch_ShouldReturnFalse() {
-        LibraryId libraryId1 = new LibraryId(1);
-        LibraryId libraryId2 = new LibraryId(2);
-        LibraryByIdSpecification specification = new LibraryByIdSpecification(libraryId1);
-        Library library = Library.createNewLibrary(libraryId2, new Address());
+    public void isSatisfiedBy_WhenLibraryIsNull_ShouldThrowException() {
+        LibraryId libraryId = new LibraryId(1);
+        LibraryByIdSpecification specification = new LibraryByIdSpecification(libraryId);
         
-        boolean result = specification.isSatisfiedBy(library);
+        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
         
-        assertThat(result).isFalse();
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

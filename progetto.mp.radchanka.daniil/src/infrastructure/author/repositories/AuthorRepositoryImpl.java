@@ -29,12 +29,12 @@ public class AuthorRepositoryImpl extends InMemoryRepository<Author, AuthorId> i
     }
     
     @Override
-    public AuthorId generateNewAuthorId() {
-        return new AuthorId(idSeed++);
+    public boolean exists(Specification<Author> specification) {
+        return this.getFirst(specification).isPresent();
     }
     
     @Override
-    public boolean exists(Specification<Author> specification) {
-        return this.getFirst(specification).isPresent();
+    public AuthorId generateNewAuthorId() {
+        return new AuthorId(idSeed++);
     }
 }

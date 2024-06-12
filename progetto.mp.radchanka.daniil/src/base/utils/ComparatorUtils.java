@@ -5,12 +5,12 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public final class ComparatorUtils {
-    private ComparatorUtils() {
-        
-    }
-    
     public static <T, U extends Comparable<U>> Comparator<T> comparingOptionalField(
             Function<T, Optional<U>> keyExtractor) {
         return Comparator.<T, Optional<U>>comparing(keyExtractor, new OptionalComparator<U>());
+    }
+    
+    private ComparatorUtils() {
+        
     }
 }

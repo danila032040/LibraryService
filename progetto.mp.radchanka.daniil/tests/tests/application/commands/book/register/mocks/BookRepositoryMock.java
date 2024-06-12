@@ -18,28 +18,6 @@ public class BookRepositoryMock implements BookRepository {
     private boolean throwAlreadyExistsException;
     private boolean isAddCalled;
     
-    public void setBook(Optional<Book> book) {
-        this.book = book;
-    }
-    
-    public void setGeneratedBookId(BookId generatedBookId) {
-        this.generatedBookId = generatedBookId;
-    }
-    
-    public void setThrowAlreadyExistsException(boolean throwAlreadyExistsException) {
-        this.throwAlreadyExistsException = throwAlreadyExistsException;
-    }
-    
-    @Override
-    public Optional<Book> getFirst(Specification<Book> specification) {
-        return book;
-    }
-    
-    @Override
-    public void update(Book book) {
-        // No-op
-    }
-    
     @Override
     public void add(Book entity) throws AlreadyExistsException {
         if (throwAlreadyExistsException) {
@@ -51,6 +29,11 @@ public class BookRepositoryMock implements BookRepository {
     @Override
     public void addRange(Collection<Book> entity) throws AlreadyExistsException {
         throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public BookId generateNewBookId() {
+        return generatedBookId;
     }
     
     @Override
@@ -74,6 +57,15 @@ public class BookRepositoryMock implements BookRepository {
     }
     
     @Override
+    public Optional<Book> getFirst(Specification<Book> specification) {
+        return book;
+    }
+    
+    public boolean isAddCalled() {
+        return isAddCalled;
+    }
+    
+    @Override
     public void remove(BookId entityId) {
         throw new UnsupportedOperationException("Not implemented");
     }
@@ -83,17 +75,25 @@ public class BookRepositoryMock implements BookRepository {
         throw new UnsupportedOperationException("Not implemented");
     }
     
+    public void setBook(Optional<Book> book) {
+        this.book = book;
+    }
+    
+    public void setGeneratedBookId(BookId generatedBookId) {
+        this.generatedBookId = generatedBookId;
+    }
+    
+    public void setThrowAlreadyExistsException(boolean throwAlreadyExistsException) {
+        this.throwAlreadyExistsException = throwAlreadyExistsException;
+    }
+    
+    @Override
+    public void update(Book book) {
+        // No-op
+    }
+    
     @Override
     public void updateRange(Collection<Book> entity) {
         throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    @Override
-    public BookId generateNewBookId() {
-        return generatedBookId;
-    }
-    
-    public boolean isAddCalled() {
-        return isAddCalled;
     }
 }

@@ -16,13 +16,13 @@ import domain.library.LibraryId;
 public class BookSpecificationBuilderUnitTests {
     
     @Test
-    public void andWhereNameIsLike_ShouldMatchBooksWithNameContainingSubstring() {
-        Book matchingBook = createBook(0, "Harry Potter", "Test", 0, Optional.empty(), Optional.empty());
-        Book nonMatchingBook = createBook(0, "The Hobbit", "Test", 0, Optional.empty(), Optional.empty());
+    public void andWhereAuthorIdIs_ShouldMatchBooksWithSpecificAuthorId() {
+        Book matchingBook = createBook(0, "Test", "Test", 0, Optional.of(new AuthorId(1)), Optional.empty());
+        Book nonMatchingBook = createBook(0, "Test", "Test", 0, Optional.of(new AuthorId(2)), Optional.empty());
         
         Specification<Book> specification = BookSpecificationBuilder
                 .createBuilder()
-                .andWhereNameIsLike("Harry")
+                .andWhereAuthorIdIs(new AuthorId(1))
                 .build();
         
         assertThat(specification.isSatisfiedBy(matchingBook)).isTrue();
@@ -44,20 +44,6 @@ public class BookSpecificationBuilderUnitTests {
     }
     
     @Test
-    public void andWhereAuthorIdIs_ShouldMatchBooksWithSpecificAuthorId() {
-        Book matchingBook = createBook(0, "Test", "Test", 0, Optional.of(new AuthorId(1)), Optional.empty());
-        Book nonMatchingBook = createBook(0, "Test", "Test", 0, Optional.of(new AuthorId(2)), Optional.empty());
-        
-        Specification<Book> specification = BookSpecificationBuilder
-                .createBuilder()
-                .andWhereAuthorIdIs(new AuthorId(1))
-                .build();
-        
-        assertThat(specification.isSatisfiedBy(matchingBook)).isTrue();
-        assertThat(specification.isSatisfiedBy(nonMatchingBook)).isFalse();
-    }
-    
-    @Test
     public void andWhereLibraryIdIs_ShouldMatchBooksWithSpecificLibraryId() {
         Book matchingBook = createBook(0, "Test", "Test", 0, Optional.empty(), Optional.of(new LibraryId(1)));
         Book nonMatchingBook = createBook(0, "Test", "Test", 0, Optional.empty(), Optional.of(new LibraryId(2)));
@@ -65,6 +51,20 @@ public class BookSpecificationBuilderUnitTests {
         Specification<Book> specification = BookSpecificationBuilder
                 .createBuilder()
                 .andWhereLibraryIdIs(new LibraryId(1))
+                .build();
+        
+        assertThat(specification.isSatisfiedBy(matchingBook)).isTrue();
+        assertThat(specification.isSatisfiedBy(nonMatchingBook)).isFalse();
+    }
+    
+    @Test
+    public void andWhereNameIsLike_ShouldMatchBooksWithNameContainingSubstring() {
+        Book matchingBook = createBook(0, "Harry Potter", "Test", 0, Optional.empty(), Optional.empty());
+        Book nonMatchingBook = createBook(0, "The Hobbit", "Test", 0, Optional.empty(), Optional.empty());
+        
+        Specification<Book> specification = BookSpecificationBuilder
+                .createBuilder()
+                .andWhereNameIsLike("Harry")
                 .build();
         
         assertThat(specification.isSatisfiedBy(matchingBook)).isTrue();

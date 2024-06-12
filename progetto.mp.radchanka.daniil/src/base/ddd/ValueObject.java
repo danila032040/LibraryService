@@ -19,8 +19,6 @@ public abstract class ValueObject {
         return IteratorUtils.elementsEqual(this.getEqualityComponentsIterator(), other.getEqualityComponentsIterator());
     }
     
-    protected abstract Iterator<Object> getEqualityComponentsIterator();
-    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -33,5 +31,7 @@ public abstract class ValueObject {
         
         return result;
     }
+    
+    protected abstract Iterator<Object> getEqualityComponentsIterator();
     
 }

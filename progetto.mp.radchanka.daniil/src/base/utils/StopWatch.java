@@ -8,8 +8,12 @@ import java.util.Optional;
 
 public class StopWatch {
     
+    public static StopWatch from(Clock clock) {
+        return new StopWatch(clock);
+    }
     private final Clock clock;
     private Duration duration;
+    
     private Optional<Instant> startInstant;
     
     private StopWatch(Clock clock) {
@@ -18,8 +22,15 @@ public class StopWatch {
         this.duration = Duration.ZERO;
     }
     
-    public static StopWatch from(Clock clock) {
-        return new StopWatch(clock);
+    public Duration getDuration() {
+        if (isStarted())
+            recalculateDuration();
+        return duration;
+    }
+    
+    public void reset() {
+        startInstant = Optional.empty();
+        duration = Duration.ZERO;
     }
     
     public void start() {
@@ -33,9 +44,8 @@ public class StopWatch {
         startInstant = Optional.empty();
     }
     
-    public void reset() {
-        startInstant = Optional.empty();
-        duration = Duration.ZERO;
+    private boolean isStarted() {
+        return startInstant.isPresent();
     }
     
     private void recalculateDuration() {
@@ -43,16 +53,6 @@ public class StopWatch {
         Instant stop = clock.instant();
         duration = duration.plus(Duration.between(start, stop));
         startInstant = Optional.of(stop);
-    }
-    
-    public Duration getDuration() {
-        if (isStarted())
-            recalculateDuration();
-        return duration;
-    }
-    
-    private boolean isStarted() {
-        return startInstant.isPresent();
     }
     
 }

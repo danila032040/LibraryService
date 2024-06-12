@@ -30,27 +30,27 @@ public class UpdateBookCommand implements Request<ErrorOr<SuccessResult>> {
         this.libraryId = Objects.requireNonNull(libraryId);
     }
     
-    public int getBookId() {
-        return bookId;
+    public Optional<Integer> getAuthorId() {
+        return authorId;
     }
     
-    public String getName() {
-        return name;
+    public int getBookId() {
+        return bookId;
     }
     
     public String getGenre() {
         return genre;
     }
     
-    public int getPublicationYear() {
-        return publicationYear;
-    }
-    
-    public Optional<Integer> getAuthorId() {
-        return authorId;
-    }
-    
     public Optional<Integer> getLibraryId() {
         return libraryId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getPublicationYear() {
+        return publicationYear;
     }
 }

@@ -23,12 +23,12 @@ public class UserRepositoryImpl extends InMemoryRepository<User, UserId> impleme
     }
     
     @Override
-    public UserId generateNewUserId() {
-        return new UserId(idSeed++);
+    public boolean exists(Specification<User> specification) {
+        return this.getFirst(specification).isPresent();
     }
     
     @Override
-    public boolean exists(Specification<User> specification) {
-        return this.getFirst(specification).isPresent();
+    public UserId generateNewUserId() {
+        return new UserId(idSeed++);
     }
 }

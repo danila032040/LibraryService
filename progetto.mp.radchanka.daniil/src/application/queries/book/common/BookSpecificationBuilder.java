@@ -10,19 +10,23 @@ import domain.book.Book;
 import domain.library.LibraryId;
 
 public class BookSpecificationBuilder {
+    public static BookSpecificationBuilder createBuilder() {
+        return new BookSpecificationBuilder();
+    }
+    
     private CompositeSpecification<Book> specification;
     
     private BookSpecificationBuilder() {
         specification = book -> true;
     }
     
-    public BookSpecificationBuilder andWhereNameIsLike(String name) {
+    public BookSpecificationBuilder andWhereAuthorIdIs(AuthorId authorId) {
         specification = specification
                 .and(
                         SpecificationUtils
-                                .<Book, String>generateFieldSpecification(
-                                        Book::getName,
-                                        (bookName) -> bookName.contains(name)));
+                                .<Book, AuthorId>generateOptionalFieldSpecification(
+                                        Book::getAuthorId,
+                                        (bookAuthorId) -> Objects.equals(authorId, bookAuthorId)));
         return this;
     }
     
@@ -36,16 +40,6 @@ public class BookSpecificationBuilder {
         return this;
     }
     
-    public BookSpecificationBuilder andWhereAuthorIdIs(AuthorId authorId) {
-        specification = specification
-                .and(
-                        SpecificationUtils
-                                .<Book, AuthorId>generateOptionalFieldSpecification(
-                                        Book::getAuthorId,
-                                        (bookAuthorId) -> Objects.equals(authorId, bookAuthorId)));
-        return this;
-    }
-    
     public BookSpecificationBuilder andWhereLibraryIdIs(LibraryId libraryId) {
         specification = specification
                 .and(
@@ -53,6 +47,16 @@ public class BookSpecificationBuilder {
                                 .<Book, LibraryId>generateOptionalFieldSpecification(
                                         Book::getLibraryId,
                                         (bookAuthorId) -> Objects.equals(libraryId, bookAuthorId)));
+        return this;
+    }
+    
+    public BookSpecificationBuilder andWhereNameIsLike(String name) {
+        specification = specification
+                .and(
+                        SpecificationUtils
+                                .<Book, String>generateFieldSpecification(
+                                        Book::getName,
+                                        (bookName) -> bookName.contains(name)));
         return this;
     }
     
@@ -74,10 +78,6 @@ public class BookSpecificationBuilder {
                                         Book::getPublicationYear,
                                         (bookPublicationYear) -> bookPublicationYear <= publicationYear));
         return this;
-    }
-    
-    public static BookSpecificationBuilder createBuilder() {
-        return new BookSpecificationBuilder();
     }
     
     public Specification<Book> build() {

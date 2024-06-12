@@ -26,24 +26,6 @@ public class OneOf2UnitTests {
     }
     
     @Test
-    public void match_WhenResultConsumer0IsNull_ShouldThrowNullPointerException() {
-        OneOf2<Integer, String> oneOf2 = OneOf2.from0(0);
-        
-        ThrowingCallable actual = () -> oneOf2.match(null, (String str) -> {
-        });
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void match_WhenResultConsumer1IsNull_ShouldThrowNullPointerException() {
-        OneOf2<Integer, String> oneOf2 = OneOf2.from0(0);
-        
-        ThrowingCallable actual = () -> oneOf2.match((Integer integer) -> {
-        }, null);
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
     public void match_WhenResult0Provided_ShouldUseOnlyResultConsumer0() {
         OneOf2<Integer, String> oneOf2 = OneOf2.from0(0);
         ConsumerMock<Integer> resultConsumer0 = new ConsumerMock<Integer>();
@@ -69,6 +51,24 @@ public class OneOf2UnitTests {
         
         assertThat(actualExecutedTimes).isEqualTo(1);
         assertThat(actualResult).hasValue("Test");
+    }
+    
+    @Test
+    public void match_WhenResultConsumer0IsNull_ShouldThrowNullPointerException() {
+        OneOf2<Integer, String> oneOf2 = OneOf2.from0(0);
+        
+        ThrowingCallable actual = () -> oneOf2.match(null, (String str) -> {
+        });
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void match_WhenResultConsumer1IsNull_ShouldThrowNullPointerException() {
+        OneOf2<Integer, String> oneOf2 = OneOf2.from0(0);
+        
+        ThrowingCallable actual = () -> oneOf2.match((Integer integer) -> {
+        }, null);
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
 }

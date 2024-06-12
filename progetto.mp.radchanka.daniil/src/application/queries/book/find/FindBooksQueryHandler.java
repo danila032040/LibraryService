@@ -38,19 +38,6 @@ public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, Err
         return ErrorOr.fromResult(bookRepository.get(specification, sortCriteria, pagination));
     }
     
-    private Specification<Book> buildBookSpecificationFromRequest(FindBooksQuery request) {
-        BookSpecificationBuilder builder = BookSpecificationBuilder.createBuilder();
-        
-        request.getName().ifPresent(builder::andWhereNameIsLike);
-        request.getGenre().ifPresent(builder::andWhereGenreIsLike);
-        request.getAuthorId().ifPresent(builder::andWhereAuthorIdIs);
-        request.getLibraryId().ifPresent(builder::andWhereLibraryIdIs);
-        request.getPublicationYearPeriodStart().ifPresent(builder::andWherePublicationYearIsGreaterThanOrEqualTo);
-        request.getPublicationYearPeriodEnd().ifPresent(builder::andWherePublicationYearIsLessThanOrEqualTo);
-        
-        return builder.build();
-    }
-    
     private SortCriteria<Book> buildBookSortCriteriaFromRequest(FindBooksQuery request) {
         BookSortByFieldQueryData sortByField = request.getSortByField();
         SortType sortType = this.sortTypeQueryDataToSortTypeMapper.map(request.getSortType());
@@ -64,6 +51,19 @@ public class FindBooksQueryHandler implements RequestHandler<FindBooksQuery, Err
                                 .map(sortTypeQueryDataToSortTypeMapper::map)
                                 .map(thenSortType -> Pair.of(thenSortByField, thenSortType)));
         thenSortPair.ifPresent(x -> builder.thenSortBy(x.getLeft(), x.getRight()));
+        return builder.build();
+    }
+    
+    private Specification<Book> buildBookSpecificationFromRequest(FindBooksQuery request) {
+        BookSpecificationBuilder builder = BookSpecificationBuilder.createBuilder();
+        
+        request.getName().ifPresent(builder::andWhereNameIsLike);
+        request.getGenre().ifPresent(builder::andWhereGenreIsLike);
+        request.getAuthorId().ifPresent(builder::andWhereAuthorIdIs);
+        request.getLibraryId().ifPresent(builder::andWhereLibraryIdIs);
+        request.getPublicationYearPeriodStart().ifPresent(builder::andWherePublicationYearIsGreaterThanOrEqualTo);
+        request.getPublicationYearPeriodEnd().ifPresent(builder::andWherePublicationYearIsLessThanOrEqualTo);
+        
         return builder.build();
     }
     

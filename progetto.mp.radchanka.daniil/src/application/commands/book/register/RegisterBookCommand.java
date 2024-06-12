@@ -27,23 +27,23 @@ public class RegisterBookCommand implements Request<ErrorOr<BookId>> {
         this.libraryId = Objects.requireNonNull(libraryId);
     }
     
-    public String getName() {
-        return name;
+    public Optional<Integer> getAuthorId() {
+        return authorId;
     }
     
     public String getGenre() {
         return genre;
     }
     
-    public int getPublicationYear() {
-        return publicationYear;
-    }
-    
-    public Optional<Integer> getAuthorId() {
-        return authorId;
-    }
-    
     public Optional<Integer> getLibraryId() {
         return libraryId;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getPublicationYear() {
+        return publicationYear;
     }
 }

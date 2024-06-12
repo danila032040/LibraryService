@@ -33,45 +33,6 @@ public class BorrowBookByUserCommandHandlerUnitTests {
     private BorrowBookByUserCommandHandler handler;
     private Mapper<AddressCommandData, Address> addressMapper;
     
-    @Before
-    public void setUp() {
-        bookRepository = new BookRepositoryMock();
-        userRepository = new UserRepositoryMock();
-        domainEventPublisher = new DomainEventPublisherMock();
-        addressMapper = new AddressCommandDataMapper();
-        handler = new BorrowBookByUserCommandHandler(
-                bookRepository,
-                userRepository,
-                domainEventPublisher,
-                addressMapper);
-    }
-    
-    @Test
-    public void handle_WhenBookNotFound_ShouldReturnErrorMessage() {
-        BorrowBookByUserCommand command = new BorrowBookByUserCommand(0, 0);
-        bookRepository.setBook(Optional.empty());
-        
-        ErrorOr<SuccessResult> result = handler.handle(command);
-        
-        assertThat(result.isError()).isTrue();
-        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("Book with specified id was not found");
-        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
-    }
-    
-    @Test
-    public void handle_WhenUserNotFound_ShouldReturnErrorMessage() {
-        BorrowBookByUserCommand command = new BorrowBookByUserCommand(0, 0);
-        Book book = createBookWithoutDomainEvents(0);
-        bookRepository.setBook(Optional.of(book));
-        userRepository.setExists(false);
-        
-        ErrorOr<SuccessResult> result = handler.handle(command);
-        
-        assertThat(result.isError()).isTrue();
-        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("User with specified id was not found");
-        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
-    }
-    
     @Test
     public void handle_WhenBookAlreadyBorrowed_ShouldReturnErrorMessage()
             throws BookIsAlreadyBorrowedByAnotherUserDomainException {
@@ -85,6 +46,18 @@ public class BorrowBookByUserCommandHandlerUnitTests {
         
         assertThat(result.isError()).isTrue();
         assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("Book were already borrowed");
+        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
+    }
+    
+    @Test
+    public void handle_WhenBookNotFound_ShouldReturnErrorMessage() {
+        BorrowBookByUserCommand command = new BorrowBookByUserCommand(0, 0);
+        bookRepository.setBook(Optional.empty());
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isTrue();
+        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("Book with specified id was not found");
         assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
     }
     
@@ -111,6 +84,33 @@ public class BorrowBookByUserCommandHandlerUnitTests {
                         });
             });
         });
+    }
+    
+    @Test
+    public void handle_WhenUserNotFound_ShouldReturnErrorMessage() {
+        BorrowBookByUserCommand command = new BorrowBookByUserCommand(0, 0);
+        Book book = createBookWithoutDomainEvents(0);
+        bookRepository.setBook(Optional.of(book));
+        userRepository.setExists(false);
+        
+        ErrorOr<SuccessResult> result = handler.handle(command);
+        
+        assertThat(result.isError()).isTrue();
+        assertThat(result.getError()).map(ErrorResult::getMessage).hasValue("User with specified id was not found");
+        assertThat(domainEventPublisher.getLastSpecifiedDomainEvents()).isEmpty();
+    }
+    
+    @Before
+    public void setUp() {
+        bookRepository = new BookRepositoryMock();
+        userRepository = new UserRepositoryMock();
+        domainEventPublisher = new DomainEventPublisherMock();
+        addressMapper = new AddressCommandDataMapper();
+        handler = new BorrowBookByUserCommandHandler(
+                bookRepository,
+                userRepository,
+                domainEventPublisher,
+                addressMapper);
     }
     
     private Book createBookWithoutDomainEvents(int id) {

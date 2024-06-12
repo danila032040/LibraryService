@@ -10,6 +10,46 @@ import domain.library.LibraryId;
 
 public class LibraryIdUnitTests {
     @Test
+    public void compareTo_WhenComparingWithGreaterId_ShouldReturnNegative() {
+        LibraryId id1 = new LibraryId(1);
+        LibraryId id2 = new LibraryId(2);
+        
+        int result = id1.compareTo(id2);
+        
+        assertThat(result).isNegative();
+    }
+    
+    @Test
+    public void compareTo_WhenComparingWithLesserId_ShouldReturnPositive() {
+        LibraryId id1 = new LibraryId(2);
+        LibraryId id2 = new LibraryId(1);
+        
+        int result = id1.compareTo(id2);
+        
+        assertThat(result).isPositive();
+    }
+    
+    @Test
+    public void compareTo_WhenComparingWithNull_ShouldThrowNullPointerException() {
+        LibraryId id1 = new LibraryId(2);
+        LibraryId id2 = null;
+        
+        ThrowingCallable actual = () -> id1.compareTo(id2);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void compareTo_WhenIdsAreEqual_ShouldReturnZero() {
+        LibraryId id1 = new LibraryId(1);
+        LibraryId id2 = new LibraryId(1);
+        
+        int result = id1.compareTo(id2);
+        
+        assertThat(result).isZero();
+    }
+    
+    @Test
     public void createClone_ShouldReturnEqualButNotTheSameInstance() {
         LibraryId id = new LibraryId(0);
         
@@ -78,45 +118,5 @@ public class LibraryIdUnitTests {
         int actual2 = id2.hashCode();
         
         assertThat(actual1).isNotEqualTo(actual2);
-    }
-    
-    @Test
-    public void compareTo_WhenIdsAreEqual_ShouldReturnZero() {
-        LibraryId id1 = new LibraryId(1);
-        LibraryId id2 = new LibraryId(1);
-        
-        int result = id1.compareTo(id2);
-        
-        assertThat(result).isZero();
-    }
-    
-    @Test
-    public void compareTo_WhenComparingWithGreaterId_ShouldReturnNegative() {
-        LibraryId id1 = new LibraryId(1);
-        LibraryId id2 = new LibraryId(2);
-        
-        int result = id1.compareTo(id2);
-        
-        assertThat(result).isNegative();
-    }
-    
-    @Test
-    public void compareTo_WhenComparingWithLesserId_ShouldReturnPositive() {
-        LibraryId id1 = new LibraryId(2);
-        LibraryId id2 = new LibraryId(1);
-        
-        int result = id1.compareTo(id2);
-        
-        assertThat(result).isPositive();
-    }
-    
-    @Test
-    public void compareTo_WhenComparingWithNull_ShouldThrowNullPointerException() {
-        LibraryId id1 = new LibraryId(2);
-        LibraryId id2 = null;
-        
-        ThrowingCallable actual = () -> id1.compareTo(id2);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

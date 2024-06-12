@@ -11,13 +11,13 @@ public class RequestHandlerMock implements RequestHandler<RequestMock, ErrorOr<S
         this.result = result;
     }
     
-    public boolean isCalled() {
-        return called;
-    }
-    
     @Override
     public ErrorOr<String> handle(RequestMock request) {
         called = true;
         return ErrorOr.fromResult(result);
+    }
+    
+    public boolean isCalled() {
+        return called;
     }
 }

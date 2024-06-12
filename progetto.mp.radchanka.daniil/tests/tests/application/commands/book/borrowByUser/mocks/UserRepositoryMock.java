@@ -15,8 +15,14 @@ import domain.user.UserRepository;
 public class UserRepositoryMock implements UserRepository {
     private boolean exists;
     
-    public void setExists(boolean exists) {
-        this.exists = exists;
+    @Override
+    public void add(User entity) throws AlreadyExistsException {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+    
+    @Override
+    public void addRange(Collection<User> entity) throws AlreadyExistsException {
+        throw new UnsupportedOperationException("Not implemented");
     }
     
     @Override
@@ -25,12 +31,7 @@ public class UserRepositoryMock implements UserRepository {
     }
     
     @Override
-    public void add(User entity) throws AlreadyExistsException {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-    
-    @Override
-    public void addRange(Collection<User> entity) throws AlreadyExistsException {
+    public UserId generateNewUserId() {
         throw new UnsupportedOperationException("Not implemented");
     }
     
@@ -71,6 +72,10 @@ public class UserRepositoryMock implements UserRepository {
         
     }
     
+    public void setExists(boolean exists) {
+        this.exists = exists;
+    }
+    
     @Override
     public void update(User entity) {
         throw new UnsupportedOperationException("Not implemented");
@@ -81,10 +86,5 @@ public class UserRepositoryMock implements UserRepository {
     public void updateRange(Collection<User> entity) {
         throw new UnsupportedOperationException("Not implemented");
         
-    }
-    
-    @Override
-    public UserId generateNewUserId() {
-        throw new UnsupportedOperationException("Not implemented");
     }
 }

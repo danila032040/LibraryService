@@ -15,18 +15,18 @@ public class PipelineBehaviourMock implements PipelineBehaviour<RequestMock0, In
         this.requstMockTransformationFunction = requstMockTransformationFunction;
     }
     
-    @Override
-    public Integer handle(RequestMock0 request, RequestHandler<RequestMock0, Integer> next) {
-        lastSpecifiedRequest = Optional.of(request);
-        lastSpecifiedNext = Optional.of(next);
-        return next.handle(requstMockTransformationFunction.apply(request));
+    public Optional<RequestHandler<RequestMock0, Integer>> getLastSpecifiedNext() {
+        return lastSpecifiedNext;
     }
     
     public Optional<RequestMock0> getLastSpecifiedRequest() {
         return lastSpecifiedRequest;
     }
     
-    public Optional<RequestHandler<RequestMock0, Integer>> getLastSpecifiedNext() {
-        return lastSpecifiedNext;
+    @Override
+    public Integer handle(RequestMock0 request, RequestHandler<RequestMock0, Integer> next) {
+        lastSpecifiedRequest = Optional.of(request);
+        lastSpecifiedNext = Optional.of(next);
+        return next.handle(requstMockTransformationFunction.apply(request));
     }
 }

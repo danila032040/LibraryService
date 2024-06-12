@@ -24,29 +24,22 @@ public class BorrowedByUserDomainEventHandlerUnitTests {
     private UserRepositoryMock userRepository;
     private BorrowedByUserDomainEventHandler handler;
     
-    @Before
-    public void setUp() {
-        userRepository = new UserRepositoryMock();
-        logger = new LoggerMock();
-        handler = new BorrowedByUserDomainEventHandler(logger, userRepository);
-    }
-    
     @Test
-    public void handle_WhenUserExistsAndHasNotBorrowedBook_ShouldAddBookToUser() {
+    public void handle_WhenBookWasAlreadyBorrowedByUser_ShouldDoNothing()
+            throws BookWasAlreadyBorrowedByTheUserDomainEvent {
         Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.empty(), Optional.empty());
-        User userFromRepository = User.createNewUser(new UserId(1), "Test", "Test", new Address(), Optional.empty());
-        userRepository.setUser(userFromRepository);
+        User user = User.createNewUser(new UserId(1), "Test", "Test", new Address(), Optional.empty());
+        userRepository.setUser(user);
+        user.addBorrowedBook(book.getId());
         
-        BookBorrowedByUserDomainEvent event = new BookBorrowedByUserDomainEvent(book, userFromRepository.getId());
+        BookBorrowedByUserDomainEvent event = new BookBorrowedByUserDomainEvent(book, user.getId());
         DomainEventNotification<BookBorrowedByUserDomainEvent> notification = DomainEventNotification
                 .fromDomainEvent(event);
         
         handler.handle(notification);
         
         assertThat(logger.getLastErrorMessage()).isEmpty();
-        assertThat(userRepository.getLastSpecifiedUserInUpdate()).hasValueSatisfying(user -> {
-            assertThat(user.getBorrowedBookIds()).contains(book.getId());
-        });
+        assertThat(userRepository.getLastSpecifiedUserInUpdate()).isEmpty();
     }
     
     @Test
@@ -78,20 +71,27 @@ public class BorrowedByUserDomainEventHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenBookWasAlreadyBorrowedByUser_ShouldDoNothing()
-            throws BookWasAlreadyBorrowedByTheUserDomainEvent {
+    public void handle_WhenUserExistsAndHasNotBorrowedBook_ShouldAddBookToUser() {
         Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.empty(), Optional.empty());
-        User user = User.createNewUser(new UserId(1), "Test", "Test", new Address(), Optional.empty());
-        userRepository.setUser(user);
-        user.addBorrowedBook(book.getId());
+        User userFromRepository = User.createNewUser(new UserId(1), "Test", "Test", new Address(), Optional.empty());
+        userRepository.setUser(userFromRepository);
         
-        BookBorrowedByUserDomainEvent event = new BookBorrowedByUserDomainEvent(book, user.getId());
+        BookBorrowedByUserDomainEvent event = new BookBorrowedByUserDomainEvent(book, userFromRepository.getId());
         DomainEventNotification<BookBorrowedByUserDomainEvent> notification = DomainEventNotification
                 .fromDomainEvent(event);
         
         handler.handle(notification);
         
         assertThat(logger.getLastErrorMessage()).isEmpty();
-        assertThat(userRepository.getLastSpecifiedUserInUpdate()).isEmpty();
+        assertThat(userRepository.getLastSpecifiedUserInUpdate()).hasValueSatisfying(user -> {
+            assertThat(user.getBorrowedBookIds()).contains(book.getId());
+        });
+    }
+    
+    @Before
+    public void setUp() {
+        userRepository = new UserRepositoryMock();
+        logger = new LoggerMock();
+        handler = new BorrowedByUserDomainEventHandler(logger, userRepository);
     }
 }

@@ -29,20 +29,6 @@ public class SortCriteriaUnitTests {
     }
     
     @Test
-    public void sortBy_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> SortCriteria.sortByAsc(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void sortByDesc_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
-        ThrowingCallable actual = () -> SortCriteria.sortByDesc(null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
     public void sortBy_getSortComparator_ShouldReturnCorrectComparator() {
         Comparator<EntityMock> expected = Comparator.<EntityMock, Integer>comparing(x -> x.getId());
         
@@ -54,6 +40,13 @@ public class SortCriteriaUnitTests {
                                 .stream()
                                 .sorted(expected)
                                 .toArray(size -> new EntityMock[size]));
+    }
+    
+    @Test
+    public void sortBy_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> SortCriteria.sortByAsc(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
     @Test
@@ -70,6 +63,13 @@ public class SortCriteriaUnitTests {
                                 .stream()
                                 .sorted(expected)
                                 .toArray(size -> new EntityMock[size]));
+    }
+    
+    @Test
+    public void sortByDesc_WhenFieldExpressionIsNull_ShouldThrowNullPointerException() {
+        ThrowingCallable actual = () -> SortCriteria.sortByDesc(null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
     @Test

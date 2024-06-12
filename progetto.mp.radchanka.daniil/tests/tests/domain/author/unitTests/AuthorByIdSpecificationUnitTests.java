@@ -19,13 +19,15 @@ public class AuthorByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenAuthorIsNull_ShouldThrowException() {
-        AuthorId authorId = new AuthorId(1);
-        AuthorByIdSpecification specification = new AuthorByIdSpecification(authorId);
+    public void isSatisfiedBy_WhenAuthorIdDoesNotMatch_ShouldReturnFalse() {
+        AuthorId authorId1 = new AuthorId(1);
+        AuthorId authorId2 = new AuthorId(2);
+        AuthorByIdSpecification specification = new AuthorByIdSpecification(authorId1);
+        Author author = Author.createNewAuthor(authorId2, "", "", "");
         
-        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
+        boolean result = specification.isSatisfiedBy(author);
         
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+        assertThat(result).isFalse();
     }
     
     @Test
@@ -40,14 +42,12 @@ public class AuthorByIdSpecificationUnitTests {
     }
     
     @Test
-    public void isSatisfiedBy_WhenAuthorIdDoesNotMatch_ShouldReturnFalse() {
-        AuthorId authorId1 = new AuthorId(1);
-        AuthorId authorId2 = new AuthorId(2);
-        AuthorByIdSpecification specification = new AuthorByIdSpecification(authorId1);
-        Author author = Author.createNewAuthor(authorId2, "", "", "");
+    public void isSatisfiedBy_WhenAuthorIsNull_ShouldThrowException() {
+        AuthorId authorId = new AuthorId(1);
+        AuthorByIdSpecification specification = new AuthorByIdSpecification(authorId);
         
-        boolean result = specification.isSatisfiedBy(author);
+        ThrowingCallable actual = () -> specification.isSatisfiedBy(null);
         
-        assertThat(result).isFalse();
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
 }

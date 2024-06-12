@@ -71,6 +71,62 @@ public class IteratorUtilsUnitTest {
     }
     
     @Test
+    public void reduceRemaining_ShouldInvokeAccumulatorWithCorrectArguments() {
+        List<Integer> elements = Arrays.asList(1, 2, 3, 4, 5);
+        int expectedAccumulatedValueBeforeLastElement = 10;
+        int expectedLastElement = 5;
+        Iterator<Integer> iterator = elements.iterator();
+        AccumulatorMock<Integer, Integer> accumulatorMock = new AccumulatorMock<>((acc, element) -> acc + element);
+        
+        IteratorUtils.reduceRemaining(iterator, 0, accumulatorMock);
+        
+        assertThat(accumulatorMock.getExecutionsCount()).isEqualTo(elements.size());
+        assertThat(accumulatorMock.getLastSpecifiedT()).contains(expectedAccumulatedValueBeforeLastElement);
+        assertThat(accumulatorMock.getLastSpecifiedU()).contains(expectedLastElement);
+    }
+    
+    @Test
+    public void reduceRemaining_ShouldReturnAccumulatedResult() {
+        List<Integer> elements = Arrays.asList(1, 2, 3, 4, 5);
+        Iterator<Integer> iterator = elements.iterator();
+        int expectedResult = 15;
+        AccumulatorMock<Integer, Integer> accumulatorMock = new AccumulatorMock<>((acc, element) -> acc + element);
+        
+        Integer result = IteratorUtils.reduceRemaining(iterator, 0, accumulatorMock);
+        
+        assertThat(result).isEqualTo(expectedResult);
+        assertThat(accumulatorMock.getExecutionsCount()).isEqualTo(elements.size());
+    }
+    
+    @Test
+    public void reduceRemaining_WhenAccumulatorIsNull_ShouldThrowNullPointerException() {
+        Iterator<Integer> iterator = Arrays.<Integer>asList(1, 2, 3, 4, 5).iterator();
+        ThrowingCallable actual = () -> IteratorUtils.reduceRemaining(iterator, 0, null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
+    public void reduceRemaining_WhenIteratorIsEmpty_ShouldReturnIdentity() {
+        Iterator<Integer> emptyIterator = Arrays.<Integer>asList().iterator();
+        AccumulatorMock<Integer, Integer> accumulatorMock = new AccumulatorMock<>((acc, element) -> acc + element);
+        int expectedIdentity = 0;
+        
+        Integer result = IteratorUtils.reduceRemaining(emptyIterator, expectedIdentity, accumulatorMock);
+        
+        assertThat(result).isEqualTo(expectedIdentity);
+        assertThat(accumulatorMock.getExecutionsCount()).isEqualTo(0);
+    }
+    
+    @Test
+    public void reduceRemaining_WhenIteratorIsEmptyAndAccumulatorIsNull_ShouldThrowNullPointerException() {
+        Iterator<Integer> emptyIterator = Arrays.<Integer>asList().iterator();
+        ThrowingCallable actual = () -> IteratorUtils.reduceRemaining(emptyIterator, 0, null);
+        
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+    }
+    
+    @Test
     public void toArrayList_ShouldReturnArrayListWithElementsReturnedInOrderFromIterator() {
         ArrayDeque<Integer> list = IntStream
                 .of(1, 2, 3, 4, 5, 6)
@@ -90,62 +146,6 @@ public class IteratorUtilsUnitTest {
         ArrayList<Integer> actual = IteratorUtils.toArrayList(expected.iterator());
         
         assertThat(actual).isEmpty();
-    }
-    
-    @Test
-    public void reduceRemaining_WhenIteratorIsEmpty_ShouldReturnIdentity() {
-        Iterator<Integer> emptyIterator = Arrays.<Integer>asList().iterator();
-        AccumulatorMock<Integer, Integer> accumulatorMock = new AccumulatorMock<>((acc, element) -> acc + element);
-        int expectedIdentity = 0;
-        
-        Integer result = IteratorUtils.reduceRemaining(emptyIterator, expectedIdentity, accumulatorMock);
-        
-        assertThat(result).isEqualTo(expectedIdentity);
-        assertThat(accumulatorMock.getExecutionsCount()).isEqualTo(0);
-    }
-    
-    @Test
-    public void reduceRemaining_ShouldReturnAccumulatedResult() {
-        List<Integer> elements = Arrays.asList(1, 2, 3, 4, 5);
-        Iterator<Integer> iterator = elements.iterator();
-        int expectedResult = 15;
-        AccumulatorMock<Integer, Integer> accumulatorMock = new AccumulatorMock<>((acc, element) -> acc + element);
-        
-        Integer result = IteratorUtils.reduceRemaining(iterator, 0, accumulatorMock);
-        
-        assertThat(result).isEqualTo(expectedResult);
-        assertThat(accumulatorMock.getExecutionsCount()).isEqualTo(elements.size());
-    }
-    
-    @Test
-    public void reduceRemaining_ShouldInvokeAccumulatorWithCorrectArguments() {
-        List<Integer> elements = Arrays.asList(1, 2, 3, 4, 5);
-        int expectedAccumulatedValueBeforeLastElement = 10;
-        int expectedLastElement = 5;
-        Iterator<Integer> iterator = elements.iterator();
-        AccumulatorMock<Integer, Integer> accumulatorMock = new AccumulatorMock<>((acc, element) -> acc + element);
-        
-        IteratorUtils.reduceRemaining(iterator, 0, accumulatorMock);
-        
-        assertThat(accumulatorMock.getExecutionsCount()).isEqualTo(elements.size());
-        assertThat(accumulatorMock.getLastSpecifiedT()).contains(expectedAccumulatedValueBeforeLastElement);
-        assertThat(accumulatorMock.getLastSpecifiedU()).contains(expectedLastElement);
-    }
-    
-    @Test
-    public void reduceRemaining_WhenIteratorIsEmptyAndAccumulatorIsNull_ShouldThrowNullPointerException() {
-        Iterator<Integer> emptyIterator = Arrays.<Integer>asList().iterator();
-        ThrowingCallable actual = () -> IteratorUtils.reduceRemaining(emptyIterator, 0, null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
-    public void reduceRemaining_WhenAccumulatorIsNull_ShouldThrowNullPointerException() {
-        Iterator<Integer> iterator = Arrays.<Integer>asList(1, 2, 3, 4, 5).iterator();
-        ThrowingCallable actual = () -> IteratorUtils.reduceRemaining(iterator, 0, null);
-        
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
 }

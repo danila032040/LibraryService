@@ -19,10 +19,15 @@ public class GetBookByIdQueryHandlerUnitTests {
     private BookRepositoryMock bookRepository;
     private GetBookByIdQueryHandler handler;
     
-    @Before
-    public void setUp() {
-        bookRepository = new BookRepositoryMock();
-        handler = new GetBookByIdQueryHandler(bookRepository);
+    @Test
+    public void handle_WhenBookDoesNotExist_ShouldReturnEmpty() {
+        GetBookByIdQuery query = new GetBookByIdQuery(1);
+        bookRepository.setBook(Optional.empty());
+        
+        ErrorOr<Optional<Book>> result = handler.handle(query);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult().get()).isEmpty();
     }
     
     @Test
@@ -38,14 +43,9 @@ public class GetBookByIdQueryHandlerUnitTests {
         assertThat(result.getResult().get()).hasValue(expectedBook);
     }
     
-    @Test
-    public void handle_WhenBookDoesNotExist_ShouldReturnEmpty() {
-        GetBookByIdQuery query = new GetBookByIdQuery(1);
-        bookRepository.setBook(Optional.empty());
-        
-        ErrorOr<Optional<Book>> result = handler.handle(query);
-        
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult().get()).isEmpty();
+    @Before
+    public void setUp() {
+        bookRepository = new BookRepositoryMock();
+        handler = new GetBookByIdQueryHandler(bookRepository);
     }
 }

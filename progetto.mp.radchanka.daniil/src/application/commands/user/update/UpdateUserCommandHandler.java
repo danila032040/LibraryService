@@ -66,14 +66,14 @@ public class UpdateUserCommandHandler implements RequestHandler<UpdateUserComman
         return ErrorOr.fromResult(SuccessResult.from("Successfully updated user"));
     }
     
+    private Boolean isAddressNewerForTheUser(Optional<Address> newAddress, User existingUser) {
+        return newAddress.map(address -> !Objects.equals(existingUser.getAddress(), address)).orElse(false);
+    }
+    
     private Boolean isPhoneNumberNewerForTheUser(Optional<String> newPhoneNumber, User existingUser) {
         return newPhoneNumber
                 .map(phoneNumber -> !Objects.equals(existingUser.getPhoneNumber().orElse(phoneNumber), phoneNumber))
                 .orElse(false);
-    }
-    
-    private Boolean isAddressNewerForTheUser(Optional<Address> newAddress, User existingUser) {
-        return newAddress.map(address -> !Objects.equals(existingUser.getAddress(), address)).orElse(false);
     }
     
 }

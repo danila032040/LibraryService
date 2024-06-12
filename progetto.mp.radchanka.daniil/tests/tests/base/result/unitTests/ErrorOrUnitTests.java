@@ -30,15 +30,6 @@ public class ErrorOrUnitTests {
     }
     
     @Test
-    public void match_WhenResultConsumerIsNull_ShouldThrowNullPointerException() {
-        ErrorOr<Integer> errorOr = ErrorOr.fromResult(0);
-        
-        ThrowingCallable actual = () -> errorOr.match(null, (ErrorResult error) -> {
-        });
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
-    }
-    
-    @Test
     public void match_WhenErrorMessageConsumerIsNull_ShouldThrowNullPointerException() {
         ErrorOr<Integer> errorOr = ErrorOr.fromErrorMessage("");
         
@@ -59,6 +50,15 @@ public class ErrorOrUnitTests {
         
         assertThat(actualExecutedTimes).isEqualTo(1);
         assertThat(actualError).hasValueSatisfying(error -> assertThat(error.getMessage()).isEqualTo(""));
+    }
+    
+    @Test
+    public void match_WhenResultConsumerIsNull_ShouldThrowNullPointerException() {
+        ErrorOr<Integer> errorOr = ErrorOr.fromResult(0);
+        
+        ThrowingCallable actual = () -> errorOr.match(null, (ErrorResult error) -> {
+        });
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
     @Test

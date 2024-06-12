@@ -17,16 +17,10 @@ import tests.application.pipelineBehaviours.mocks.ValidatorMock;
 public class ValidationPipelineBehaviourUnitTests {
     
     @Test
-    public void handle_WhenValidationPasses_ShouldCallNextHandler() {
-        ValidatorMock validator = new ValidatorMock();
-        RequestHandlerMock nextHandler = new RequestHandlerMock("");
-        ValidationPipelineBehaviour<RequestMock, String> validationPipelineBehaviour = new ValidationPipelineBehaviour<>(
-                validator);
-        validator.setValidationResult(ValidationResult.create());
+    public void constructor_WhenValidatorIsNull_ShoultThrowNullPointerException() {
+        ThrowingCallable actual = () -> new ValidationPipelineBehaviour<>(null);
         
-        validationPipelineBehaviour.handle(new RequestMock(), nextHandler);
-        
-        assertThat(nextHandler.isCalled()).isTrue();
+        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
     }
     
     @Test
@@ -50,9 +44,15 @@ public class ValidationPipelineBehaviourUnitTests {
     }
     
     @Test
-    public void constructor_WhenValidatorIsNull_ShoultThrowNullPointerException() {
-        ThrowingCallable actual = () -> new ValidationPipelineBehaviour<>(null);
+    public void handle_WhenValidationPasses_ShouldCallNextHandler() {
+        ValidatorMock validator = new ValidatorMock();
+        RequestHandlerMock nextHandler = new RequestHandlerMock("");
+        ValidationPipelineBehaviour<RequestMock, String> validationPipelineBehaviour = new ValidationPipelineBehaviour<>(
+                validator);
+        validator.setValidationResult(ValidationResult.create());
         
-        assertThatExceptionOfType(NullPointerException.class).isThrownBy(actual);
+        validationPipelineBehaviour.handle(new RequestMock(), nextHandler);
+        
+        assertThat(nextHandler.isCalled()).isTrue();
     }
 }

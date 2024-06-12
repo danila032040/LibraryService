@@ -30,11 +30,87 @@ public class FindBooksQueryHandlerUnitTests {
     private Mapper<SortTypeQueryData, SortType> sortTypeMapper;
     private FindBooksQueryHandler handler;
     
-    @Before
-    public void setUp() {
-        bookRepository = new BookRepositoryMock();
-        sortTypeMapper = new SortTypeQueryDataToSortTypeMapper();
-        handler = new FindBooksQueryHandler(sortTypeMapper, bookRepository);
+    @Test
+    public void handle_WhenBooksMatchAuthorId_ShouldReturnBooks() {
+        AuthorId authorId = new AuthorId(1);
+        FindBooksQuery query = new FindBooksQuery(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(authorId),
+                Optional.empty(),
+                0,
+                10,
+                BookSortByFieldQueryData.Name,
+                SortTypeQueryData.Ascending,
+                Optional.empty(),
+                Optional.empty());
+        
+        Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.of(authorId), Optional.empty());
+        bookRepository.addBook(book);
+        
+        ErrorOr<List<Book>> result = handler.handle(query);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).hasValueSatisfying(books -> {
+            assertThat(books).containsExactly(book);
+        });
+    }
+    
+    @Test
+    public void handle_WhenBooksMatchGenre_ShouldReturnBooks() {
+        FindBooksQuery query = new FindBooksQuery(
+                Optional.empty(),
+                Optional.of("Fiction"),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                0,
+                10,
+                BookSortByFieldQueryData.Genre,
+                SortTypeQueryData.Ascending,
+                Optional.empty(),
+                Optional.empty());
+        
+        Book book = Book.createNewBook(new BookId(1), "Test", "Fiction", 0, Optional.empty(), Optional.empty());
+        bookRepository.addBook(book);
+        
+        ErrorOr<List<Book>> result = handler.handle(query);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).hasValueSatisfying(books -> {
+            assertThat(books).containsExactly(book);
+        });
+    }
+    
+    @Test
+    public void handle_WhenBooksMatchLibraryId_ShouldReturnBooks() {
+        LibraryId libraryId = new LibraryId(1);
+        FindBooksQuery query = new FindBooksQuery(
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
+                Optional.of(libraryId),
+                0,
+                10,
+                BookSortByFieldQueryData.Name,
+                SortTypeQueryData.Ascending,
+                Optional.empty(),
+                Optional.empty());
+        
+        Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.empty(), Optional.of(libraryId));
+        bookRepository.addBook(book);
+        
+        ErrorOr<List<Book>> result = handler.handle(query);
+        
+        assertThat(result.isError()).isFalse();
+        assertThat(result.getResult()).hasValueSatisfying(books -> {
+            assertThat(books).containsExactly(book);
+        });
     }
     
     @Test
@@ -92,41 +168,13 @@ public class FindBooksQueryHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenBooksMatchGenre_ShouldReturnBooks() {
+    public void handle_WhenNoBooksMatchCriteria_ShouldReturnEmptyCollection() {
         FindBooksQuery query = new FindBooksQuery(
-                Optional.empty(),
-                Optional.of("Fiction"),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                0,
-                10,
-                BookSortByFieldQueryData.Genre,
-                SortTypeQueryData.Ascending,
-                Optional.empty(),
-                Optional.empty());
-        
-        Book book = Book.createNewBook(new BookId(1), "Test", "Fiction", 0, Optional.empty(), Optional.empty());
-        bookRepository.addBook(book);
-        
-        ErrorOr<List<Book>> result = handler.handle(query);
-        
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult()).hasValueSatisfying(books -> {
-            assertThat(books).containsExactly(book);
-        });
-    }
-    
-    @Test
-    public void handle_WhenBooksMatchAuthorId_ShouldReturnBooks() {
-        AuthorId authorId = new AuthorId(1);
-        FindBooksQuery query = new FindBooksQuery(
+                Optional.of("Nonexistent Test"),
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
-                Optional.of(authorId),
                 Optional.empty(),
                 0,
                 10,
@@ -135,71 +183,11 @@ public class FindBooksQueryHandlerUnitTests {
                 Optional.empty(),
                 Optional.empty());
         
-        Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.of(authorId), Optional.empty());
-        bookRepository.addBook(book);
-        
         ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
-            assertThat(books).containsExactly(book);
-        });
-    }
-    
-    @Test
-    public void handle_WhenBooksMatchLibraryId_ShouldReturnBooks() {
-        LibraryId libraryId = new LibraryId(1);
-        FindBooksQuery query = new FindBooksQuery(
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.of(libraryId),
-                0,
-                10,
-                BookSortByFieldQueryData.Name,
-                SortTypeQueryData.Ascending,
-                Optional.empty(),
-                Optional.empty());
-        
-        Book book = Book.createNewBook(new BookId(1), "Test", "Test", 0, Optional.empty(), Optional.of(libraryId));
-        bookRepository.addBook(book);
-        
-        ErrorOr<List<Book>> result = handler.handle(query);
-        
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult()).hasValueSatisfying(books -> {
-            assertThat(books).containsExactly(book);
-        });
-    }
-    
-    @Test
-    public void handle_WhenSortCriteriaAreApplied_ShouldReturnSortedBooks() {
-        FindBooksQuery query = new FindBooksQuery(
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                Optional.empty(),
-                0,
-                10,
-                BookSortByFieldQueryData.PublicationYear,
-                SortTypeQueryData.Descending,
-                Optional.of(BookSortByFieldQueryData.Name),
-                Optional.of(SortTypeQueryData.Ascending));
-        
-        Book book1 = Book.createNewBook(new BookId(1), "A Test", "Test", 2000, Optional.empty(), Optional.empty());
-        Book book2 = Book.createNewBook(new BookId(2), "B Test", "Test", 1999, Optional.empty(), Optional.empty());
-        
-        bookRepository.addBooks(Arrays.asList(book1, book2));
-        
-        ErrorOr<List<Book>> result = handler.handle(query);
-        
-        assertThat(result.isError()).isFalse();
-        assertThat(result.getResult()).hasValueSatisfying(books -> {
-            assertThat(books).containsExactly(book1, book2);
+            assertThat(books).isEmpty();
         });
     }
     
@@ -234,9 +222,9 @@ public class FindBooksQueryHandlerUnitTests {
     }
     
     @Test
-    public void handle_WhenNoBooksMatchCriteria_ShouldReturnEmptyCollection() {
+    public void handle_WhenSortCriteriaAreApplied_ShouldReturnSortedBooks() {
         FindBooksQuery query = new FindBooksQuery(
-                Optional.of("Nonexistent Test"),
+                Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
                 Optional.empty(),
@@ -244,16 +232,28 @@ public class FindBooksQueryHandlerUnitTests {
                 Optional.empty(),
                 0,
                 10,
-                BookSortByFieldQueryData.Name,
-                SortTypeQueryData.Ascending,
-                Optional.empty(),
-                Optional.empty());
+                BookSortByFieldQueryData.PublicationYear,
+                SortTypeQueryData.Descending,
+                Optional.of(BookSortByFieldQueryData.Name),
+                Optional.of(SortTypeQueryData.Ascending));
+        
+        Book book1 = Book.createNewBook(new BookId(1), "A Test", "Test", 2000, Optional.empty(), Optional.empty());
+        Book book2 = Book.createNewBook(new BookId(2), "B Test", "Test", 1999, Optional.empty(), Optional.empty());
+        
+        bookRepository.addBooks(Arrays.asList(book1, book2));
         
         ErrorOr<List<Book>> result = handler.handle(query);
         
         assertThat(result.isError()).isFalse();
         assertThat(result.getResult()).hasValueSatisfying(books -> {
-            assertThat(books).isEmpty();
+            assertThat(books).containsExactly(book1, book2);
         });
+    }
+    
+    @Before
+    public void setUp() {
+        bookRepository = new BookRepositoryMock();
+        sortTypeMapper = new SortTypeQueryDataToSortTypeMapper();
+        handler = new FindBooksQueryHandler(sortTypeMapper, bookRepository);
     }
 }
